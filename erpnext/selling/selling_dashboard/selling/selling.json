@@ -15,11 +15,11 @@
  ],
  "charts": [
   {
-   "chart": "Sales Order Trends",
+   "chart": "Sales invoice",
    "width": "Full"
   },
   {
-   "chart": "Top Customers",
+   "chart": "Warehouse wise Stock Value",
    "width": "Half"
   },
   {
@@ -38,7 +38,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2020-07-22 15:31:22.299903",
+ "modified": "2021-07-15 14:25:54.827941",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Selling",

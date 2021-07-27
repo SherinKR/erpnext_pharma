@@ -364,6 +364,43 @@ def get_delivery_notes_to_be_billed(doctype, txt, searchfield, start, page_len, 
 
 
 @frappe.whitelist()
+def get_new_medicines(company, purchase_type=None):
+	query = """
+		select
+			i.item_code, i.item_name, i.drug_content
+		from
+			`tabItem` i, `tabItem Default` id
+		where
+			id.parent=i.name and id.is_new_item=1 and id.company=%(company)s and disabled=0
+	"""
+	if purchase_type:
+		query += " and i.purchase_type=%(purchase_type)s"
+	return frappe.db.sql(query.format(), {'company': company, 'purchase_type': purchase_type}, as_dict=True)
+
+@frappe.whitelist()
+def search_item_contents(filter_value,warehouse,price_list):
+	query = """
+			select
+				i.item_code, i.item_name, i.drug_content
+			from
+				`tabItem` i
+			where
+				( item_code like %(filter_value)s or item_name like %(filter_value)s or drug_content like %(filter_value)s or brand like %(filter_value)s ) and disabled=0 and is_sales_item=1
+    """
+	return_dict = frappe.db.sql(query.format(), {'filter_value': '%'+ filter_value +'%'}, as_dict=True)
+	for item in return_dict:
+		item_qty = frappe.db.get_value('Bin', {'warehouse': warehouse, 'item_code': item.item_code }, ['actual_qty'])
+		item_price = frappe.db.get_value('Item Price', {'price_list': price_list, 'item_code': item.item_code }, ['price_list_rate'])
+		if not item_qty:
+			item_qty=0
+		item['qty'] = item_qty
+		if not item_price:
+			item_price=0
+		item['qty'] = item_qty
+		item['price'] = item_price
+	return return_dict
+
+@frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_batch_no(doctype, txt, searchfield, start, page_len, filters):
 	cond = ""
@@ -401,7 +438,7 @@ def get_batch_no(doctype, txt, searchfield, start, page_len, filters):
 			search_cond = " or " + " or ".join([field + " like %(txt)s" for field in searchfields])
 
 		batch_nos = frappe.db.sql("""select sle.batch_no, round(sum(sle.actual_qty),2), sle.stock_uom,
-				concat('MFG-',batch.manufacturing_date), concat('EXP-',batch.expiry_date)
+				concat('EXP-',batch.expiry_date)
 				{search_columns}
 			from `tabStock Ledger Entry` sle
 				INNER JOIN `tabBatch` batch on sle.batch_no = batch.name

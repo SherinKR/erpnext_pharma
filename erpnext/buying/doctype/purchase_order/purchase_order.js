@@ -206,7 +206,7 @@ erpnext.buying.PurchaseOrderController = erpnext.buying.BuyingController.extend(
 					if (doc.docstatus === 1 && !doc.inter_company_order_reference) {
 						let me = this;
 						let internal = me.frm.doc.is_internal_supplier;
-						if (internal) {
+						if (internal && frappe.defaults.get_user_default("Company") === me.frm.doc.represents_company) {
 							let button_label = (me.frm.doc.company === me.frm.doc.represents_company) ? "Internal Sales Order" :
 								"Inter Company Sales Order";
 

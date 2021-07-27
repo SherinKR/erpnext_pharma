@@ -1,0 +1,180 @@
+{
+ "actions": [],
+ "autoname": "format:{warehouse} - {bin_name}",
+ "creation": "2021-06-29 11:48:17.416843",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "bin_name",
+  "rack_name",
+  "shelf_name",
+  "room_name",
+  "column_break_5",
+  "company",
+  "warehouse",
+  "item_code",
+  "bin_qty",
+  "section_break_10",
+  "items"
+ ],
+ "fields": [
+  {
+   "fieldname": "bin_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bin Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "rack_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Rack Name",
+   "options": "Rack",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fetch_from": "rack_name.shelf_name",
+   "fetch_if_empty": 1,
+   "fieldname": "shelf_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Shelf Name",
+   "options": "Shelf",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rack_name.room",
+   "fetch_if_empty": 1,
+   "fieldname": "room_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Room Name",
+   "options": "Rooms",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "room_name.company",
+   "fetch_if_empty": 1,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "rack_name.warehouse",
+   "fetch_if_empty": 1,
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "bin_qty",
+   "fieldtype": "Float",
+   "label": "Bin Quantity",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "ignore_user_permissions": 1,
+   "label": "items",
+   "options": "Bin Items",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-07-23 17:23:16.648630",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Bins",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Purchase User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

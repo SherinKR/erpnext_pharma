@@ -1285,3 +1285,18 @@ var add_to_item_line = function(frm, checked_values, invoice_healthcare_services
 		frm.refresh_fields();
 	}
 };
+frappe.ui.form.on("Sales Invoice Item", "item_code", function(frm, cdt, cdn) {
+    var item = locals[cdt][cdn];
+	if(item.item_code){
+		console.log(frm.doc.company)
+		frm.set_query('bin', 'items', function(doc, cdt, cdn) {
+      	var d = locals[cdt][cdn];
+        return {
+        	"filters": {
+          	"item_code": d.item_code,
+		"company": frm.doc.company
+          	}
+      		};
+      	});
+	}
+});

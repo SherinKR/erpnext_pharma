@@ -698,6 +698,7 @@
    "fieldtype": "Table",
    "hide_days": 1,
    "hide_seconds": 1,
+   "ignore_user_permissions": 1,
    "label": "Items",
    "oldfieldname": "entries",
    "oldfieldtype": "Table",
@@ -1951,6 +1952,7 @@
    "depends_on": "eval: doc.is_internal_customer && doc.update_stock",
    "fieldname": "set_target_warehouse",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Set Target Warehouse",
    "options": "Warehouse"
   },
@@ -1978,7 +1980,7 @@
    "link_fieldname": "consolidated_invoice"
   }
  ],
- "modified": "2021-05-20 22:48:33.988881",
+ "modified": "2021-07-22 16:14:56.590988",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice",

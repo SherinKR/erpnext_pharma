@@ -10,7 +10,7 @@ app_color = "#e74c3c"
 app_email = "info@erpnext.com"
 app_license = "GNU General Public License (v3)"
 source_link = "https://github.com/frappe/erpnext"
-app_logo_url = "/assets/erpnext/images/erpnext-logo.svg"
+app_logo_url = "/files/logo.png" #/assets/erpnext/images/erpnext-logo.svg"
 
 
 develop_version = '13.x.x-develop'
@@ -79,7 +79,7 @@ website_generators = ["Item Group", "Item", "BOM", "Sales Partner",
 
 website_context = {
 	"favicon": 	"/assets/erpnext/images/erpnext-favicon.svg",
-	"splash_image": "/assets/erpnext/images/erpnext-logo.svg"
+	"splash_image": "/files/3.png", #/assets/erpnext/images/erpnext-logo.svg"
 }
 
 website_route_rules = [
@@ -339,6 +339,7 @@ scheduler_events = {
 	],
 	"daily": [
 		"erpnext.stock.reorder_item.reorder_item",
+		"erpnext.stock.item_reorder.auto_item_reorder",
 		"erpnext.support.doctype.issue.issue.auto_close_tickets",
 		"erpnext.crm.doctype.opportunity.opportunity.auto_close_opportunity",
 		"erpnext.controllers.accounts_controller.update_invoice_status",
@@ -385,10 +386,7 @@ email_brand_image = "assets/erpnext/images/erpnext-logo.jpg"
 
 default_mail_footer = """
 	<span>
-		Sent via
-		<a class="text-muted" href="https://erpnext.com?source=via_email_footer" target="_blank">
-			ERPNext
-		</a>
+		
 	</span>
 """
 

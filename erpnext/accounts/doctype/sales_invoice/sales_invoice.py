@@ -46,6 +46,7 @@ class SalesInvoice(SellingController):
 			'target_parent_dt': 'Sales Order',
 			'target_parent_field': 'per_billed',
 			'source_field': 'amount',
+			'join_field': 'so_detail',
 			'percent_join_field': 'sales_order',
 			'status_field': 'billing_status',
 			'keyword': 'Billed',
@@ -118,15 +119,14 @@ class SalesInvoice(SellingController):
 			lp = frappe.get_doc('Loyalty Program', self.loyalty_program)
 			self.loyalty_redemption_account = lp.expense_account if not self.loyalty_redemption_account else self.loyalty_redemption_account
 			self.loyalty_redemption_cost_center = lp.cost_center if not self.loyalty_redemption_cost_center else self.loyalty_redemption_cost_center
-
+		# self.validate_item_qty()
+		self.assign_bin_for_item()
 		self.set_against_income_account()
 		self.validate_c_form()
 		self.validate_time_sheets_are_submitted()
 		self.validate_multiple_billing("Delivery Note", "dn_detail", "amount", "items")
 		if not self.is_return:
 			self.validate_serial_numbers()
-		else:
-			self.timesheets = []
 		self.update_packing_list()
 		self.set_billing_hours_and_amount()
 		self.update_timesheet_billing_for_project()
@@ -140,6 +140,47 @@ class SalesInvoice(SellingController):
 
 		if self.redeem_loyalty_points and self.loyalty_program and self.loyalty_points and not self.is_consolidated:
 			validate_loyalty_points(self, self.loyalty_points)
+
+	def validate_item_qty(self):
+		pass
+		# for row in self.get("items"):
+		# 	if row.bin and row.bin_batch_no :
+		# 		if row.stock_qty< row.bin_quantity and row.stock_qty< row.actual_qty:
+		# 			if row.bin_item_qty < row.stock_qty :
+		# 				frappe.msgprint(msg="No enough items "+row.item_code+" available for selected batch in Bin: "+row.bin, title="Item shortage!")
+		# 		else:
+		# 			frappe.throw(msg="No enough items "+row.item_code+" available in Bin: "+row.bin+"! Create Bin entry", title="Item shortage!")
+	def assign_bin_for_item(self):
+		print(self.name)
+		if self.update_stock:
+			for d in self.get("items"):
+				item_bin = set_bin_details(self,d.item_code)
+				for ib in item_bin:
+					bin_name = ib.name
+					if frappe.db.exists({ 'doctype': 'Bin Items','parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code }):
+						qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
+						if qty and qty < d.stock_qty:
+							frappe.msgprint(msg='item short', title="Error!")
+				bin_name = item_bin[0].name
+				qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
+				bin_doc = frappe.get_doc('Bins', bin_name )
+				if frappe.db.exists({ 'doctype': 'Bin SI Items','parent': self.name, 'bin': bin_name ,'batch': d.batch_no, 'item_code': d.item_code }):
+					tab_name, idx = frappe.db.get_value('Bin SI Items', {'parent': self.name, 'bin': bin_name ,'batch': d.batch_no, 'item_code': d.item_code }, ['name','idx'])
+					frappe.db.set_value('Bin SI Items', tab_name, { 'quantity': d.stock_qty })
+					frappe.db.commit()
+					# self.reload()
+				else:
+					bin_item = self.append('bin_details')
+					bin_item.item_code = d.item_code
+					bin_item.item_name = d.item_name
+					bin_item.batch = d.batch_no
+					bin_item.quantity = d.stock_qty
+					bin_item.bin = bin_name
+					bin_item.room = bin_doc.room_name
+					bin_item.shelf = bin_doc.shelf_name
+					bin_item.rack = bin_doc.rack_name
+					bin_item.bin_qty = bin_doc.bin_qty
+					bin_item.batch_qty = qty
 
 	def validate_fixed_asset(self):
 		for d in self.get("items"):
@@ -189,6 +230,29 @@ class SalesInvoice(SellingController):
 
 	def on_submit(self):
 		self.validate_pos_paid_amount()
+		self.deduct_stock_from_bin()
+
+		if self.company:
+			company_doc = frappe.get_doc('Company', self.company)
+			if company_doc.is_group != 1:
+				sum=0
+				due_days=0
+				for item in self.items:
+				    item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+				    sum = sum + (int(item_price)*item.stock_qty)
+				new_fpr = frappe.new_doc('Franchise Payment Request')
+				new_fpr.company = self.company
+				new_fpr.reference_document = self.name
+				new_fpr.selling_amount = self.outstanding_amount
+				new_fpr.purchase_amount = sum
+				new_fpr.transaction_date = frappe.utils.getdate()
+				new_fpr.weekday = frappe.utils.get_weekday()
+				weekdays= [{ "day_no": 7, "day_name": "Monday"}, { "day_no": 6, "day_name": "Tuesday"}, { "day_no": 5, "day_name": "Wednesday"}, { "day_no": 4, "day_name": "Thursday"}, { "day_no": 3, "day_name": "Friday"}, { "day_no": 2, "day_name": "Saturday"}, { "day_no": 1, "day_name": "Sunday"}]
+				for week in weekdays:
+				    if week["day_name"] == frappe.utils.get_weekday():
+				        due_days = week["day_no"]
+				new_fpr.notification_date = frappe.utils.add_days(frappe.utils.getdate(), due_days)
+				new_fpr.insert()
 
 		if not self.auto_repeat:
 			frappe.get_doc('Authorization Control').validate_approving_authority(self.doctype,
@@ -266,6 +330,14 @@ class SalesInvoice(SellingController):
 	def validate_pos_paid_amount(self):
 		if len(self.payments) == 0 and self.is_pos:
 			frappe.throw(_("At least one mode of payment is required for POS invoice."))
+	def deduct_stock_from_bin(self):
+		for item in self.bin_details:
+			bin_doc = frappe.get_doc("Bins",item.bin)
+			tab_name, batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name','batch_qty'])
+			frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty - item.quantity })
+			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty - item.quantity })
+			frappe.db.commit()
+
 
 	def check_if_consolidated_invoice(self):
 		# since POS Invoice extends Sales Invoice, we explicitly check if doctype is Sales Invoice
@@ -277,7 +349,7 @@ class SalesInvoice(SellingController):
 				pluck="pos_closing_entry"
 			)
 			if pos_closing_entry:
-				msg = _("To cancel a {} you need to cancel the POS Closing Entry {}.").format(
+				msg = _("To cancel a {} you need to cancel the POS Closing Entry {}. ").format(
 					frappe.bold("Consolidated Sales Invoice"),
 					get_link_to_form("POS Closing Entry", pos_closing_entry[0])
 				)
@@ -339,7 +411,7 @@ class SalesInvoice(SellingController):
 
 		if "Healthcare" in active_domains:
 			manage_invoice_submit_cancel(self, "on_cancel")
-		self.unlink_sales_invoice_from_timesheets()
+
 		self.ignore_linked_doctypes = ('GL Entry', 'Stock Ledger Entry', 'Repost Item Valuation')
 
 	def update_status_updater_args(self):
@@ -395,18 +467,6 @@ class SalesInvoice(SellingController):
 		if validate_against_credit_limit:
 			check_credit_limit(self.customer, self.company, bypass_credit_limit_check_at_sales_order)
 
-	def unlink_sales_invoice_from_timesheets(self):
-		for row in self.timesheets:
-			timesheet = frappe.get_doc('Timesheet', row.time_sheet)
-			for time_log in timesheet.time_logs:
-				if time_log.sales_invoice == self.name:
-					time_log.sales_invoice = None
-			timesheet.calculate_total_amounts()
-			timesheet.calculate_percentage_billed()
-			timesheet.flags.ignore_validate_update_after_submit = True
-			timesheet.set_status()
-			timesheet.db_update_all()
-
 	@frappe.whitelist()
 	def set_missing_values(self, for_validate=False):
 		pos = self.set_pos_fields(for_validate)
@@ -441,7 +501,7 @@ class SalesInvoice(SellingController):
 				timesheet.calculate_percentage_billed()
 				timesheet.flags.ignore_validate_update_after_submit = True
 				timesheet.set_status()
-				timesheet.db_update_all()
+				timesheet.save()
 
 	def update_time_sheet_detail(self, timesheet, args, sales_invoice):
 		for data in timesheet.time_logs:
@@ -562,12 +622,12 @@ class SalesInvoice(SellingController):
 			frappe.throw(_("Debit To is required"), title=_("Account Missing"))
 
 		if account.report_type != "Balance Sheet":
-			msg = _("Please ensure {} account is a Balance Sheet account.").format(frappe.bold("Debit To")) + " "
+			msg = _("Please ensure {} account is a Balance Sheet account. ").format(frappe.bold("Debit To"))
 			msg += _("You can change the parent account to a Balance Sheet account or select a different account.")
 			frappe.throw(msg, title=_("Invalid Account"))
 
 		if self.customer and account.account_type != "Receivable":
-			msg = _("Please ensure {} account is a Receivable account.").format(frappe.bold("Debit To")) + " "
+			msg = _("Please ensure {} account is a Receivable account. ").format(frappe.bold("Debit To"))
 			msg += _("Change the account type to Receivable or select a different account.")
 			frappe.throw(msg, title=_("Invalid Account"))
 
@@ -755,10 +815,8 @@ class SalesInvoice(SellingController):
 				self.append('timesheets', {
 						'time_sheet': data.parent,
 						'billing_hours': data.billing_hours,
-						'billing_amount': data.billing_amount,
-						'timesheet_detail': data.name,
-						'activity_type': data.activity_type,
-						'description': data.description
+						'billing_amount': data.billing_amt,
+						'timesheet_detail': data.name
 					})
 
 			self.calculate_billing_amount_for_timesheet()
@@ -1137,7 +1195,7 @@ class SalesInvoice(SellingController):
 			if not item.serial_no:
 				continue
 
-			for serial_no in get_serial_nos(item.serial_no):
+			for serial_no in item.serial_no.split("\n"):
 				if serial_no and frappe.db.get_value('Serial No', serial_no, 'item_code') == item.item_code:
 					frappe.db.set_value('Serial No', serial_no, 'sales_invoice', invoice)
 
@@ -1147,6 +1205,7 @@ class SalesInvoice(SellingController):
 		"""
 		self.set_serial_no_against_delivery_note()
 		self.validate_serial_against_delivery_note()
+		self.validate_serial_against_sales_invoice()
 
 	def set_serial_no_against_delivery_note(self):
 		for item in self.items:
@@ -1176,6 +1235,26 @@ class SalesInvoice(SellingController):
 			if item.serial_no and cint(item.qty) != len(si_serial_nos):
 				frappe.throw(_("Row {0}: {1} Serial numbers required for Item {2}. You have provided {3}.").format(
 					item.idx, item.qty, item.item_code, len(si_serial_nos)))
+
+	def validate_serial_against_sales_invoice(self):
+		""" check if serial number is already used in other sales invoice """
+		for item in self.items:
+			if not item.serial_no:
+				continue
+
+			for serial_no in item.serial_no.split("\n"):
+				serial_no_details = frappe.db.get_value("Serial No", serial_no,
+					["sales_invoice", "item_code"], as_dict=1)
+
+				if not serial_no_details:
+					continue
+
+				if serial_no_details.sales_invoice and serial_no_details.item_code == item.item_code \
+					and self.name != serial_no_details.sales_invoice:
+					sales_invoice_company = frappe.db.get_value("Sales Invoice", serial_no_details.sales_invoice, "company")
+					if sales_invoice_company == self.company:
+						frappe.throw(_("Serial Number: {0} is already referenced in Sales Invoice: {1}")
+							.format(serial_no, serial_no_details.sales_invoice))
 
 	def update_project(self):
 		if self.project:
@@ -1333,6 +1412,34 @@ class SalesInvoice(SellingController):
 				item_line.description = checked_item['description']
 
 		self.set_missing_values(for_validate = True)
+
+	#Rack Bin
+	@frappe.whitelist()
+	def set_rack_bin(self, item_code):
+		company_name = frappe.defaults.get_user_default("Company")
+		if frappe.db.exists({ 'doctype': 'Bins', 'company': company_name, 'item_code': item_code }):
+			bin_list = frappe.db.get_list('Bins',
+				filters= {'company': company_name, 'item_code': item_code},
+				order_by='bin_item_quantity desc'
+				)
+			bin_doc = frappe.get_doc('Bins', bin_list[0].name)
+			items = {'bin': bin_doc.bin_name, 'rack': bin_doc.rack_name , 'shelf': bin_doc.shelf_name ,'room': bin_doc.room_name , 'item_code': item_code, 'bin_qty': bin_doc.bin_item_quantity}
+		else:
+			items = {'item_code': item_code}
+			frappe.msgprint(msg="No bins found", title="Error!")
+		return items
+
+	@frappe.whitelist()
+	def set_rack_bin_qty(self, item_code, batch, bin):
+		if frappe.db.exists({ 'doctype': 'Bin Items','parent': bin, 'batch': batch, 'item_code': item_code }):
+			tab_name, qty = frappe.db.get_value('Bin Items', {'parent': bin, 'batch': batch, 'item_code':item_code}, ['name','available_quantity'])
+			bin_item = { 'bin_item_qty': qty }
+			if qty < 1:
+				frappe.msgprint(msg="No items available for selected batch", title="Error!")
+		else:
+			bin_item_qty = { 'bin_item_qty':0 }
+			frappe.msgprint(msg="No items available for selected batch", title="Error!")
+		return bin_item
 
 	def set_status(self, update=False, status=None, update_modified=True):
 		if self.is_new():
@@ -1760,10 +1867,15 @@ def update_pr_items(doc, sales_item_map, purchase_item_map, parent_child_map, wa
 		item.purchase_order = parent_child_map.get(sales_item_map.get(item.delivery_note_item))
 
 def get_delivery_note_details(internal_reference):
+	so_item_map = {}
+
 	si_item_details = frappe.get_all('Delivery Note Item', fields=['name', 'so_detail'],
 		filters={'parent': internal_reference})
 
-	return {d.name: d.so_detail for d in si_item_details if d.so_detail}
+	for d in si_item_details:
+		so_item_map.setdefault(d.name, d.so_detail)
+
+	return so_item_map
 
 def get_sales_invoice_details(internal_reference):
 	dn_item_map = {}
@@ -1923,3 +2035,17 @@ def create_dunning(source_name, target_doc=None):
 		}
 	}, target_doc, set_missing_values)
 	return doclist
+
+@frappe.whitelist()
+def set_bin_details(self, item_code):
+	company_name = frappe.defaults.get_user_default("Company")
+	if frappe.db.exists({ 'doctype': 'Bins', 'company': company_name, 'item_code': item_code }):
+		bin_list = frappe.db.get_list('Bins',
+			filters= {'company': company_name, 'item_code': item_code},
+			order_by='bin_qty desc'
+			)
+		return bin_list
+				# items = {'bin': bin_doc.bin_name, 'rack': bin_doc.rack_name , 'shelf': bin_doc.shelf_name ,'room': bin_doc.room_name , 'item_code': item_code, 'bin_qty': bin_doc.bin_item_quantity}
+	else:
+		frappe.throw(msg="No bins found", title="Error!")
+

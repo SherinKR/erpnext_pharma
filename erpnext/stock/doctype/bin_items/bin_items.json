@@ -1,0 +1,87 @@
+{
+ "actions": [],
+ "creation": "2021-06-29 11:34:40.537992",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "batch",
+  "batch_qty",
+  "batch_uom",
+  "manufacturing_date",
+  "expiry_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fetch_if_empty": 1,
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Name",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Batch",
+   "options": "Batch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch_qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Batch Quantity",
+   "precision": "2"
+  },
+  {
+   "fetch_from": "batch.stock_uom",
+   "fetch_if_empty": 1,
+   "fieldname": "batch_uom",
+   "fieldtype": "Link",
+   "label": "Batch UOM",
+   "options": "UOM"
+  },
+  {
+   "fetch_from": "batch.manufacturing_date",
+   "fetch_if_empty": 1,
+   "fieldname": "manufacturing_date",
+   "fieldtype": "Date",
+   "label": "Manufacturing Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "batch.expiry_date",
+   "fetch_if_empty": 1,
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "label": "Expiry Date",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-07-04 22:30:59.688100",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Bin Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

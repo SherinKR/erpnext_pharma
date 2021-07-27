@@ -1,0 +1,122 @@
+{
+ "actions": [],
+ "creation": "2021-06-29 11:48:22.879729",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "batch",
+  "quantity",
+  "column_break_5",
+  "bin",
+  "rack",
+  "shelf",
+  "room",
+  "bin_qty",
+  "company"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "item_code.item_name",
+   "fetch_if_empty": 1,
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Batch",
+   "options": "Batch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Received Quantity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bin",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Bin",
+   "options": "Bins",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "bin.rack_name",
+   "fetch_if_empty": 1,
+   "fieldname": "rack",
+   "fieldtype": "Link",
+   "label": "Rack",
+   "options": "Rack",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "bin.shelf_name",
+   "fetch_if_empty": 1,
+   "fieldname": "shelf",
+   "fieldtype": "Link",
+   "label": "Shelf",
+   "options": "Shelf",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "bin.room_name",
+   "fetch_if_empty": 1,
+   "fieldname": "room",
+   "fieldtype": "Link",
+   "label": "Room",
+   "options": "Rooms",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "bin.bin_qty",
+   "fetch_if_empty": 1,
+   "fieldname": "bin_qty",
+   "fieldtype": "Data",
+   "label": "Bin Qty",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "room.company",
+   "fetch_if_empty": 1,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-06-29 13:29:45.679705",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Bin Entry Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

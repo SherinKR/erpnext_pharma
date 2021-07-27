@@ -7,8 +7,15 @@ import frappe
 from frappe.utils import cint
 
 def boot_session(bootinfo):
-	"""boot session - send website info if guest"""
 
+	"""boot session - send website info if guest"""
+	if frappe.defaults.get_user_default("Company"):
+		company_name = frappe.defaults.get_user_default("Company")
+	else:
+		company_name = frappe.db.get_value('User Permission', {'user':frappe.session.user,'allow': 'Company'}, ['for_value'])
+	if company_name:
+		#pass
+		validate_user_payment(company_name)
 	bootinfo.custom_css = frappe.db.get_value('Style Settings', None, 'custom_css') or ''
 
 	if frappe.session['user']!='Guest':
@@ -38,7 +45,13 @@ def boot_session(bootinfo):
 
 		party_account_types = frappe.db.sql(""" select name, ifnull(account_type, '') from `tabParty Type`""")
 		bootinfo.party_account_types = frappe._dict(party_account_types)
-
+def validate_user_payment(company_name):
+	doc_company = frappe.get_doc('Company', company_name)
+	if doc_company.block_user_access == 1:
+		if doc_company.reson_for_blocking:
+			frappe.throw( msg= " "+doc_company.reson_for_blocking, title='Error!')
+		else:
+			frappe.throw( msg= "Administrator blocked you. Please contact Administrator", title='Error!')
 def load_country_and_currency(bootinfo):
 	country = frappe.db.get_default("country")
 	if country and frappe.db.exists("Country", country):

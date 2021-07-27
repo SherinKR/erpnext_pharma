@@ -73,34 +73,6 @@ frappe.ui.form.on("Purchase Receipt", {
 				})
 			}, __('Create'));
 		}
-
-		frm.events.add_custom_buttons(frm);
-	},
-
-	add_custom_buttons: function(frm) {
-		if (frm.doc.docstatus == 0) {
-			frm.add_custom_button(__('Purchase Invoice'), function () {
-				if (!frm.doc.supplier) {
-					frappe.throw({
-						title: __("Mandatory"),
-						message: __("Please Select a Supplier")
-					});
-				}
-				erpnext.utils.map_current_doc({
-					method: "erpnext.accounts.doctype.purchase_invoice.purchase_invoice.make_purchase_receipt",
-					source_doctype: "Purchase Invoice",
-					target: frm,
-					setters: {
-						supplier: frm.doc.supplier,
-					},
-					get_query_filters: {
-						docstatus: 1,
-						per_received: ["<", 100],
-						company: frm.doc.company
-					}
-				})
-			}, __("Get Items From"));
-		}
 	},
 
 	company: function(frm) {
@@ -179,6 +151,8 @@ erpnext.stock.PurchaseReceiptController = erpnext.buying.BuyingController.extend
 				cur_frm.add_custom_button(__('Purchase Return'), this.make_purchase_return, __('Create'));
 
 				cur_frm.add_custom_button(__('Make Stock Entry'), cur_frm.cscript['Make Stock Entry'], __('Create'));
+
+				cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
 
 				if(flt(this.frm.doc.per_billed) < 100) {
 					cur_frm.add_custom_button(__('Purchase Invoice'), this.make_purchase_invoice, __('Create'));
@@ -330,6 +304,13 @@ cur_frm.cscript['Make Stock Entry'] = function() {
 	})
 }
 
+cur_frm.cscript['Make Bin Entry'] = function() {
+	frappe.model.open_mapped_doc({
+		method: "erpnext.stock.doctype.purchase_receipt.purchase_receipt.make_bin_entry",
+		frm: cur_frm,
+	})
+}
+
 var validate_sample_quantity = function(frm, cdt, cdn) {
 	var d = locals[cdt][cdn];
 	if (d.sample_quantity && d.qty) {
@@ -347,3 +328,4 @@ var validate_sample_quantity = function(frm, cdt, cdn) {
 		});
 	}
 };
+

@@ -19,12 +19,8 @@
    "width": "Full"
   },
   {
-   "chart": "Material Request Analysis",
-   "width": "Half"
-  },
-  {
    "chart": "Purchase Order Analysis",
-   "width": "Half"
+   "width": "Full"
   },
   {
    "chart": "Top Suppliers",
@@ -36,9 +32,9 @@
  "docstatus": 0,
  "doctype": "Dashboard",
  "idx": 0,
- "is_default": 1,
+ "is_default": 0,
  "is_standard": 1,
- "modified": "2020-07-22 12:48:38.112744",
+ "modified": "2021-07-15 14:21:27.110351",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Buying",

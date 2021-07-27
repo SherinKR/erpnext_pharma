@@ -115,13 +115,13 @@
    "options": "Gender"
   },
   {
-   "default": "Company",
+   "default": "Business",
    "fieldname": "customer_type",
    "fieldtype": "Select",
    "label": "Type",
    "oldfieldname": "customer_type",
    "oldfieldtype": "Select",
-   "options": "Company\nIndividual",
+   "options": "Business\nIndividual",
    "reqd": 1
   },
   {
@@ -500,7 +500,7 @@
  "image_field": "image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-01-28 12:54:57.258959",
+ "modified": "2021-07-12 12:56:59.816659",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",

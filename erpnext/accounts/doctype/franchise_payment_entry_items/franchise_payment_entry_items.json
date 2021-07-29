@@ -1,0 +1,66 @@
+{
+ "actions": [],
+ "creation": "2021-07-28 09:11:45.773608",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "doc_name",
+  "date",
+  "sales_amount",
+  "purchase_amount",
+  "paid_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "doc_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Doc Name",
+   "options": "Franchise Payment Request"
+  },
+  {
+   "fetch_from": "doc_name.transaction_date",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "doc_name.selling_amount",
+   "fieldname": "sales_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Sales Amount",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "doc_name.purchase_amount",
+   "fieldname": "purchase_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Purchase Amount",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "doc_name.purchase_amount",
+   "fieldname": "paid_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Paid Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-07-28 15:50:40.517339",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Franchise Payment Entry Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

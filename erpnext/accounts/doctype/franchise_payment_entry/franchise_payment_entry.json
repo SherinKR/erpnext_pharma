@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "autoname": "naming_series: ",
+ "creation": "2021-07-28 09:23:20.127081",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "company",
+  "from_date",
+  "to_date",
+  "get_items",
+  "items",
+  "get_total",
+  "total_sales_amount",
+  "total_purchase_amount",
+  "total_paid_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ACC-FPE-.YYYY.-"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "get_items",
+   "fieldtype": "Button",
+   "label": "Get Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Franchise Payment Entry Items"
+  },
+  {
+   "fieldname": "get_total",
+   "fieldtype": "Button",
+   "label": "Get Total"
+  },
+  {
+   "fieldname": "total_sales_amount",
+   "fieldtype": "Float",
+   "label": "Total Sales Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_purchase_amount",
+   "fieldtype": "Float",
+   "label": "Total Purchase Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_paid_amount",
+   "fieldtype": "Float",
+   "label": "Total Paid Amount",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-07-28 15:44:58.232816",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Franchise Payment Entry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

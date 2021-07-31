@@ -18,7 +18,8 @@
   "transaction_details_section",
   "selling_amount",
   "purchase_amount",
-  "status"
+  "status",
+  "paid_amount"
  ],
  "fields": [
   {
@@ -97,15 +98,13 @@
    "fieldname": "selling_amount",
    "fieldtype": "Currency",
    "label": "Selling Amount ",
-   "read_only": 1,
-   "set_only_once": 1
+   "read_only": 1
   },
   {
    "fieldname": "purchase_amount",
    "fieldtype": "Currency",
    "label": "Purchase Amount",
-   "read_only": 1,
-   "set_only_once": 1
+   "read_only": 1
   },
   {
    "fieldname": "status",
@@ -113,6 +112,12 @@
    "in_standard_filter": 1,
    "label": "Status",
    "options": "Unpaid\nPaid",
+   "read_only": 1
+  },
+  {
+   "fieldname": "paid_amount",
+   "fieldtype": "Float",
+   "label": "Paid Amount",
    "read_only": 1
   }
  ],
@@ -124,7 +129,7 @@
    "link_fieldname": "franchise_payment_request"
   }
  ],
- "modified": "2021-07-13 09:38:57.108113",
+ "modified": "2021-07-30 13:35:57.138881",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Franchise Payment Request",

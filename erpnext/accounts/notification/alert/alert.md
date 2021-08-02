@@ -1,0 +1,1 @@
+Please clear the payment dues amount INR amount to central office before wedenesday ( Date )

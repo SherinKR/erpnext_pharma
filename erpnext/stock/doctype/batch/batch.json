@@ -1,7 +1,6 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "field:batch_id",
  "creation": "2013-03-05 14:50:38",
  "doctype": "DocType",
  "document_type": "Setup",
@@ -40,25 +39,12 @@
    "label": "Disabled"
   },
   {
-   "depends_on": "eval:doc.__islocal",
    "fieldname": "batch_id",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Batch ID",
-   "no_copy": 1,
    "oldfieldname": "batch_id",
    "oldfieldtype": "Data",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "in_standard_filter": 1,
-   "label": "Item",
-   "oldfieldname": "item",
-   "oldfieldtype": "Link",
-   "options": "Item",
    "reqd": 1
   },
   {
@@ -186,6 +172,15 @@
    "fieldtype": "Float",
    "label": "Produced Qty",
    "read_only": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Item",
+   "oldfieldname": "item",
+   "oldfieldtype": "Link",
+   "options": "Item"
   }
  ],
  "icon": "fa fa-archive",
@@ -193,7 +188,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 5,
- "modified": "2021-01-07 11:10:09.149170",
+ "modified": "2021-08-03 11:07:43.353351",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Batch",

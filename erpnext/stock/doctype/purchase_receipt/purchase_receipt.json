@@ -134,7 +134,8 @@
   "transporter_name",
   "column_break5",
   "lr_no",
-  "lr_date"
+  "lr_date",
+  "test"
  ],
  "fields": [
   {
@@ -182,6 +183,7 @@
    "options": "Supplier",
    "print_hide": 1,
    "print_width": "150px",
+   "reqd": 1,
    "search_index": 1,
    "width": "150px"
   },
@@ -1154,13 +1156,18 @@
    "fieldname": "fetch_batches",
    "fieldtype": "Button",
    "label": "Fetch Batches"
+  },
+  {
+   "fieldname": "test",
+   "fieldtype": "Data",
+   "label": "Test"
   }
  ],
  "icon": "fa fa-truck",
  "idx": 261,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-07-28 11:27:04.992319",
+ "modified": "2021-08-05 10:14:47.683957",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Purchase Receipt",

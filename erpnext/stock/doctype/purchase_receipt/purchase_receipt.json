@@ -53,6 +53,8 @@
   "supplier_warehouse",
   "items_section",
   "scan_barcode",
+  "purchase_invoice_reference",
+  "fetch_batches",
   "items",
   "section_break0",
   "total_qty",
@@ -1142,13 +1144,24 @@
    "label": "Represents Company",
    "options": "Company",
    "read_only": 1
+  },
+  {
+   "fieldname": "purchase_invoice_reference",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice Reference",
+   "options": "Purchase Invoice"
+  },
+  {
+   "fieldname": "fetch_batches",
+   "fieldtype": "Button",
+   "label": "Fetch Batches"
   }
  ],
  "icon": "fa fa-truck",
  "idx": 261,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-05-25 00:15:12.239017",
+ "modified": "2021-08-04 17:16:49.165875",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Purchase Receipt",

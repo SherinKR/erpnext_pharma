@@ -3,9 +3,8 @@
  "allow_guest_to_view": 1,
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "field:item_code",
+ "autoname": "field:item_name",
  "creation": "2013-05-03 10:45:46",
- "description": "A Product or a Service that is bought, sold or kept in stock.",
  "doctype": "DocType",
  "document_type": "Setup",
  "editable_grid": 1,
@@ -187,7 +186,7 @@
    "label": "Item Name",
    "oldfieldname": "item_name",
    "oldfieldtype": "Data",
-   "search_index": 1
+   "unique": 1
   },
   {
    "fieldname": "item_group",
@@ -1067,7 +1066,7 @@
  "index_web_pages_for_search": 1,
  "links": [],
  "max_attachments": 1,
- "modified": "2021-03-18 14:04:38.575519",
+ "modified": "2021-08-02 18:40:30.491933",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",
@@ -1131,7 +1130,7 @@
   }
  ],
  "quick_entry": 1,
- "search_fields": "item_name,description,item_group,customer_code",
+ "search_fields": "item_name,description,item_group",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
  "sort_field": "idx desc,modified desc",

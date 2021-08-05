@@ -64,8 +64,9 @@ class StockController(AccountsController):
 				expiry_date = frappe.get_cached_value("Batch", d.get("batch_no"), "expiry_date")
 
 				if expiry_date and getdate(expiry_date) < getdate(self.posting_date):
-					frappe.throw(_("Row #{0}: The batch {1} has already expired.")
-						.format(d.idx, get_link_to_form("Batch", d.get("batch_no"))))
+					pass
+					# frappe.throw(_("Row #{0}: The batch {1} has already expired.")
+						# .format(d.idx, get_link_to_form("Batch", d.get("batch_no"))))
 
 	def get_gl_entries(self, warehouse_account=None, default_expense_account=None,
 			default_cost_center=None):

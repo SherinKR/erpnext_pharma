@@ -2,7 +2,6 @@
  "actions": [],
  "allow_import": 1,
  "creation": "2013-05-02 16:29:48",
- "description": "Multiple Item prices.",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
@@ -70,7 +69,6 @@
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Item Name",
    "read_only": 1
   },
@@ -216,11 +214,10 @@
  "idx": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-07-23 17:17:38.428359",
+ "modified": "2021-08-02 18:34:38.882261",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Price",
- "name_case": "Title Case",
  "owner": "Administrator",
  "permissions": [
   {

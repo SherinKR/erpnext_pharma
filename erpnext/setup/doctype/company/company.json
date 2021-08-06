@@ -33,6 +33,8 @@
   "existing_company",
   "tax_id",
   "date_of_establishment",
+  "default_price_list",
+  "default_tax_template",
   "sales_settings",
   "monthly_sales_target",
   "sales_monthly_history",
@@ -734,6 +736,18 @@
    "fieldtype": "Link",
    "label": "Default Payment Discount Account",
    "options": "Account"
+  },
+  {
+   "fieldname": "default_price_list",
+   "fieldtype": "Link",
+   "label": "Default Price List",
+   "options": "Price List"
+  },
+  {
+   "fieldname": "default_tax_template",
+   "fieldtype": "Link",
+   "label": "Default Tax Template",
+   "options": "Item Tax Template"
   }
  ],
  "icon": "fa fa-building",
@@ -741,7 +755,7 @@
  "image_field": "company_logo",
  "is_tree": 1,
  "links": [],
- "modified": "2021-05-07 03:11:28.189740",
+ "modified": "2021-08-06 12:08:52.152055",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",

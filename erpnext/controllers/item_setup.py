@@ -12,18 +12,18 @@ from erpnext.stock.get_item_details import _get_item_tax_template
 from frappe.utils import unique
 
 @frappe.whitelist()
-def update_items(flag1,flag2,item,company, warehouse, price_list, tax_template, name_default, name_tax):
+def update_items(flag1,flag2,item,company, warehouse, price_list, tax_template, name_default, name_tax, supplier):
     if flag1:
         # item_doc.item_defaults.remove(row)
         query = """
             UPDATE
                 `tabItem Default`
             SET
-                default_warehouse= %(default_warehouse)s, default_price_list= %(default_price_list)s
+                default_warehouse= %(default_warehouse)s, default_price_list= %(default_price_list)s, default_supplier = %(supplier)s
             WHERE
                 name = %(name_default)s and company = %(company)s
         """
-        frappe.db.sql(query.format(), {'default_warehouse': warehouse, 'default_price_list': price_list, 'name_default':name_default, 'company':company })
+        frappe.db.sql(query.format(), {'default_warehouse': warehouse, 'default_price_list': price_list, 'name_default':name_default, 'company':company, 'supplier':supplier })
         frappe.db.commit()
         # frappe.msgprint( msg= "Case 1", title='Success')
     else:
@@ -41,6 +41,7 @@ def update_items(flag1,flag2,item,company, warehouse, price_list, tax_template, 
         row.default_price_list = price_list
         row.parent = item.item_code
         row.company = company
+        row.default_supplier = supplier
         item.save()
         # frappe.msgprint( msg= "Case 2", title='Success')
 
@@ -74,7 +75,7 @@ def update_items(flag1,flag2,item,company, warehouse, price_list, tax_template, 
         # frappe.msgprint( msg= "Case 4", title='Success')
 
 @frappe.whitelist()
-def set_item_defaults(company, warehouse, price_list, tax_template):
+def set_item_defaults(company, warehouse, price_list, tax_template, supplier):
     for item in frappe.get_all("Item", filters={'disabled':0 }):
         if item:
             item_doc = frappe.get_doc("Item", item.name )
@@ -97,6 +98,6 @@ def set_item_defaults(company, warehouse, price_list, tax_template):
                 if taxes.item_tax_template == tax_template :
                     flag2 = 1
                     name_tax = taxes.name
-            frappe.enqueue(update_items, item=item_doc, flag1=flag1, flag2=flag2 ,company=company ,warehouse=warehouse ,price_list=price_list ,tax_template=tax_template , name_default=name_default, name_tax=name_tax, queue='short')
+            frappe.enqueue(update_items, item=item_doc, flag1=flag1, flag2=flag2 ,company=company ,warehouse=warehouse ,price_list=price_list ,tax_template=tax_template , name_default=name_default, name_tax=name_tax, supplier=supplier, queue='short')
             # update_items(flag1,flag2,item_doc,company, warehouse, price_list, tax_template, name_default, name_tax)
     frappe.msgprint( msg= "Item defaults updated", title='Success')

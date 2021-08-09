@@ -78,6 +78,13 @@ def set_item_defaults(company, warehouse, price_list, tax_template):
     for item in frappe.get_all("Item", filters={'disabled':0 }):
         if item:
             item_doc = frappe.get_doc("Item", item.name )
+            item_tax_template = item_doc.default_tax_template
+            if item_tax_template:
+                for template in frappe.get_list("Item Tax Template", filters={'title': item_tax_template , 'company':company }):
+                    if template:
+                        tax_template = template.name
+                    else:
+                        frappe.msgprint( msg= "Item Tax Template not found", title='WARNING')
             flag1 = 0
             flag2 = 0
             name_default = 0

@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import frappe
 import erpnext
 import json
+import itertools
 from frappe.desk.reportview import get_match_cond, get_filters_cond
 from frappe.utils import nowdate, getdate
 from collections import defaultdict
@@ -378,27 +379,68 @@ def get_new_medicines(company, purchase_type=None):
 	return frappe.db.sql(query.format(), {'company': company, 'purchase_type': purchase_type}, as_dict=True)
 
 @frappe.whitelist()
-def search_item_contents(filter_value,warehouse,price_list):
-	query = """
-			select
-				i.item_code, i.item_name, i.drug_content
-			from
-				`tabItem` i
-			where
-				( item_code like %(filter_value)s or item_name like %(filter_value)s or drug_content like %(filter_value)s or brand like %(filter_value)s ) and disabled=0 and is_sales_item=1
-    """
-	return_dict = frappe.db.sql(query.format(), {'filter_value': '%'+ filter_value +'%'}, as_dict=True)
-	for item in return_dict:
-		item_qty = frappe.db.get_value('Bin', {'warehouse': warehouse, 'item_code': item.item_code }, ['actual_qty'])
-		item_price = frappe.db.get_value('Item Price', {'price_list': price_list, 'item_code': item.item_code }, ['price_list_rate'])
-		if not item_qty:
-			item_qty=0
-		item['qty'] = item_qty
-		if not item_price:
-			item_price=0
-		item['qty'] = item_qty
-		item['price'] = item_price
-	return return_dict
+def search_item_contents(filter_value=None, drug_content=None, warehouse=None, price_list=None):
+	if drug_content and filter_value:
+		connect = "and "
+	else:
+		connect = "or "
+	if drug_content or filter_value:
+		if not filter_value:
+			filter_value = "NULL"
+		if not drug_content:
+			drug_content = "NULL"
+		drug_content += ','
+		# print(drug_content)
+		alphanumeric = ""
+		drug = []
+		for character in drug_content:
+			if character.isalnum():
+				alphanumeric += character
+			elif character == ' ':
+				alphanumeric += character
+			elif character == ',':
+				drug.append(alphanumeric)
+				alphanumeric = ""
+		print(drug)
+		for drug_permutation in itertools.permutations(drug):
+			# print(drug_permutation)
+			alphanumeric = ""
+			druglist=str(drug_permutation)[1:-2]
+			for character in druglist:
+				if character.isalnum():
+					alphanumeric += character
+				elif character == ' ':
+					alphanumeric += character
+				elif character == ',':
+					alphanumeric += character
+			print(alphanumeric)
+			query = """
+					select
+						i.item_code, i.item_name, i.drug_content
+					from
+						`tabItem` i
+					where
+						(( item_code like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0 and is_sales_item=1 )
+				"""
+			if alphanumeric:
+				query += connect+ "drug_content like %(druglist)s"
+				print(query)
+				print(alphanumeric)
+			return_dict = frappe.db.sql(query.format(), {'filter_value': '%'+ filter_value +'%', 'druglist': '%'+alphanumeric+'%'}, as_dict=True)
+			print(len(return_dict))
+			for item in return_dict:
+				item_qty = frappe.db.get_value('Bin', {'warehouse': warehouse, 'item_code': item.item_code }, ['actual_qty'])
+				item_price = frappe.db.get_value('Item Price', {'price_list': price_list, 'item_code': item.item_code }, ['price_list_rate'])
+				if not item_qty:
+					item_qty=0
+				item['qty'] = item_qty
+				if not item_price:
+					item_price=0
+				item['qty'] = item_qty
+				item['price'] = item_price
+				print(return_dict[0].item_code)
+		return return_dict
+
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs

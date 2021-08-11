@@ -401,7 +401,7 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 			elif character == ',':
 				drug.append(alphanumeric)
 				alphanumeric = ""
-		print(drug)
+		# print(drug)
 		for drug_permutation in itertools.permutations(drug):
 			# print(drug_permutation)
 			alphanumeric = ""
@@ -413,21 +413,21 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 					alphanumeric += character
 				elif character == ',':
 					alphanumeric += character
-			print(alphanumeric)
+			# print(alphanumeric)
 			query = """
 					select
 						i.item_code, i.item_name, i.drug_content
 					from
 						`tabItem` i
 					where
-						(( item_code like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0 and is_sales_item=1 )
+						(( item_code like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0 )
 				"""
 			if alphanumeric:
 				query += connect+ "drug_content like %(druglist)s"
-				print(query)
-				print(alphanumeric)
+				# print(query)
+				# print(alphanumeric)
 			return_dict = frappe.db.sql(query.format(), {'filter_value': '%'+ filter_value +'%', 'druglist': '%'+alphanumeric+'%'}, as_dict=True)
-			print(len(return_dict))
+			# print(len(return_dict))
 			for item in return_dict:
 				item_qty = frappe.db.get_value('Bin', {'warehouse': warehouse, 'item_code': item.item_code }, ['actual_qty'])
 				item_price = frappe.db.get_value('Item Price', {'price_list': price_list, 'item_code': item.item_code }, ['price_list_rate'])
@@ -438,7 +438,7 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 					item_price=0
 				item['qty'] = item_qty
 				item['price'] = item_price
-				print(return_dict[0].item_code)
+				# print(return_dict[0].item_code)
 		return return_dict
 
 

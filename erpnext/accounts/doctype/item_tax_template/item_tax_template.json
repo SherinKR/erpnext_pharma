@@ -9,6 +9,7 @@
  "engine": "InnoDB",
  "field_order": [
   "title",
+  "tax_rate",
   "company",
   "taxes"
  ],
@@ -36,10 +37,16 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "tax_rate",
+   "fieldtype": "Float",
+   "label": "Tax Rate",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2021-03-08 19:50:21.416513",
+ "modified": "2021-08-11 17:21:37.658194",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Item Tax Template",

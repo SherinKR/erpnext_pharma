@@ -81,12 +81,7 @@ def set_item_defaults(company, warehouse, price_list, tax_template, supplier):
         if item:
             item_doc = frappe.get_doc("Item", item.name )
             item_tax_template = item_doc.default_tax_template
-            if item_tax_template:
-                for template in frappe.get_list("Item Tax Template", filters={'title': item_tax_template , 'company':company }):
-                    if template:
-                        tax_template = template.name
-                    else:
-                        frappe.msgprint( msg= "Item Tax Template not found", title='WARNING')
+            item_tax_rate = item_doc.default_tax_rate
             flag1 = 0
             flag2 = 0
             name_default = 0
@@ -95,13 +90,22 @@ def set_item_defaults(company, warehouse, price_list, tax_template, supplier):
                 if item_default.company == company :
                     flag1 = 1
                     name_default = item_default.name
-            for taxes in item_doc.taxes:
-                if taxes.item_tax_template == tax_template :
-                    flag2 = 1
-                    name_tax = taxes.name
-            frappe.enqueue(update_items, item=item_doc, flag1=flag1, flag2=flag2 ,company=company ,warehouse=warehouse ,price_list=price_list ,tax_template=tax_template , name_default=name_default, name_tax=name_tax, supplier=supplier, queue='short')
-            # update_items(flag1,flag2,item_doc,company, warehouse, price_list, tax_template, name_default, name_tax)
-    frappe.msgprint( msg= "Item defaults updated", title='Success')
+            if item_tax_rate:
+                for template in frappe.get_list("Item Tax Template", filters={'tax_rate': item_tax_rate , 'company': company }):
+                    if template:
+                        tax_template = template.name
+                        for taxes in item_doc.taxes:
+                            if taxes.item_tax_template == tax_template :
+                                flag2 = 1
+                                name_tax = taxes.name
+                        update_items(flag1,flag2,item_doc,company, warehouse, price_list, tax_template, name_default, name_tax, supplier)
+                    else:
+                        frappe.msgprint( msg= "Item Tax Template not found", title='WARNING')
+            print("Test")
+            flag2 = 0
+            name_tax = 0
+            tax_template =0
+            update_items(flag1,flag2,item_doc,company, warehouse, price_list, tax_template, name_default, name_tax, supplier)
 
 @frappe.whitelist()
 def set_defaults_in_item(item_code):

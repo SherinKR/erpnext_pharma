@@ -39,14 +39,18 @@
    "reqd": 1
   },
   {
+   "allow_in_quick_entry": 1,
    "fieldname": "tax_rate",
    "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_preview": 1,
+   "in_standard_filter": 1,
    "label": "Tax Rate",
    "reqd": 1
   }
  ],
  "links": [],
- "modified": "2021-08-11 17:21:37.658194",
+ "modified": "2021-08-13 11:24:25.837765",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Item Tax Template",

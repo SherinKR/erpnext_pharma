@@ -2049,3 +2049,13 @@ def set_bin_details(self, item_code):
 	else:
 		frappe.throw(msg="No bins found", title="Error!")
 
+@frappe.whitelist()
+def check_superseded_item(item_name):
+	if frappe.db.exists({ 'doctype': 'Item', 'item_name': item_name }):
+		item_doc = frappe.get_doc('Item', {'item_name': item_name})
+		if item_doc.superseded_by_sg:
+			return item_doc
+		else:
+			return False
+	else:
+		return False

@@ -379,7 +379,11 @@ def get_new_medicines(company, purchase_type=None):
 	return frappe.db.sql(query.format(), {'company': company, 'purchase_type': purchase_type}, as_dict=True)
 
 @frappe.whitelist()
-def search_item_contents(filter_value=None, drug_content=None, warehouse=None, price_list=None):
+def search_item_contents(filter_value=None, drug_content=None, warehouse=None, price_list=None, sales=None, purchase=None):
+	if sales:
+		filter_condition  = 'and is_sales_item = 1 )'
+	if purchase:
+		filter_condition  = 'and is_purchase_item = 1 )'
 	if drug_content and filter_value:
 		connect = "and "
 	else:
@@ -420,8 +424,10 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 					from
 						`tabItem` i
 					where
-						(( item_code like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0 )
+						(( item_code like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0
 				"""
+			if filter_condition:
+				query += filter_condition
 			if alphanumeric:
 				query += connect+ "drug_content like %(druglist)s"
 				# print(query)

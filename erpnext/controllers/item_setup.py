@@ -13,6 +13,10 @@ from frappe.utils import unique
 
 @frappe.whitelist()
 def update_items(flag1,flag2,item,company, warehouse, price_list, tax_template, name_default, name_tax, supplier):
+    for item_default in item.item_defaults:
+        if item_default.company == company :
+            flag1 = 1
+            name_default = item_default.name
     if flag1:
         # item_doc.item_defaults.remove(row)
         query = """
@@ -43,6 +47,7 @@ def update_items(flag1,flag2,item,company, warehouse, price_list, tax_template, 
         row.company = company
         row.default_supplier = supplier
         item.save()
+        flag1 = 1
         # frappe.msgprint( msg= "Case 2", title='Success')
 
     if flag2 and tax_template and name_tax:

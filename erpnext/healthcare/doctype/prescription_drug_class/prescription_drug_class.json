@@ -1,0 +1,109 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:prescription_drug_class",
+ "creation": "2021-07-04 17:54:16.062147",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "prescription_drug_class",
+  "restrict_quantity",
+  "max_qty",
+  "provide_with_prescription_only"
+ ],
+ "fields": [
+  {
+   "fieldname": "prescription_drug_class",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Prescription Drug Class",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "restrict_quantity",
+   "fieldtype": "Check",
+   "label": "Restrict Quantity"
+  },
+  {
+   "depends_on": "restrict_quantity",
+   "fieldname": "max_qty",
+   "fieldtype": "Float",
+   "label": "Maximum Quantity Based on Stock UOM",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "fieldname": "provide_with_prescription_only",
+   "fieldtype": "Check",
+   "label": "Provide with Prescription Only"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-08-24 14:48:11.736903",
+ "modified_by": "Administrator",
+ "module": "Healthcare",
+ "name": "Prescription Drug Class",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Stock User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Purchase User",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

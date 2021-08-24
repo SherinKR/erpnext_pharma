@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "autoname": "ERP-EAZ.-.#####",
+ "creation": "2021-07-27 16:38:37.439029",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "subject",
+  "issue_priority",
+  "column_break_4",
+  "date",
+  "raised_from",
+  "section_break_4",
+  "describe_your_issue_here"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Subject"
+  },
+  {
+   "bold": 1,
+   "fieldname": "issue_priority",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Issue Priority",
+   "options": "Issue Priority"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "raised_from",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Raised From",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "describe_your_issue_here",
+   "fieldtype": "Text Editor",
+   "label": "Describe your Issue here"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-08-24 14:48:44.124180",
+ "modified_by": "Administrator",
+ "module": "Support",
+ "name": "ERPEaz",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

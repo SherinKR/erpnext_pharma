@@ -1,0 +1,794 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2021-07-15 16:10:53.717038",
+  "name": "Central Office Admin",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "Central Office Admin",
+  "roles": [
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Analytics"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Auditor"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Blogger"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central PO Approver"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central PO User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Dashboard Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee Self Service"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Expense Approver"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fleet Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fulfillment User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Inbox User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Approver"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Knowledge Base Contributor"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Knowledge Base Editor"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "LMS User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Loan Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Maintenance Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Newsletter Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Outlet Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Prepared Report User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Projects Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Projects User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Quality Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Script Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Supplier"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "System Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Translator"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Website Manager"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central Office Admin"
+   },
+   {
+    "parent": "Central Office Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central Payment Approver"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2021-07-16 14:52:16.397274",
+  "name": "Franchise Admin",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "Franchise Admin",
+  "roles": [
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Auditor"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fleet Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Franchise PO Approver"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fulfillment User"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Quality Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR User"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Outlet Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "Franchise Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Master Manager"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2021-07-04 21:21:42.933764",
+  "name": "Franchise Sales User",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "Franchise Sales User",
+  "roles": [
+   {
+    "parent": "Franchise Sales User",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   }
+  ]
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Role Profile",
+  "modified": "2021-07-07 14:57:17.550272",
+  "name": "WEBEaz Admin",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "role_profile": "WEBEaz Admin",
+  "roles": [
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Analytics"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Auditor"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Blogger"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central PO Approver"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central PO User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Customer"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Dashboard Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Employee Self Service"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Expense Approver"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fleet Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Franchise PO Approver"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Fulfillment User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "HR User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Inbox User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Approver"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Knowledge Base Contributor"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Knowledge Base Editor"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Leave Approver"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "LMS User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Loan Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Maintenance Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Newsletter Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Outlet Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Prepared Report User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Projects Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Projects User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Quality Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Sales User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Script Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Stock User"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Supplier"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Support Team"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "System Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Translator"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Website Manager"
+   },
+   {
+    "parent": "WEBEaz Admin",
+    "parentfield": "roles",
+    "parenttype": "Role Profile",
+    "role": "Central Office Admin"
+   }
+  ]
+ }
+]

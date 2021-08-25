@@ -635,5 +635,8 @@ fixtures = [
 	},
     {
 		"dt": "Client Script"
+	},
+	{
+		"dt": "Translation"
 	}
 ]

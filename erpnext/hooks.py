@@ -638,5 +638,8 @@ fixtures = [
 	},
 	{
 		"dt": "Translation"
+	},
+	{
+		"dt": "Notification"
 	}
 ]

@@ -10,6 +10,7 @@ from frappe.utils import nowdate, getdate
 from collections import defaultdict
 from erpnext.stock.get_item_details import _get_item_tax_template
 from frappe.utils import unique
+from frappe import enqueue
 
 @frappe.whitelist()
 def update_item_defaults(flag, item_doc, company, warehouse, price_list, name_default, supplier):
@@ -87,7 +88,8 @@ def set_tax_defaults(company, tax_template):
                             if taxes.item_tax_template == tax_template :
                                 flag_tax = 1
                                 name_tax = taxes.name
-                        update_item_taxes(flag_tax, name_tax, item_doc, tax_template)
+                        frappe.enqueue(update_item_taxes, flag_tax=flag_tax, name_tax=name_tax, item_doc=item_doc, tax_template=tax_template , is_async=True, queue="long")
+                        # update_item_taxes(flag_tax, name_tax, item_doc, tax_template)
                     else:
                         frappe.msgprint( msg= "Item Tax Template not found", title='WARNING')
 

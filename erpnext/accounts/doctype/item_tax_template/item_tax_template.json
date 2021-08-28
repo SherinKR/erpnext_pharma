@@ -10,7 +10,10 @@
  "field_order": [
   "title",
   "tax_rate",
+  "column_break_3",
+  "tax_category",
   "company",
+  "section_break_6",
   "taxes"
  ],
  "fields": [
@@ -47,10 +50,25 @@
    "in_standard_filter": 1,
    "label": "Tax Rate",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tax_category",
+   "fieldtype": "Link",
+   "label": "Tax Category",
+   "options": "Tax Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
   }
  ],
  "links": [],
- "modified": "2021-08-13 11:24:25.837765",
+ "modified": "2021-08-28 10:02:42.537671",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Item Tax Template",

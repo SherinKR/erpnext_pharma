@@ -228,6 +228,8 @@ frappe.ui.form.on('Stock Entry', {
 					frappe.set_route('List', 'Stock Entry');
 				}, __("View"));
 			}
+
+			cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
 		}
 
 		if (frm.doc.docstatus===0) {
@@ -1101,3 +1103,10 @@ function check_should_not_attach_bom_items(bom_no) {
 }
 
 $.extend(cur_frm.cscript, new erpnext.stock.StockEntry({frm: cur_frm}));
+
+cur_frm.cscript['Make Bin Entry'] = function() {
+	frappe.model.open_mapped_doc({
+		method: "erpnext.stock.doctype.stock_entry.stock_entry.make_bin_entry",
+		frm: cur_frm,
+	})
+}

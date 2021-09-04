@@ -1843,3 +1843,25 @@ def get_supplied_items(purchase_order):
 		supplied_item.total_supplied_qty = flt(supplied_item.supplied_qty) - flt(supplied_item.returned_qty)
 
 	return supplied_item_details
+
+@frappe.whitelist()
+def make_bin_entry(source_name, target_doc=None):
+	def set_missing_values(source, target):
+		target.entry_type = "Purchase"
+		target.ref_document_type =  "Stock Entry"
+		target.reference_document = source_name
+
+	doclist = get_mapped_doc("Stock Entry", source_name,{
+		"Stock Entry": {
+			"doctype": "Bin Entry",
+		},
+		"Stock Entry Detail": {
+			"doctype": "Bin Entry Items",
+			"field_map": {
+				"transfer_qty": "quantity",
+				"batch_no": "batch"
+			},
+		},
+	}, target_doc, set_missing_values)
+
+	return doclist

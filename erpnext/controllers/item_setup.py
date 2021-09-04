@@ -89,6 +89,8 @@ def set_tax_defaults(company, tax_template):
                                 flag_tax = 1
                                 name_tax = taxes.name
                         frappe.enqueue(update_item_taxes, flag_tax=flag_tax, name_tax=name_tax, item_doc=item_doc, tax_template=tax_template , is_async=True, queue="long")
+                        flag_tax = 0
+                        name_tax = 0
                         # update_item_taxes(flag_tax, name_tax, item_doc, tax_template)
                     else:
                         frappe.msgprint( msg= "Item Tax Template not found", title='WARNING')
@@ -111,6 +113,8 @@ def set_tax_defaults_from_item(item_code):
                                 flag_tax = 1
                                 name_tax = taxes.name
                         update_item_taxes(flag_tax, name_tax, item_doc, tax_template)
+                        flag_tax = 0
+                        name_tax = 0
                     else:
                         frappe.msgprint( msg= "Item Tax Template not found", title='WARNING')
 

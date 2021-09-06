@@ -12,6 +12,7 @@
   "disabled",
   "sb_batch",
   "batch_id",
+  "batch_name",
   "item",
   "item_name",
   "image",
@@ -189,6 +190,11 @@
    "fieldtype": "Select",
    "label": "Series",
    "options": "BATCH-.YY.-"
+  },
+  {
+   "fieldname": "batch_name",
+   "fieldtype": "Data",
+   "label": "Batch Name"
   }
  ],
  "icon": "fa fa-archive",
@@ -196,7 +202,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 5,
- "modified": "2021-08-28 16:36:25.902680",
+ "modified": "2021-09-06 16:22:36.810320",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Batch",

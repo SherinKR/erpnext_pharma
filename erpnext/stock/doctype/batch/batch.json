@@ -1,14 +1,13 @@
 {
  "actions": [],
  "allow_import": 1,
- "autoname": "naming_series:",
+ "autoname": "format:{batch_name}-{item}",
  "creation": "2013-03-05 14:50:38",
  "doctype": "DocType",
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
   "sb_disabled",
-  "naming_series",
   "disabled",
   "sb_batch",
   "batch_id",
@@ -185,16 +184,10 @@
    "options": "Item"
   },
   {
-   "default": "BATCH-.YY.-",
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Series",
-   "options": "BATCH-.YY.-"
-  },
-  {
    "fieldname": "batch_name",
    "fieldtype": "Data",
-   "label": "Batch Name"
+   "label": "Batch Name",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-archive",
@@ -202,7 +195,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 5,
- "modified": "2021-09-06 16:22:36.810320",
+ "modified": "2021-09-08 15:31:47.923549",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Batch",

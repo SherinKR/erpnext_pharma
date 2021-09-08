@@ -78,21 +78,5 @@
   "parenttype": null,
   "source_text": "Frappe",
   "translated_text": "ERPEAZ"
- },
- {
-  "context": null,
-  "contributed": 0,
-  "contribution_docname": null,
-  "contribution_status": "",
-  "docstatus": 0,
-  "doctype": "Translation",
-  "language": "en",
-  "modified": "2021-08-25 12:13:32.097967",
-  "name": "550ead700d",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
-  "source_text": "Material Request",
-  "translated_text": "Purchase Request"
  }
 ]

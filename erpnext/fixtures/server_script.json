@@ -304,5 +304,22 @@
   "reference_doctype": "Sales Invoice",
   "script": "if not doc.is_return:\n    today=frappe.utils.today()\n    for item in doc.items:\n        if item.batch_expiry_date:\n            expired_date = item.batch_expiry_date\n            if frappe.utils.date_diff(today, expired_date) > 0:\n                 frappe.throw(\n                     title='Error',\n                     msg='Batch is already expired for the item' + ' ' + item.item_name\n                    )\n            ",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Validate",
+  "event_frequency": "All",
+  "modified": "2021-09-08 15:32:48.685709",
+  "name": "Batch ID Setting",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "reference_doctype": "Batch",
+  "script": "if doc.batch_name and doc.item:\n    doc.batch_id = doc.batch_name+\"-\"+doc.item",
+  "script_type": "DocType Event"
  }
 ]

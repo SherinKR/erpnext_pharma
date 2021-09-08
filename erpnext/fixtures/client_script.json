@@ -193,5 +193,18 @@
   "parenttype": null,
   "script": "frappe.ui.form.on('Company', {\n\trefresh: function(frm) {\n    frm.add_custom_button(__('Set Item Defaults'), function() {\n\t\tfrappe.msgprint(__('Item defaults updation started'));\n  \t\tfrappe.call({\n  \t\t\t\"method\": \"erpnext.controllers.item_setup.set_item_defaults\",\n  \t\t\t\"args\": {\n  \t\t\t\t\"company\": frm.doc.company_name,\n\t\t\t\t\"warehouse\": frm.doc.default_warehouse,\n\t\t\t\t\"price_list\": frm.doc.default_price_list,\n\t\t\t\t\"supplier\": frm.doc.default_supplier\n  \t\t\t},\n  \t\t\tcallback: function(r){\n  \t\t\t\tconsole.log(r);\n\t\t\t\t\tfrappe.msgprint(__('Item defaults succesfully updated'));\n  \t\t\t}\n  \t\t});\n  \t});\n\n\tfrm.add_custom_button(__('Set Tax Defaults'), function() {\n\t\tfrappe.msgprint(__('Tax defaults updation started'));\n  \t\tfrappe.call({\n  \t\t\t\"method\": \"erpnext.controllers.item_setup.set_tax_defaults\",\n  \t\t\t\"args\": {\n  \t\t\t\t\"company\": frm.doc.company_name,\n\t\t\t\t\"warehouse\": frm.doc.default_warehouse,\n\t\t\t\t\"price_list\": frm.doc.default_price_list,\n\t\t\t\t\"tax_template\": frm.doc.default_tax_template,\n\t\t\t\t\"supplier\": frm.doc.default_supplier\n  \t\t\t},\n  \t\t\tcallback: function(r){\n  \t\t\t\tconsole.log(r);\n\t\t\t\t\tfrappe.msgprint(__('Tax defaults succesfully updated'));\n  \t\t\t}\n  \t\t});\n  \t});\n  }\n});\n",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Batch",
+  "enabled": 1,
+  "modified": "2021-09-08 15:39:29.902514",
+  "name": "Batch-Form",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "script": "frappe.ui.form.on('Batch', {\n\tbatch_name(frm) {\n\t\tif(frm.doc.batch_name && frm.doc.item){\n\t\t    frm.set_value('batch_id', frm.doc.batch_name+\"-\"+frm.doc.item);\n\t\t    frm.refresh_field('batch_id');\n\t\t}\n\t},\n\tvalidate(frm){\n\t    if(frm.doc.batch_name && frm.doc.item){\n\t\t    frm.set_value('batch_id', frm.doc.batch_name+\"-\"+frm.doc.item);\n\t\t    frm.refresh_field('batch_id');\n\t\t}\n\t},\n\titem(frm){\n\t    if(frm.doc.batch_name && frm.doc.item){\n\t\t    frm.set_value('batch_id', frm.doc.batch_name+\"-\"+frm.doc.item);\n\t\t    frm.refresh_field('batch_id');\n\t\t}\n\t}\n});",
+  "view": "Form"
  }
 ]

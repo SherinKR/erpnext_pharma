@@ -126,14 +126,6 @@
  "doctype": "Report",
  "filters": [
   {
-   "fieldname": "batch",
-   "fieldtype": "Link",
-   "label": "Batch",
-   "mandatory": 0,
-   "options": "Batch",
-   "wildcard_filter": 0
-  },
-  {
    "fieldname": "item",
    "fieldtype": "Link",
    "label": "Item",
@@ -144,7 +136,7 @@
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-17 12:43:10.784185",
+ "modified": "2021-09-17 14:07:11.068344",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",

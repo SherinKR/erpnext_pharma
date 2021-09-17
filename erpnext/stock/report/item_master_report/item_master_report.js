@@ -5,12 +5,6 @@
 frappe.query_reports["Item Master Report"] = {
 	"filters": [
 		{
-			fieldname:"batch",
-			label:__("Batch"),
-			fieldtype:"Link",
-			options:"Batch"
-		},
-		{
 			fieldname:"item",
 			label:__("Item"),
 			fieldtype:"Link",

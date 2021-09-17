@@ -72,7 +72,7 @@ def get_data(filters=None):
 					sale_return+= si_detail.stock_qty
 				mrp = si_detail.mrp
 
-		pr_details = get_sales_qty(batch)
+		pr_details = get_purchase_qty(batch)
 		# print(pr_details)
 		if pr_details:
 			for pr_detail in pr_details:

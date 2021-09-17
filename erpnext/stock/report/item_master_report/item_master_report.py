@@ -13,16 +13,18 @@ def execute(filters=None):
 def get_columns():
 	print("get_columns")
 	return[
+		_("Item") + ":Link/Item:100",
 		_("Item Name") + ":Data:200",
+		_("Manufacturer") + ":Link/Manufacturer:150",
 		_("Batch") + ":Link/Batch:150",
 		_("Expiry") + ":Date:100",
 		_("Content") + ":Data:200",
-		_("Current Stock") + ":Float:100",
-		_("Purchase Qty") + ":Float:100",
+		_("Current Stock") + ":Float:130",
+		_("Purchase Qty") + ":Float:120",
 		_("Free Qty") + ":Float:100",
-		_("Purchase Return") + ":Float:100",
+		_("Purchase Return") + ":Float:120",
 		_("Sales Qty") + ":Float:100",
-		_("Sales Return") + ":Float:100",
+		_("Sales Return") + ":Float:180",
 		_("Company Buying") + ":Currency:150",
 		_("PTF") + ":Currency:100",
 		_("PTC") + ":Currency:100",
@@ -31,7 +33,7 @@ def get_columns():
 		_("UOM") + ":Link/UOM:100",
 		_("Is Purchase") + ":Check:100",
 		_("Is Sales") + ":Check:100",
-		_("Superseeded By") + ":Link/Item:100"
+		_("Superseeded By") + ":Link/Item:160"
 	]
 
 def get_data(filters=None):
@@ -45,6 +47,7 @@ def get_data(filters=None):
 	sales_invoice_list = frappe.get_list("Sales Invoice")
 	purchase_order_list = frappe.get_list("Purchase Order")
 	item_code = ""
+	manufacturer = ""
 	item_name = ""
 	batch = ""
 	expiry = ""
@@ -58,7 +61,7 @@ def get_data(filters=None):
 	superseeded_by = ""
 	for b in batch_list:
 		batch, item_code, item_name, expiry, current_stock = frappe.db.get_value('Batch', b.name, ['name', 'item', 'item_name', 'expiry_date', 'batch_qty'])
-		uom, content, is_purchase, is_sales, superseeded_by, gst  = frappe.db.get_value('Item', item_code, ['stock_uom','drug_content', 'is_purchase_item', 'is_sales_item', 'superseded_item', 'default_tax_rate'])
+		uom, content, is_purchase, is_sales, superseeded_by, gst, manufacturer  = frappe.db.get_value('Item', item_code, ['stock_uom','drug_content', 'is_purchase_item', 'is_sales_item', 'superseded_item', 'default_tax_rate', 'manufacturer'])
 		ptf = frappe.db.get_value('Item Price', {'price_list': 'Price To Franchaisee - (PTF)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		ptc = frappe.db.get_value('Item Price', {'price_list': 'Price To Customer - (PTC)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		company_buying = frappe.db.get_value('Item Price', {'price_list': 'Company Buying', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
@@ -70,7 +73,7 @@ def get_data(filters=None):
 					sale_qty+= si_detail.stock_qty
 				else:
 					sale_return+= si_detail.stock_qty
-				mrp = si_detail.mrp
+				mrp = float(si_detail.mrp)/float(si_detail.conversion_factor)
 
 		pr_details = get_purchase_qty(batch)
 		# print(pr_details)
@@ -82,7 +85,9 @@ def get_data(filters=None):
 					purchase_qty+= pr_detail.stock_qty
 
 		row = [
+			item_code,
 			item_name,
+			manufacturer,
 			batch,
 			expiry,
 			content,
@@ -103,6 +108,19 @@ def get_data(filters=None):
 			superseeded_by
 		]
 		data.append(row)
+		item_code = ""
+		manufacturer = ""
+		item_name = ""
+		batch = ""
+		expiry = ""
+		content = ""
+		current_stock = 0
+		purchase_qty, free_qty, purchase_return = 0,0,0
+		sale_qty, sale_return = 0,0
+		company_buying, ptf, ptc, mrp, gst = 0,0,0,0,0
+		uom = ""
+		is_purchase, is_sales = 0,0
+		superseeded_by = ""
 
 	return data
 
@@ -110,7 +128,7 @@ def get_data(filters=None):
 def get_sales_qty(batch_no):
 	query = """
 		select
-			si.item_code, si.stock_qty, si.mrp, si.batch_no, si.parent
+			si.item_code, si.stock_qty, si.mrp, si.batch_no, si.parent, si.conversion_factor
 		from
 			`tabSales Invoice Item` si
 		where
@@ -120,6 +138,18 @@ def get_sales_qty(batch_no):
 
 @frappe.whitelist()
 def get_purchase_qty(batch_no):
+	query = """
+		select
+			pri.item_code, pri.stock_qty, pri.free, pri.batch_no, pri.parent
+		from
+			`tabPurchase Receipt Item` pri
+		where
+			pri.batch_no=%(batch_no)s
+	"""
+	return frappe.db.sql(query.format(), {'batch_no': batch_no }, as_dict=True)
+
+@frappe.whitelist()
+def get_purchase_return_qty(batch_no):
 	query = """
 		select
 			pri.item_code, pri.stock_qty, pri.free, pri.batch_no, pri.parent

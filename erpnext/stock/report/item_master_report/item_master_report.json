@@ -2,9 +2,23 @@
  "add_total_row": 0,
  "columns": [
   {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item",
+   "width": 0
+  },
+  {
    "fieldname": "item_name",
    "fieldtype": "Data",
    "label": "Item Name",
+   "width": 0
+  },
+  {
+   "fieldname": "manufacturer",
+   "fieldtype": "Link",
+   "label": "Manufacturer",
+   "options": "Manufacturer",
    "width": 0
   },
   {
@@ -136,7 +150,7 @@
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-17 14:07:11.068344",
+ "modified": "2021-09-17 14:53:13.037202",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",

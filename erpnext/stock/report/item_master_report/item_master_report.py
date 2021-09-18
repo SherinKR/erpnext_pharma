@@ -75,10 +75,10 @@ def get_data(filters=None):
 		
 		batch_wise_list = get_batch_qty(batch)
 		warehouse_stock=0
-		for warehouse in warehouse_list:
-			for batch in batch_wise_list:
-				if(batch['warehouse'] == warehouse['name']):
-					warehouse_stock = warehouse_stock+int(batch['qty'])
+		for warehouse_item in warehouse_list:
+			for batch_item in batch_wise_list:
+				if(batch_item['warehouse'] == warehouse_item['name']):
+					warehouse_stock = warehouse_stock+int(batch_item['qty'])
 		current_stock = warehouse_stock
 		warehouse_stock=0
 		si_details = get_sales_qty(batch,company)

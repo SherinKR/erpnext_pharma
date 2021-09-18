@@ -39,6 +39,7 @@ def get_columns():
 	]
 
 def get_data(filters=None):
+	company = filters['company']
 	data=[]
 	if 'item' in filters:
 		print(filters['item'])
@@ -69,9 +70,9 @@ def get_data(filters=None):
 		ptf = frappe.db.get_value('Item Price', {'price_list': 'Price To Franchaisee - (PTF)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		ptc = frappe.db.get_value('Item Price', {'price_list': 'Price To Customer - (PTC)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		company_buying = frappe.db.get_value('Item Price', {'price_list': 'Company Buying', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
-		si_details = get_sales_qty(batch)
-		if frappe.db.exists({ 'doctype': 'Bins', 'item_code': item_code}):
-			rack = frappe.db.get_value('Bins', {'item_code': item_code}, ['name'])
+		si_details = get_sales_qty(batch,company)
+		if frappe.db.exists({ 'doctype': 'Bins', 'item_code': item_code, 'company':company}):
+			rack = frappe.db.get_value('Bins', {'item_code': item_code, 'company':company}, ['name'])
 
 		# print(si_details)
 		if si_details:
@@ -84,7 +85,7 @@ def get_data(filters=None):
 					mrp = float(si_detail.mrp)/float(si_detail.conversion_factor)
 					qty_per_pack = 1
 
-		pr_details = get_purchase_qty(batch)
+		pr_details = get_purchase_qty(batch,company)
 		# print(pr_details)
 		if pr_details:
 			for pr_detail in pr_details:
@@ -93,7 +94,7 @@ def get_data(filters=None):
 				else:
 					purchase_qty+= pr_detail.stock_qty
 
-		purchase_return_details = get_purchase_return_qty(batch)
+		purchase_return_details = get_purchase_return_qty(batch,company)
 		if purchase_return_details:
 			for purchase_return_detail in purchase_return_details:
 				if purchase_return_detail.stock_qty<0:
@@ -144,49 +145,52 @@ def get_data(filters=None):
 	return data
 
 @frappe.whitelist()
-def get_sales_qty(batch_no):
+def get_sales_qty(batch_no, company):
 	query = """
 		select
-			si.item_code, si.stock_qty, si.mrp, si.batch_no, si.parent, si.conversion_factor
+			sii.item_code, sii.stock_qty, sii.mrp, sii.batch_no, sii.parent, sii.conversion_factor
 		from
-			`tabSales Invoice Item` si
+			`tabSales Invoice Item` sii
 		where
-			si.batch_no=%(batch_no)s
+			sii.batch_no=%(batch_no)s and sii.parent IN
+			(SELECT si.name FROM `tabSales Invoice` as si where si.company = %(company)s)
 	"""
-	return frappe.db.sql(query.format(), {'batch_no': batch_no }, as_dict=True)
+	return frappe.db.sql(query.format(), {'batch_no': batch_no , 'company':company}, as_dict=True)
 
 @frappe.whitelist()
-def get_purchase_qty(batch_no):
+def get_purchase_qty(batch_no, company):
 	query = """
 		select
 			pri.item_code, pri.stock_qty, pri.free, pri.batch_no, pri.parent
 		from
 			`tabPurchase Receipt Item` pri
 		where
-			pri.batch_no=%(batch_no)s
+			pri.batch_no=%(batch_no)s and pri.parent IN
+			(SELECT pr.name FROM `tabPurchase Receipt` as pr where pr.company = %(company)s)
 	"""
-	return frappe.db.sql(query.format(), {'batch_no': batch_no }, as_dict=True)
+	return frappe.db.sql(query.format(), {'batch_no': batch_no, 'company':company}, as_dict=True)
 
 @frappe.whitelist()
-def get_purchase_return_qty(batch_no):
+def get_purchase_return_qty(batch_no, company):
 	query = """
 		select
 			pii.item_code, pii.stock_qty, pii.batch_no, pii.parent
 		from
 			`tabPurchase Invoice Item` pii
 		where
-			pii.batch_no=%(batch_no)s
+			pii.batch_no=%(batch_no)s and pii.parent IN
+			(SELECT pi.name FROM `tabPurchase Invoice` as pi where pi.company = %(company)s)
 	"""
-	return frappe.db.sql(query.format(), {'batch_no': batch_no }, as_dict=True)
+	return frappe.db.sql(query.format(), {'batch_no': batch_no, 'company':company }, as_dict=True)
 
 @frappe.whitelist()
-def get_bin_details(item_code,batch):
+def get_bin_details(item_code,batch,company):
 	query = """
 		select
 			bi.item_code, bi.batch_qty, bi.batch
 		from
 			`tabBin Items` bi
 		where
-			bi.batch=%(batch)s and bi.item_code=%(item_code)s
+			bi.batch=%(batch)s and bi.item_code=%(item_code)s and bi.company=%(company)s
 	"""
-	return frappe.db.sql(query.format(), {'batch': batch, 'item_code': item_code }, as_dict=True)
+	return frappe.db.sql(query.format(), {'batch': batch, 'item_code': item_code, 'company':company }, as_dict=True)

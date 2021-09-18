@@ -9,6 +9,12 @@ frappe.query_reports["Item Master Report"] = {
 			label:__("Item"),
 			fieldtype:"Link",
 			options:"Item"
+		},
+		{
+			fieldname:"company",
+			label:__("Company"),
+			fieldtype:"Link",
+			options:"Company"
 		}
 	],
 	

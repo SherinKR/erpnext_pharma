@@ -159,11 +159,19 @@
    "mandatory": 0,
    "options": "Item",
    "wildcard_filter": 0
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "mandatory": 1,
+   "options": "Company",
+   "wildcard_filter": 0
   }
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-18 09:23:01.833739",
+ "modified": "2021-09-18 14:54:16.657655",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",
@@ -174,31 +182,7 @@
  "report_type": "Script Report",
  "roles": [
   {
-   "role": "Item Manager"
-  },
-  {
-   "role": "Stock Manager"
-  },
-  {
-   "role": "Stock User"
-  },
-  {
-   "role": "Sales User"
-  },
-  {
-   "role": "Purchase User"
-  },
-  {
-   "role": "Maintenance User"
-  },
-  {
-   "role": "Accounts User"
-  },
-  {
-   "role": "Manufacturing User"
-  },
-  {
-   "role": "All"
+   "role": "Central Office Admin"
   }
  ]
 }

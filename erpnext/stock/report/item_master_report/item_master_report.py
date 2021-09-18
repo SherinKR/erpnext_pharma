@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 from frappe.model.document import Document
+from erpnext.stock.doctype.batch.batch import get_batch_qty
 import frappe
 from frappe import _
 
@@ -40,6 +41,7 @@ def get_columns():
 
 def get_data(filters=None):
 	company = filters['company']
+	warehouse_list = frappe.get_list("Warehouse", filters={'company':company})
 	data=[]
 	if 'item' in filters:
 		print(filters['item'])
@@ -70,6 +72,15 @@ def get_data(filters=None):
 		ptf = frappe.db.get_value('Item Price', {'price_list': 'Price To Franchaisee - (PTF)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		ptc = frappe.db.get_value('Item Price', {'price_list': 'Price To Customer - (PTC)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		company_buying = frappe.db.get_value('Item Price', {'price_list': 'Company Buying', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
+		
+		batch_wise_list = get_batch_qty(batch)
+		warehouse_stock=0
+		for warehouse in warehouse_list:
+			for batch in batch_wise_list:
+				if(batch['warehouse'] == warehouse['name']):
+					warehouse_stock = warehouse_stock+int(batch['qty'])
+		current_stock = warehouse_stock
+		warehouse_stock=0
 		si_details = get_sales_qty(batch,company)
 		if frappe.db.exists({ 'doctype': 'Bins', 'item_code': item_code, 'company':company}):
 			rack = frappe.db.get_value('Bins', {'item_code': item_code, 'company':company}, ['name'])

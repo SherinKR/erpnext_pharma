@@ -31,6 +31,8 @@ def get_columns():
 		_("MRP") + ":Currency:100",
 		_("GST") + ":Float:100",
 		_("UOM") + ":Link/UOM:100",
+		_("Qty Per Pack") + ":Float:150",
+		_("Rack") + ":Link/Bins:130",
 		_("Is Purchase") + ":Check:100",
 		_("Is Sales") + ":Check:100",
 		_("Superseeded By") + ":Link/Item:160"
@@ -43,7 +45,7 @@ def get_data(filters=None):
 		batch_list=frappe.get_list("Batch", filters={'item':filters['item']})
 	else:
 		batch_list=frappe.get_list("Batch")
-
+	
 	sales_invoice_list = frappe.get_list("Sales Invoice")
 	purchase_order_list = frappe.get_list("Purchase Order")
 	item_code = ""
@@ -57,6 +59,8 @@ def get_data(filters=None):
 	sale_qty, sale_return = 0,0
 	company_buying, ptf, ptc, mrp, gst = 0,0,0,0,0
 	uom = ""
+	qty_per_pack = 1
+	rack = ""
 	is_purchase, is_sales = 0,0
 	superseeded_by = ""
 	for b in batch_list:
@@ -66,6 +70,9 @@ def get_data(filters=None):
 		ptc = frappe.db.get_value('Item Price', {'price_list': 'Price To Customer - (PTC)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		company_buying = frappe.db.get_value('Item Price', {'price_list': 'Company Buying', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		si_details = get_sales_qty(batch)
+		if frappe.db.exists({ 'doctype': 'Bins', 'item_code': item_code}):
+			rack = frappe.db.get_value('Bins', {'item_code': item_code}, ['name'])
+
 		# print(si_details)
 		if si_details:
 			for si_detail in si_details:
@@ -73,7 +80,9 @@ def get_data(filters=None):
 					sale_qty+= si_detail.stock_qty
 				else:
 					sale_return+= si_detail.stock_qty
-				mrp = float(si_detail.mrp)/float(si_detail.conversion_factor)
+				if si_detail.mrp and si_detail.conversion_factor:
+					mrp = float(si_detail.mrp)/float(si_detail.conversion_factor)
+					qty_per_pack = 1
 
 		pr_details = get_purchase_qty(batch)
 		# print(pr_details)
@@ -83,6 +92,12 @@ def get_data(filters=None):
 					free_qty+= pr_detail.stock_qty
 				else:
 					purchase_qty+= pr_detail.stock_qty
+
+		purchase_return_details = get_purchase_return_qty(batch)
+		if purchase_return_details:
+			for purchase_return_detail in purchase_return_details:
+				if purchase_return_detail.stock_qty<0:
+					purchase_return += purchase_return_detail.stock_qty
 
 		row = [
 			item_code,
@@ -103,6 +118,8 @@ def get_data(filters=None):
 			mrp,
 			gst,
 			uom,
+			qty_per_pack,
+			rack,
 			is_purchase,
 			is_sales,
 			superseeded_by
@@ -119,6 +136,8 @@ def get_data(filters=None):
 		sale_qty, sale_return = 0,0
 		company_buying, ptf, ptc, mrp, gst = 0,0,0,0,0
 		uom = ""
+		qty_per_pack = 1
+		rack = ""
 		is_purchase, is_sales = 0,0
 		superseeded_by = ""
 
@@ -152,10 +171,22 @@ def get_purchase_qty(batch_no):
 def get_purchase_return_qty(batch_no):
 	query = """
 		select
-			pri.item_code, pri.stock_qty, pri.free, pri.batch_no, pri.parent
+			pii.item_code, pii.stock_qty, pii.batch_no, pii.parent
 		from
-			`tabPurchase Receipt Item` pri
+			`tabPurchase Invoice Item` pii
 		where
-			pri.batch_no=%(batch_no)s
+			pii.batch_no=%(batch_no)s
 	"""
 	return frappe.db.sql(query.format(), {'batch_no': batch_no }, as_dict=True)
+
+@frappe.whitelist()
+def get_bin_details(item_code,batch):
+	query = """
+		select
+			bi.item_code, bi.batch_qty, bi.batch
+		from
+			`tabBin Items` bi
+		where
+			bi.batch=%(batch)s and bi.item_code=%(item_code)s
+	"""
+	return frappe.db.sql(query.format(), {'batch': batch, 'item_code': item_code }, as_dict=True)

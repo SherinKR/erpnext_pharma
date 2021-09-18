@@ -110,6 +110,17 @@ frappe.query_reports["Item Master Report"] = {
 			label:__("Superseeded By"),
 			fieldtype:"Link",
 			options:"Item"
+		},
+		{
+			fieldname:"qty_per_pack",
+			label:__("Qty Per Pack"),
+			fieldtype:"Float"
+		},
+		{
+			fieldname:"rack",
+			label:__("Rack"),
+			fieldtype:"Link",
+			options:"Bins"
 		}
 
 	]

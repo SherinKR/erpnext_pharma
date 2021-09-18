@@ -114,6 +114,19 @@
    "width": 0
   },
   {
+   "fieldname": "qty_per_pack",
+   "fieldtype": "Float",
+   "label": "Qty Per Pack",
+   "width": 0
+  },
+  {
+   "fieldname": "rack",
+   "fieldtype": "Link",
+   "label": "Rack",
+   "options": "Bins",
+   "width": 0
+  },
+  {
    "fieldname": "is_purchase",
    "fieldtype": "Check",
    "label": "Is Purchase",
@@ -150,7 +163,7 @@
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-17 14:53:13.037202",
+ "modified": "2021-09-18 09:23:01.833739",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",

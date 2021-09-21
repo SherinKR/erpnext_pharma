@@ -77,6 +77,18 @@
    "width": 0
   },
   {
+   "fieldname": "material_issue",
+   "fieldtype": "Float",
+   "label": "Miscellaneous Issue",
+   "width": 0
+  },
+  {
+   "fieldname": "material_receipt",
+   "fieldtype": "Float",
+   "label": "Miscellaneous Receipt",
+   "width": 0
+  },
+  {
    "fieldname": "company_buying",
    "fieldtype": "Currency",
    "label": "Company Buying",
@@ -171,7 +183,7 @@
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-18 14:54:16.657655",
+ "modified": "2021-09-21 10:04:23.384516",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",

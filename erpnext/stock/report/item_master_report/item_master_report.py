@@ -26,6 +26,8 @@ def get_columns():
 		_("Purchase Return") + ":Float:120",
 		_("Sales Qty") + ":Float:100",
 		_("Sales Return") + ":Float:180",
+		_("Miscellaneous Issue") + ":Float:200",
+		_("Miscellaneous Receipt") + ":Float:200",
 		_("Company Buying") + ":Currency:150",
 		_("PTF") + ":Currency:100",
 		_("PTC") + ":Currency:100",
@@ -49,8 +51,6 @@ def get_data(filters=None):
 	else:
 		batch_list=frappe.get_list("Batch")
 	
-	sales_invoice_list = frappe.get_list("Sales Invoice")
-	purchase_order_list = frappe.get_list("Purchase Order")
 	item_code = ""
 	manufacturer = ""
 	item_name = ""
@@ -60,6 +60,7 @@ def get_data(filters=None):
 	current_stock = 0
 	purchase_qty, free_qty, purchase_return = 0,0,0
 	sale_qty, sale_return = 0,0
+	material_receipt,material_issue = 0,0
 	company_buying, ptf, ptc, mrp, gst = 0,0,0,0,0
 	uom = ""
 	qty_per_pack = 1
@@ -111,6 +112,16 @@ def get_data(filters=None):
 				if purchase_return_detail.stock_qty<0:
 					purchase_return += purchase_return_detail.stock_qty
 
+		material_receipt_details = get_stock_entry_qty(batch, "Material Receipt", company)
+		if material_receipt_details:
+			for material_receipt_detail in material_receipt_details:
+				if material_receipt_detail.transfer_qty:
+					material_receipt += material_receipt_detail.transfer_qty
+		material_issue_details = get_stock_entry_qty(batch, "Material Issue", company)
+		if material_issue_details:
+			for material_issue_detail in material_issue_details:
+				if material_issue_detail.transfer_qty:
+					material_issue += material_issue_detail.transfer_qty
 		row = [
 			item_code,
 			item_name,
@@ -124,6 +135,8 @@ def get_data(filters=None):
 			purchase_return,
 			sale_qty,
 			sale_return,
+			material_issue,
+			material_receipt,
 			company_buying,
 			ptf,
 			ptc,
@@ -146,6 +159,7 @@ def get_data(filters=None):
 		current_stock = 0
 		purchase_qty, free_qty, purchase_return = 0,0,0
 		sale_qty, sale_return = 0,0
+		material_receipt,material_issue = 0,0
 		company_buying, ptf, ptc, mrp, gst = 0,0,0,0,0
 		uom = ""
 		qty_per_pack = 1
@@ -205,3 +219,16 @@ def get_bin_details(item_code,batch,company):
 			bi.batch=%(batch)s and bi.item_code=%(item_code)s and bi.company=%(company)s
 	"""
 	return frappe.db.sql(query.format(), {'batch': batch, 'item_code': item_code, 'company':company }, as_dict=True)
+
+@frappe.whitelist()
+def get_stock_entry_qty(batch_no, purpose, company):
+	query = """
+		select
+			sed.item_code, sed.transfer_qty, sed.batch_no, sed.parent
+		from
+			`tabStock Entry Detail` sed
+		where
+			sed.batch_no=%(batch_no)s and sed.parent IN
+			(SELECT se.name FROM `tabStock Entry` as se where ( se.company = %(company)s and se.purpose = %(purpose)s))
+	"""
+	return frappe.db.sql(query.format(), {'batch_no': batch_no, 'company':company, 'purpose':purpose }, as_dict=True)

@@ -71,6 +71,16 @@ frappe.query_reports["Item Master Report"] = {
 			fieldtype:"Float"
 		},
 		{
+			fieldname: "material_issue",
+			fieldtype: "Float",
+			label: "Miscellaneous Issue"
+		},
+		{
+			fieldname: "material_receipt",
+			fieldtype: "Float",
+			label: "Miscellaneous Receipt"
+		},
+		{
 			fieldname:"company_buying",
 			label:__("Company Buying"),
 			fieldtype:"Currency"

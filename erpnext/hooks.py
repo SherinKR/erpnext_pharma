@@ -641,5 +641,8 @@ fixtures = [
 	},
 	{
 		"dt": "Notification"
+	},
+	{
+		"dt": "Print Format"
 	}
 ]

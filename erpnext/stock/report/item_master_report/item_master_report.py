@@ -178,7 +178,7 @@ def get_sales_qty(batch_no, company):
 			`tabSales Invoice Item` sii
 		where
 			sii.batch_no=%(batch_no)s and sii.parent IN
-			(SELECT si.name FROM `tabSales Invoice` as si where si.company = %(company)s)
+			(SELECT si.name FROM `tabSales Invoice` as si where (si.docstatus=1 and si.company = %(company)s))
 	"""
 	return frappe.db.sql(query.format(), {'batch_no': batch_no , 'company':company}, as_dict=True)
 
@@ -191,7 +191,7 @@ def get_purchase_qty(batch_no, company):
 			`tabPurchase Receipt Item` pri
 		where
 			pri.batch_no=%(batch_no)s and pri.parent IN
-			(SELECT pr.name FROM `tabPurchase Receipt` as pr where pr.company = %(company)s)
+			(SELECT pr.name FROM `tabPurchase Receipt` as pr where (pr.docstatus=1 and pr.company = %(company)s))
 	"""
 	return frappe.db.sql(query.format(), {'batch_no': batch_no, 'company':company}, as_dict=True)
 
@@ -204,7 +204,7 @@ def get_purchase_return_qty(batch_no, company):
 			`tabPurchase Invoice Item` pii
 		where
 			pii.batch_no=%(batch_no)s and pii.parent IN
-			(SELECT pi.name FROM `tabPurchase Invoice` as pi where pi.company = %(company)s)
+			(SELECT pi.name FROM `tabPurchase Invoice` as pi where ( pi.docstatus=1 and pi.company = %(company)s))
 	"""
 	return frappe.db.sql(query.format(), {'batch_no': batch_no, 'company':company }, as_dict=True)
 
@@ -229,6 +229,6 @@ def get_stock_entry_qty(batch_no, purpose, company):
 			`tabStock Entry Detail` sed
 		where
 			sed.batch_no=%(batch_no)s and sed.parent IN
-			(SELECT se.name FROM `tabStock Entry` as se where ( se.company = %(company)s and se.purpose = %(purpose)s))
+			(SELECT se.name FROM `tabStock Entry` as se where ( se.company = %(company)s and se.purpose = %(purpose)s and se.docstatus = 1))
 	"""
 	return frappe.db.sql(query.format(), {'batch_no': batch_no, 'company':company, 'purpose':purpose }, as_dict=True)

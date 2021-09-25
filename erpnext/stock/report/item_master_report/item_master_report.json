@@ -29,6 +29,12 @@
    "width": 0
   },
   {
+   "fieldname": "item_creation",
+   "fieldtype": "Date",
+   "label": "Item Creation",
+   "width": 0
+  },
+  {
    "fieldname": "expiry",
    "fieldtype": "Date",
    "label": "Expiry",
@@ -183,7 +189,7 @@
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-21 10:04:23.384516",
+ "modified": "2021-09-25 13:11:42.753665",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",

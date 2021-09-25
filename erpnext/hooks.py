@@ -640,6 +640,7 @@ fixtures = [
 		"dt": "Translation"
 	},
 	{
-		"dt": "Notification"
+		"dt": "Notification",
+		'filters': [{'is_standard' : '0'}]
 	}
 ]

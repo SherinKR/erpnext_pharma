@@ -31,6 +31,11 @@ frappe.query_reports["Item Master Report"] = {
 			options:"Batch"
 		},
 		{
+			fieldname:"item_creation",
+			label:__("Item Creation"),
+			fieldtype:"Date"
+		},
+		{
 			fieldname:"expiry",
 			label:__("Expiry"),
 			fieldtype:"Date"

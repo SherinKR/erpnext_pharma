@@ -19,7 +19,7 @@ def get_columns():
 		_("Item Name") + ":Data:200",
 		_("Manufacturer") + ":Link/Manufacturer:150",
 		_("Batch") + ":Link/Batch:150",
-		_("Item Creation") + ":Date:130",
+		_("Item Creation") + ":Date:110",
 		_("Expiry") + ":Date:100",
 		_("Content") + ":Data:200",
 		_("Current Stock") + ":Float:130",

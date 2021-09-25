@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from frappe.model.document import Document
 from erpnext.stock.doctype.batch.batch import get_batch_qty
 import frappe
+from frappe.utils import cstr, cint, get_datetime, getdate, add_to_date
 from frappe import _
 
 def execute(filters=None):
@@ -18,7 +19,7 @@ def get_columns():
 		_("Item Name") + ":Data:200",
 		_("Manufacturer") + ":Link/Manufacturer:150",
 		_("Batch") + ":Link/Batch:150",
-		_("Item Creation Date") + ":Date:160",
+		_("Item Creation") + ":Date:130",
 		_("Expiry") + ":Date:100",
 		_("Content") + ":Data:200",
 		_("Current Stock") + ":Float:130",
@@ -75,7 +76,7 @@ def get_data(filters=None):
 		ptf = frappe.db.get_value('Item Price', {'price_list': 'Price To Franchaisee - (PTF)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		ptc = frappe.db.get_value('Item Price', {'price_list': 'Price To Customer - (PTC)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		company_buying = frappe.db.get_value('Item Price', {'price_list': 'Company Buying', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
-		
+		item_creation = frappe.utils.getdate(item_creation)
 		batch_wise_list = get_batch_qty(batch)
 		warehouse_stock=0
 		for warehouse_item in warehouse_list:

@@ -1848,7 +1848,8 @@ def get_supplied_items(purchase_order):
 def make_bin_entry(source_name, target_doc=None):
 	def set_missing_values(source, target):
 		target.entry_type = "Purchase"
-		target.ref_document_type =  "Stock Entry"
+		target.naming_series = "S-"
+		target.reference_document_type =  "Stock Entry"
 		target.reference_document = source_name
 
 	doclist = get_mapped_doc("Stock Entry", source_name,{

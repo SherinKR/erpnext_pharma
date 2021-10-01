@@ -31,4 +31,14 @@ class BinEntry(Document):
 				bin_doc.save()
 			frappe.db.set_value('Bins', d.bin, { 'bin_qty': bin_doc.bin_qty+d.quantity })
 			frappe.db.commit()
-
+		if self.reference_document and self.reference_document_type:
+			update_status(self.reference_document,self.reference_document_type)
+def update_status(reference_document,reference_document_type):
+	if reference_document_type=="Stock Entry":
+		if frappe.db.exists('Stock Entry',reference_document):
+			frappe.db.set_value('Stock Entry', reference_document, 'bin_entry_done', 1)
+			frappe.db.commit()
+	if reference_document_type=="Purchase Receipt":
+		if frappe.db.exists('Purchase Receipt',reference_document):
+			frappe.db.set_value('Purchase Receipt', reference_document, 'bin_entry_done', 1)
+			frappe.db.commit()

@@ -228,8 +228,9 @@ frappe.ui.form.on('Stock Entry', {
 					frappe.set_route('List', 'Stock Entry');
 				}, __("View"));
 			}
-
-			cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
+			if(!frm.doc.bin_entry_done){
+				cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
+			}
 		}
 
 		if (frm.doc.docstatus===0) {

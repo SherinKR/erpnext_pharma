@@ -22,7 +22,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Series",
-   "options": "P_\nS-",
+   "options": "P-\nS-",
    "reqd": 1
   },
   {
@@ -91,7 +91,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-07-04 22:29:18.607979",
+ "modified": "2021-10-01 15:02:43.924014",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Bin Entry",

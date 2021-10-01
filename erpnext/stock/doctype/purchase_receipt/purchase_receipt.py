@@ -734,6 +734,7 @@ def make_inter_company_delivery_note(source_name, target_doc=None):
 def make_bin_entry(source_name, target_doc=None):
 	def set_missing_values(source, target):
 		target.entry_type = "Purchase"
+		target.naming_series = "P-"
 		target.ref_document_type =  "Purchase Receipt"
 		target.reference_document = source_name
 

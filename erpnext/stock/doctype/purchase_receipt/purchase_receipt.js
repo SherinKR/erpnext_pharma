@@ -152,7 +152,9 @@ erpnext.stock.PurchaseReceiptController = erpnext.buying.BuyingController.extend
 
 				cur_frm.add_custom_button(__('Make Stock Entry'), cur_frm.cscript['Make Stock Entry'], __('Create'));
 
-				cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
+				if(!frm.doc.bin_entry_done){
+					cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
+				}
 
 				if(flt(this.frm.doc.per_billed) < 100) {
 					cur_frm.add_custom_button(__('Purchase Invoice'), this.make_purchase_invoice, __('Create'));

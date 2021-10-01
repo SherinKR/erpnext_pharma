@@ -24,7 +24,18 @@ doctype_js = {
 	"Address": "public/js/address.js",
 	"Communication": "public/js/communication.js",
 	"Event": "public/js/event.js",
-	"Newsletter": "public/js/newsletter.js"
+	"Newsletter": "public/js/newsletter.js",
+	"Item": "public/js/webeaz/item.js",
+	"Material Request": "public/js/webeaz/material_request.js",
+	"Issue": "public/js/webeaz/issue.js",
+	"Payment Entry": "public/js/webeaz/payment_entry.js",
+	"Sales Order": "public/js/webeaz/sales_order.js",
+	"Company": "public/js/webeaz/company.js",
+	"Batch": "public/js/webeaz/batch.js",
+	"Purchase Invoice": "public/js/webeaz/purchase_invoice.js",
+	"Purchase Order": "public/js/webeaz/purchase_order.js",
+	"Sales Invoice": "public/js/webeaz/sales_invoice.js",
+	"Purchase Receipt": "public/js/webeaz/purchase_receipt.js"
 }
 
 override_doctype_class = {

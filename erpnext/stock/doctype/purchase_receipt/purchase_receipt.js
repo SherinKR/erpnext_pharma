@@ -144,6 +144,7 @@ erpnext.stock.PurchaseReceiptController = erpnext.buying.BuyingController.extend
 			}
 
 			if(this.frm.doc.docstatus == 1 && this.frm.doc.status!="Closed") {
+				console.log("test 1");
 				if (this.frm.has_perm("submit")) {
 					cur_frm.add_custom_button(__("Close"), this.close_purchase_receipt, __("Status"))
 				}
@@ -152,7 +153,8 @@ erpnext.stock.PurchaseReceiptController = erpnext.buying.BuyingController.extend
 
 				cur_frm.add_custom_button(__('Make Stock Entry'), cur_frm.cscript['Make Stock Entry'], __('Create'));
 
-				if(!frm.doc.bin_entry_done){
+				if(!cur_frm.doc.bin_entry_done){
+					console.log("test 2");
 					cur_frm.add_custom_button(__('Make Bin Entry'), cur_frm.cscript['Make Bin Entry'], __('Create'));
 				}
 

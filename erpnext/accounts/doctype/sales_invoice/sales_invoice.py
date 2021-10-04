@@ -142,8 +142,8 @@ class SalesInvoice(SellingController):
 			validate_loyalty_points(self, self.loyalty_points)
 
 	def validate_item_qty(self):
-		if self.set_bin_details:
-			for row in self.set_bin_details:
+		if self.bin_details:
+			for row in self.bin_details:
 				if row.quantity > row.batch_qty :
 					frappe.throw(msg="No enough items "+row.item_code+" available for selected batch in Bin: "+row.bin, title="Item shortage!")
 		

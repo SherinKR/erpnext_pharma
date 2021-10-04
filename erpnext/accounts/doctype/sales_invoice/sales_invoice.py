@@ -197,9 +197,9 @@ class SalesInvoice(SellingController):
 					if frappe.db.exists({ 'doctype': 'Bin Items','parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code }):
 						qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
 						if qty and qty < d.stock_qty:
-							frappe.msgprint(msg='item short', title="Error!")
+							frappe.msgprint(msg='item short for item '+d.item_code , title="Error!")
 				else:
-					frappe.throw(msg="No bins found, Please asign items to Bins", title="Error!")
+					frappe.throw(msg="No bins found, Please asign items to Bins for item "+d.item_code, title="Error!")
 				
 				qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
 				bin_doc = frappe.get_doc('Bins', bin_name )

@@ -13,7 +13,6 @@
   "column_break_5",
   "company",
   "warehouse",
-  "item_code",
   "bin_qty",
   "section_break_10",
   "items"
@@ -87,13 +86,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "item_code",
-   "fieldtype": "Link",
-   "label": "Item Code",
-   "options": "Item",
-   "reqd": 1
-  },
-  {
    "default": "0",
    "fieldname": "bin_qty",
    "fieldtype": "Float",
@@ -116,7 +108,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-08-04 18:14:36.024196",
+ "modified": "2021-10-04 09:54:33.115521",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Bins",

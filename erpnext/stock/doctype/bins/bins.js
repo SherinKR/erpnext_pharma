@@ -4,11 +4,11 @@ frappe.ui.form.on('Bins', {
 	refresh: function(frm) {
 		if(frm.doc.company){
 			frm.set_query('rack_name', () => {
-    		return {
-	        filters: {
-	            company: frm.doc.company
-	        }
-    		}
+				return {
+					filters: {
+						company: frm.doc.company
+					}
+				}
 			});
 		}
 	}

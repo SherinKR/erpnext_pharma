@@ -13,15 +13,22 @@ frappe.ui.form.on('Bin Entry', {
 function set_filters(frm){
 	frm.set_query('bin', 'items', function(doc, cdt, cdn) {
 		var d = locals[cdt][cdn];
-		if(d.item_code){
-			return {
-				"filters": {
-					"item_code": d.item_code,
-					"company": frm.doc.company
-				}
-			};
-		}
-		else{
+		// if(d.item_code){
+		// 	return {
+		// 		"filters": {
+		// 			"item_code": d.item_code,
+		// 			"company": frm.doc.company
+		// 		}
+		// 	};
+		// }
+		// else{
+		// 	return {
+		// 		"filters": {
+		// 			"company": frm.doc.company
+		// 		}
+		// 	};
+		// }
+		if(frm.doc.company){
 			return {
 				"filters": {
 					"company": frm.doc.company

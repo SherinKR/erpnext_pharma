@@ -69,7 +69,7 @@ function set_filter(frm){
 			}
         }
     });
-	frm.set_query('bin', 'items', function(doc, cdt, cdn) {
+	frm.set_query('batch', 'items', function(doc, cdt, cdn) {
 		var d = locals[cdt][cdn];
 		if(d.item_code){
 			return {

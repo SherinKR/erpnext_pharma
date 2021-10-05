@@ -52,12 +52,21 @@ function set_filter(frm){
                     }
                 }
             });
-            return {
-                "filters": {
-                    "name": bin,
-                    "company": frm.doc.company
-                }
-            };
+            if(bin){
+				return {
+					"filters": {
+						"name": bin,
+						"company": frm.doc.company
+					}
+				};
+			}
+			else{
+				return {
+					"filters": {
+						"company": frm.doc.company
+					}
+				};
+			}
         }
     });
 }

@@ -50,7 +50,8 @@ def set_item_defaults(company, warehouse, price_list, supplier):
                 if item_default.company == company :
                     flag = 1
                     name_default = item_default.name
-            update_item_defaults(flag, item_doc, company, warehouse, price_list, name_default, supplier)
+            # update_item_defaults(flag, item_doc, company, warehouse, price_list, name_default, supplier)
+            frappe.enqueue(update_item_defaults,flag=flag, item_doc=item_doc, company=company, warehouse=warehouse, price_list=price_list, name_default=name_default, supplier=supplier, is_async=True, queue="long")
 
 @frappe.whitelist()
 def update_item_taxes(flag_tax, name_tax, item_doc, tax_template):

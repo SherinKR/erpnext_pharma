@@ -449,6 +449,19 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 
 
 @frappe.whitelist()
+def get_bin_name(batch,item_code,company):
+	query = """
+		select
+			b.name
+		from
+			`tabBin Items` bi, `tabBins` b
+		where
+			(bi.item_code like %(item_code)s and bi.batch like %(batch)s ) and ( b.company like %(company)s and b.name = bi.parent)
+	"""
+	return_dict = frappe.db.sql(query.format(), {'item_code': '%'+ item_code +'%', 'batch': '%'+batch+'%', 'company': '%'+company+'%'}, as_dict=True)
+	return return_dict
+
+@frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
 def get_batch_no(doctype, txt, searchfield, start, page_len, filters):
 	cond = ""

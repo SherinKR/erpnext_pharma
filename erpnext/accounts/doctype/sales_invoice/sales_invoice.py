@@ -377,7 +377,14 @@ class SalesInvoice(SellingController):
 			frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty - item.quantity })
 			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty - item.quantity })
 			frappe.db.commit()
-
+	# for updating cancelled stocks back to bin 
+	def credit_stock_to_bin(self):
+		for item in self.bin_details:
+			bin_doc = frappe.get_doc("Bins",item.bin)
+			tab_name, batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name','batch_qty'])
+			frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty + item.quantity })
+			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty + item.quantity })
+			frappe.db.commit()
 
 	def check_if_consolidated_invoice(self):
 		# since POS Invoice extends Sales Invoice, we explicitly check if doctype is Sales Invoice
@@ -403,9 +410,9 @@ class SalesInvoice(SellingController):
 
 	def on_cancel(self):
 		super(SalesInvoice, self).on_cancel()
-
+		self.credit_stock_to_bin()
 		self.check_sales_order_on_hold_or_close("sales_order")
-
+		
 		if self.is_return and not self.update_billed_amount_in_sales_order:
 			# NOTE status updating bypassed for is_return
 			self.status_updater = []

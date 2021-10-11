@@ -1,5 +1,6 @@
 frappe.ui.form.on('Sales Invoice', {
 	onload: function(frm){
+        reset_cancelled_form(frm);
 	    estimate_print(frm);
 		if(frm.doc.customer){
 			frm.refresh_field('customer');
@@ -19,6 +20,7 @@ frappe.ui.form.on('Sales Invoice', {
 	  },10);
 	},
 	refresh: function(frm){
+        reset_cancelled_form(frm);
 	    estimate_print(frm);
 		setTimeout(() => {
 	    frm.remove_custom_button("Maintenance Schedule",'Create');
@@ -285,6 +287,14 @@ function update_batch_price(frm){
             }
           });
       });
+}
+function reset_cancelled_form(frm){
+    if(frm.is_new()){
+        if(frm.doc.bin_details){
+            frm.clear_table('bin_details')
+            console.log("inside bin details")
+        }
+    }
 }
 
 // var r;

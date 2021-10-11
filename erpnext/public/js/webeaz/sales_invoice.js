@@ -292,7 +292,7 @@ function reset_cancelled_form(frm){
     if(frm.is_new()){
         if(frm.doc.bin_details){
             frm.clear_table('bin_details')
-            console.log("inside bin details")
+            //console.log("inside bin details")
         }
     }
 }

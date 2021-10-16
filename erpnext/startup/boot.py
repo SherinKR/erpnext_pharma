@@ -51,7 +51,7 @@ def validate_user_payment(company_name):
 		if doc_company.reson_for_blocking:
 			frappe.throw( msg= " "+doc_company.reson_for_blocking, title='Error!')
 		else:
-			frappe.throw( msg= "Administrator blocked you. Please contact Administrator", title='Error!')
+			frappe.throw( msg= "Your system access has blocked due to dues of payment. Please contact Avanza Administrator.", title='Error!')
 def load_country_and_currency(bootinfo):
 	country = frappe.db.get_default("country")
 	if country and frappe.db.exists("Country", country):

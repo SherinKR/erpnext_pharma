@@ -34,5 +34,18 @@ frappe.ui.form.on('Company', {
   			}
   		});
   	});
+
+	frm.add_custom_button(__('Set Missing Item Price'), function() {
+		frappe.msgprint(__('Item Price updation started'));
+  		frappe.call({
+  			"method": "erpnext.controllers.patches.update_item_price_from_button",
+  			"args": {
+  				"price_list": "Price To Franchaisee - (PTF)"
+  			},
+  			callback: function(r){
+  				console.log(r);
+  			}
+  		});
+  	});
   }
 });

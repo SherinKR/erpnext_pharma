@@ -1,5 +1,7 @@
 import frappe
 import erpnext
+from frappe import enqueue
+from frappe import publish_progress
 
 @frappe.whitelist()
 def create_item_price_without_batch(price_list):
@@ -15,3 +17,11 @@ def create_item_price_without_batch(price_list):
                 new_item_price_doc.price_list_rate = item_price_doc.price_list_rate
                 new_item_price_doc.insert()
                 frappe.db.commit()
+        frappe.msgprint("Item Price Updation Completed")
+
+@frappe.whitelist()
+def update_item_price_from_button(price_list):
+    # publish_progress(percent=10, title="Reading the file")
+    # frappe.show_progress('Loading..', 70, 100, 'Please wait')
+    # frappe.publish_realtime("ocr_progress_bar", {"progress": [5, 10], "reload": 1}, user=frappe.session.user)
+    frappe.enqueue(create_item_price_without_batch,price_list=price_list, is_async=True, queue="long")

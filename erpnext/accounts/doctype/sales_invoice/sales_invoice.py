@@ -2,6 +2,8 @@
 # License: GNU General Public License v3. See license.txt
 
 from __future__ import unicode_literals
+from hashlib import new
+from warnings import filters
 import frappe, erpnext
 import frappe.defaults
 from frappe.utils import cint, flt, getdate, add_days, cstr, nowdate, get_link_to_form, formatdate
@@ -275,24 +277,7 @@ class SalesInvoice(SellingController):
 		if self.company:
 			company_doc = frappe.get_doc('Company', self.company)
 			if company_doc.is_group != 1:
-				sum=0
-				due_days=0
-				for item in self.items:
-				    item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
-				    sum = sum + (int(item_price)*item.stock_qty)
-				new_fpr = frappe.new_doc('Franchise Payment Request')
-				new_fpr.company = self.company
-				new_fpr.reference_document = self.name
-				new_fpr.selling_amount = self.outstanding_amount
-				new_fpr.purchase_amount = sum
-				new_fpr.transaction_date = frappe.utils.getdate()
-				new_fpr.weekday = frappe.utils.get_weekday()
-				weekdays= [{ "day_no": 7, "day_name": "Monday"}, { "day_no": 6, "day_name": "Tuesday"}, { "day_no": 5, "day_name": "Wednesday"}, { "day_no": 4, "day_name": "Thursday"}, { "day_no": 3, "day_name": "Friday"}, { "day_no": 2, "day_name": "Saturday"}, { "day_no": 1, "day_name": "Sunday"}]
-				for week in weekdays:
-				    if week["day_name"] == frappe.utils.get_weekday():
-				        due_days = week["day_no"]
-				new_fpr.notification_date = frappe.utils.add_days(frappe.utils.getdate(), due_days)
-				new_fpr.insert()
+				create_franchise_payment_request(self)
 
 		if not self.auto_repeat:
 			frappe.get_doc('Authorization Control').validate_approving_authority(self.doctype,
@@ -2119,3 +2104,40 @@ def check_superseded_item(item_name):
 			return False
 	else:
 		return False
+
+@frappe.whitelist()
+def create_franchise_payment_request(self):
+	sum=0
+	due_days=0
+	for item in self.items:
+		item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+		sum = sum + (int(item_price)*item.stock_qty)
+	if frappe.db.exists({ 'doctype': 'Franchise Payment Request', 'company': self.company, 'transaction_date': self.posting_date }):
+		fpr_doc_name = frappe.db.get_value('Franchise Payment Request', { 'company': self.company, 'transaction_date': self.posting_date }, ['name'])
+		fpr_doc = frappe.get_doc('Franchise Payment Request', fpr_doc_name)
+		fpr_item = fpr_doc.append('items')
+		fpr_item.sales_invoice = self.name
+		fpr_item.posting_date = self.posting_date
+		fpr_item.sales_amount = self.outstanding_amount
+		fpr_item.purchase_amount = sum
+		fpr_doc.total_purchase_amount = sum + fpr_doc.total_purchase_amount
+		fpr_doc.total_sales_amount = self.outstanding_amount + fpr_doc.total_sales_amount
+		fpr_doc.save()
+	else:
+		new_fpr = frappe.new_doc('Franchise Payment Request')
+		new_fpr.company = self.company
+		new_fpr.transaction_date = frappe.utils.getdate()
+		new_fpr.weekday = frappe.utils.get_weekday()
+		weekdays= [{ "day_no": 7, "day_name": "Monday"}, { "day_no": 6, "day_name": "Tuesday"}, { "day_no": 5, "day_name": "Wednesday"}, { "day_no": 4, "day_name": "Thursday"}, { "day_no": 3, "day_name": "Friday"}, { "day_no": 2, "day_name": "Saturday"}, { "day_no": 1, "day_name": "Sunday"}]
+		for week in weekdays:
+			if week["day_name"] == frappe.utils.get_weekday():
+				due_days = week["day_no"]
+		new_fpr.notification_date = frappe.utils.add_days(frappe.utils.getdate(), due_days)
+		fpr_item = new_fpr.append('items')
+		fpr_item.sales_invoice = self.name
+		fpr_item.posting_date = self.posting_date
+		fpr_item.sales_amount = self.outstanding_amount
+		fpr_item.purchase_amount = sum
+		new_fpr.total_purchase_amount = sum
+		new_fpr.total_sales_amount = self.outstanding_amount
+		new_fpr.insert()

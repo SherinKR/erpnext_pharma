@@ -19,7 +19,11 @@
   "selling_amount",
   "purchase_amount",
   "status",
-  "paid_amount"
+  "paid_amount",
+  "items",
+  "total_purchase_amount",
+  "total_sales_amount",
+  "total_paid_amount"
  ],
  "fields": [
   {
@@ -64,6 +68,7 @@
    "label": "Party Details"
   },
   {
+   "default": "AVANZA",
    "fieldname": "supplier",
    "fieldtype": "Link",
    "label": "Supplier",
@@ -118,6 +123,27 @@
    "fieldtype": "Float",
    "label": "Paid Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Franchise Payment Request Item"
+  },
+  {
+   "fieldname": "total_purchase_amount",
+   "fieldtype": "Currency",
+   "label": "Total Purchase Amount"
+  },
+  {
+   "fieldname": "total_sales_amount",
+   "fieldtype": "Currency",
+   "label": "Total Sales Amount"
+  },
+  {
+   "fieldname": "total_paid_amount",
+   "fieldtype": "Currency",
+   "label": "Total Paid Amount"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -128,7 +154,7 @@
    "link_fieldname": "franchise_payment_request"
   }
  ],
- "modified": "2021-10-26 10:56:23.207442",
+ "modified": "2021-10-26 17:10:44.449139",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Franchise Payment Request",

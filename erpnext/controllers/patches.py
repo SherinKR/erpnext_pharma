@@ -10,7 +10,7 @@ def create_item_price_without_batch(price_list):
         count = 0
         # frappe.msgprint('Item Price updation started')
         for item_price in item_price_list:
-            frappe.publish_progress(count*100/len(item_price_list), title = ("Creating Dimensions..."))
+            frappe.publish_progress(count*100/len(item_price_list), title = ("Creating Item Prices..."))
             item_price_doc = frappe.get_doc("Item Price", item_price.name)
             if not frappe.db.exists({"doctype":"Item Price", 'item_code':item_price_doc.item_code ,'price_list': price_list, 'batch_no':""}):
                 new_item_price_doc = frappe.new_doc('Item Price')
@@ -21,6 +21,7 @@ def create_item_price_without_batch(price_list):
                 frappe.db.commit()
             count = count+1
         frappe.msgprint("Item Price Updation Completed")
+        count = 0
 
 @frappe.whitelist()
 def update_item_price_from_button(price_list):

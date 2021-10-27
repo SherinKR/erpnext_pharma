@@ -41,16 +41,14 @@ def update_item_price_from_button(price_list):
 @frappe.whitelist()
 def update_franchise_payment_request_to_new(transaction_date,company):
     franchise_payment_request_list = frappe.get_list("Franchise Payment Request", filters={'transaction_date': getdate(transaction_date), 'company':company})
-    print(franchise_payment_request_list)
-    print(len(franchise_payment_request_list))
     if len(franchise_payment_request_list)>1:
         new_fpr = frappe.new_doc('Franchise Payment Request')
         new_fpr.company = company
         new_fpr.transaction_date = getdate(transaction_date)
         new_fpr.total_purchase_amount = 0
         new_fpr.total_sales_amount = 0
-        sum = 0
         for franchise_payment_request in franchise_payment_request_list:
+            sum = 0
             print(franchise_payment_request.name)
             franchise_payment_request_doc = frappe.get_doc("Franchise Payment Request", franchise_payment_request.name)
             sales_invoice_doc = frappe.get_doc("Sales Invoice", franchise_payment_request_doc.reference_document)
@@ -69,3 +67,19 @@ def update_franchise_payment_request_to_new(transaction_date,company):
             new_fpr.save()
             franchise_payment_request_doc.delete()
             frappe.db.commit()
+
+@frappe.whitelist()
+def update_franchise_payment_request():
+    franchise_payment_request_list = frappe.get_list("Franchise Payment Request")
+    for franchise_payment_request in franchise_payment_request_list:
+        print(franchise_payment_request.name)
+        franchise_payment_request_doc = frappe.get_doc("Franchise Payment Request", franchise_payment_request.name)
+        for item in franchise_payment_request_doc.items:
+            sum = 0
+            sales_invoice_doc = frappe.get_doc("Sales Invoice", item.sales_invoice)
+            for si_item in sales_invoice_doc.items:
+                item_price = frappe.db.get_value('Item Price', {'item_code': si_item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+                sum = sum + (int(item_price)*si_item.stock_qty)
+            item.purchase_amount = sum
+        franchise_payment_request_doc.save()
+        frappe.db.commit()

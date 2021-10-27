@@ -93,3 +93,14 @@ def asign_item_to_bin_from_sales_invoice(sales_invoice):
         frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty + item.quantity })
         frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty + item.quantity })
         frappe.db.commit()
+
+@frappe.whitelist()
+def update_bin_items_with_company():
+    bin_list = frappe.get_list("Bins")
+    for bin in bin_list:
+        bin_doc = frappe.get_doc("Bins", bin.name)
+        for bin_item in bin_doc.items:
+            bin_item.company = bin_doc.company
+        bin_doc.save()
+        frappe.db.commit()
+    print("Updated Succesfully")

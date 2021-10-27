@@ -2084,8 +2084,8 @@ def create_dunning(source_name, target_doc=None):
 @frappe.whitelist()
 def set_bin_details(self, item_code, batch):
 	company_name = frappe.defaults.get_user_default("Company")
-	if frappe.db.exists({ 'doctype': 'Bin Items', 'batch': batch, 'item_code': item_code }):
-		bin, tab_name, new_qty = frappe.db.get_value('Bin Items', { 'batch': batch, 'item_code':item_code}, ['parent','name','batch_qty'])
+	if frappe.db.exists({ 'doctype': 'Bin Items', 'batch': batch, 'item_code': item_code , 'company': company_name}):
+		bin, tab_name, new_qty = frappe.db.get_value('Bin Items', { 'batch': batch, 'item_code':item_code, 'company': company_name }, ['parent','name','batch_qty'])
 		return bin
 		# bin_list = frappe.db.get_list('Bins',
 		# 	filters= {'company': company_name, 'bin_name': bin},

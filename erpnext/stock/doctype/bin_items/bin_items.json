@@ -11,7 +11,8 @@
   "batch_qty",
   "batch_uom",
   "manufacturing_date",
-  "expiry_date"
+  "expiry_date",
+  "company"
  ],
  "fields": [
   {
@@ -70,12 +71,18 @@
    "fieldtype": "Date",
    "label": "Expiry Date",
    "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-07-04 22:30:59.688100",
+ "modified": "2021-10-27 17:15:43.951850",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Bin Items",

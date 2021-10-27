@@ -83,3 +83,13 @@ def update_franchise_payment_request():
             item.purchase_amount = sum
         franchise_payment_request_doc.save()
         frappe.db.commit()
+
+@frappe.whitelist()
+def asign_item_to_bin_from_sales_invoice(sales_invoice):
+    sales_invoice_doc = frappe.get_doc("Sales Invoice", sales_invoice)
+    for item in sales_invoice_doc.bin_details:
+        bin_doc = frappe.get_doc("Bins",item.bin)
+        tab_name, batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name','batch_qty'])
+        frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty + item.quantity })
+        frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty + item.quantity })
+        frappe.db.commit()

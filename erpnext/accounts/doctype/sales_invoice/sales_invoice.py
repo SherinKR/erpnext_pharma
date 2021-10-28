@@ -358,7 +358,10 @@ class SalesInvoice(SellingController):
 	def deduct_stock_from_bin(self):
 		for item in self.bin_details:
 			bin_doc = frappe.get_doc("Bins",item.bin)
-			tab_name, batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name','batch_qty'])
+			tab_name = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name'])
+			batch_qty = 0
+			if frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['batch_qty']):
+				batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['batch_qty'])
 			frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty - item.quantity })
 			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty - item.quantity })
 			frappe.db.commit()
@@ -366,7 +369,10 @@ class SalesInvoice(SellingController):
 	def credit_stock_to_bin(self):
 		for item in self.bin_details:
 			bin_doc = frappe.get_doc("Bins",item.bin)
-			tab_name, batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name','batch_qty'])
+			tab_name = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['name'])
+			batch_qty = 0
+			if frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['batch_qty']):
+				batch_qty = frappe.db.get_value('Bin Items', {'parent': item.bin ,'batch': item.batch , 'item_code': item.item_code }, ['batch_qty'])
 			frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty + item.quantity })
 			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty + item.quantity })
 			frappe.db.commit()

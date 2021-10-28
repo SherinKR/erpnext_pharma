@@ -58,13 +58,13 @@
   "doctype": "Server Script",
   "doctype_event": "Before Validate",
   "event_frequency": "All",
-  "modified": "2021-07-04 19:17:44.083642",
+  "modified": "2021-10-28 10:22:05.511710",
   "name": "Sales Invoice Expiry Notification",
   "parent": null,
   "parentfield": null,
   "parenttype": null,
   "reference_doctype": "Sales Invoice",
-  "script": "for item in doc.items:\r\n    if item.expiry_date and frappe.utils.date_diff(frappe.utils.today(), item.expiry_date) <= 30:\r\n        frappe.msgprint( msg= item.item_code + ' will expire on '+item.expiry_date, title='Item(s) Expire Soon')",
+  "script": "for item in doc.items:\r\n    if item.batch_expiry_date and frappe.utils.date_diff(frappe.utils.today(), item.batch_expiry_date) <= 30:\r\n        frappe.msgprint( msg= item.item_code + ' will expire on '+str(item.batch_expiry_date), title='Item(s) Expire Soon')",
   "script_type": "DocType Event"
  },
  {

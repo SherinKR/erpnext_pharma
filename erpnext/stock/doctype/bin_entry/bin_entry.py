@@ -28,6 +28,7 @@ class BinEntry(Document):
 				bin_item.item_name = d.item_name
 				bin_item.batch = d.batch
 				bin_item.batch_qty = d.quantity
+				bin_item.company = bin_doc.company
 				bin_doc.save()
 			frappe.db.set_value('Bins', d.bin, { 'bin_qty': bin_doc.bin_qty+d.quantity })
 			frappe.db.commit()

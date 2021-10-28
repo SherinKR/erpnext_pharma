@@ -142,7 +142,7 @@
   "is_standard": 0,
   "message": "{{ doc.message }}",
   "method": null,
-  "modified": "2021-09-07 11:02:45.734207",
+  "modified": "2021-10-28 12:23:46.841596",
   "module": null,
   "name": "Please clear the payment dues amount",
   "parent": null,
@@ -154,12 +154,222 @@
    {
     "bcc": null,
     "cc": null,
-    "condition": "doc.company_name == \"STORE GENERIX KOTTAKAL\"",
+    "condition": "doc.company_name == \"SG EDAPPAL\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG Edappal"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG KOTTAYAM\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG KOTTAYAM"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG KOTTAKKAL\"",
     "parent": "Please clear the payment dues amount",
     "parentfield": "recipients",
     "parenttype": "Notification",
     "receiver_by_document_field": null,
     "receiver_by_role": "SG KOTTAKAL"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG THIRUVANANTHAPURAM\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG THIRUVANANTHAPURAM"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG WADAKANCHERY\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG WADAKANCHERY"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG EDAVANNAPARA\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG EDAVANNAPARA"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG CHERUTHURUTHY\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG CHERUTHURUTHY"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG CHAVAKKAD\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG Chavakad"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG VALANCHERY\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG VALANCHERY"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG PERINTHALMANNA\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG PERINTHALMANNA"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG PARAPPANANGADI\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG PARAPPANANGADI"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG VELIANCODE\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG VELIANCODE"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG KUNNAMKULAM\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG KUNNAMKULAM"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG THACHAMPARA\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG THACHAMPARA"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG MANJERI\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG Manjeri"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG CHANGARAMKULAM\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG CHANGARAMKULAM"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG CHALAKUDY\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG CHALAKUDY"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG KOYILANDY\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG KOYILANDY"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG CALICUT\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG CALICUT"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG AMALA NAGAR\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG AMALA NAGAR"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG TIRUR\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG TIRUR"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG PERUMPADAPPU\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG PERUMPADAPPU"
    }
   ],
   "send_system_notification": 0,

@@ -321,5 +321,22 @@
   "reference_doctype": "Batch",
   "script": "if doc.batch_name and doc.item:\n    doc.batch_id = doc.batch_name+\"-\"+doc.item",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Save",
+  "event_frequency": "All",
+  "modified": "2021-10-28 16:12:33.572548",
+  "name": "Setting You saved amount",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "reference_doctype": "Sales Invoice",
+  "script": "if doc.items:\n    mrp_total = 0\n    total_saved_amount = 0\n    total = doc.total\n    for item in doc.items:\n        qty = item.qty\n        conversion_factor = item.conversion_factor\n        if item.mrp:\n            mrp = item.mrp\n        else:\n            mrp = 0\n        if mrp and item.uom!=item.stock_uom:\n            mrp_total = mrp_total+(qty*(mrp/conversion_factor))\n        else:\n            mrp_total = mrp_total+(mrp*qty)\n    total_saved_amount = mrp_total-total\n    if(total_saved_amount>0):\n        doc.total_saved_amount = total_saved_amount\n    else:\n        doc.total_saved_amount = 0\n",
+  "script_type": "DocType Event"
  }
 ]

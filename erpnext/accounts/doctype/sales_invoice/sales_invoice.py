@@ -1454,7 +1454,8 @@ class SalesInvoice(SellingController):
 	#Rack Bin
 	@frappe.whitelist()
 	def set_rack_bin(self, item_code):
-		company_name = frappe.defaults.get_user_default("Company")
+		# company_name = frappe.defaults.get_user_default("Company")
+		company_name = self.company
 		if frappe.db.exists({ 'doctype': 'Bins', 'company': company_name, 'item_code': item_code }):
 			bin_list = frappe.db.get_list('Bins',
 				filters= {'company': company_name, 'item_code': item_code},
@@ -2089,7 +2090,8 @@ def create_dunning(source_name, target_doc=None):
 
 @frappe.whitelist()
 def set_bin_details(self, item_code, batch):
-	company_name = frappe.defaults.get_user_default("Company")
+	#company_name = frappe.defaults.get_user_default("Company")
+	company_name = self.company
 	if frappe.db.exists({ 'doctype': 'Bin Items', 'batch': batch, 'item_code': item_code , 'company': company_name}):
 		bin, tab_name, new_qty = frappe.db.get_value('Bin Items', { 'batch': batch, 'item_code':item_code, 'company': company_name }, ['parent','name','batch_qty'])
 		return bin

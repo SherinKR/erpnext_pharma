@@ -4,6 +4,7 @@ from frappe import enqueue
 from frappe import publish_progress
 from frappe.utils import dateutils
 from frappe.utils import getdate
+from pymysql.converters import conversions
 
 @frappe.whitelist()
 def create_item_price_without_batch(price_list):
@@ -108,3 +109,25 @@ def update_bin_items_with_company():
         bin_doc.save()
         frappe.db.commit()
     print("Updated Succesfully")
+
+@frappe.whitelist()
+def update_mrp_to_stock_uom():
+    batch_list = frappe.get_list("Batch")
+    for batch in batch_list:
+        batch_doc = frappe.get_doc("Batch", batch.name)
+        item_doc = frappe.get_doc("Item", batch_doc.item)
+        if batch_doc.posa_btach_price:
+            batch_price = batch_doc.posa_btach_price
+        else:
+            batch_price = 0
+        if(len(item_doc.uoms)>1 and batch_price):
+            lastElement = item_doc.uoms[len(item_doc.uoms)-1]
+            conversion_factor = lastElement.conversion_factor
+            if not conversion_factor:
+                conversion_factor=1
+                print(batch.name+" Updated Succesfully with coversion_factor = 1")
+            frappe.db.set_value("Batch", batch.name, 'mrp', batch_price/conversion_factor)
+        else:
+            frappe.db.set_value("Batch", batch.name, 'mrp', batch_price)
+        frappe.db.commit()
+    print("All Updated Succesfully")

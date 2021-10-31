@@ -11,19 +11,6 @@ frappe.ui.form.on('Payment Entry', {
 			if (!frm.doc.paid_from) frm.set_value("paid_from_account_currency", null);
 			if (!frm.doc.paid_to) frm.set_value("paid_to_account_currency", null);
 		}
-		var party_type=frm.doc.party_type;
-		var customer=frm.doc.party;
-		if(frm.doc.docstatus==0 && party_type=="Customer" ){
-			frappe.db.get_value('Customer', customer, 'is_internal_customer', function(r) {
-				console.log("above is internal");
-				if(r && r.is_internal_customer != 1){
-					frm.page.add_action_item(__("Submit"), function() {
-						frm.save('Submit');
-						frm.trigger('approve');
-					});
-				}
-			   });
-		}
 		erpnext.accounts.dimensions.setup_dimension_filters(frm, frm.doctype);
 	},
 
@@ -176,33 +163,20 @@ frappe.ui.form.on('Payment Entry', {
 		frm.events.hide_unhide_fields(frm);
 		frm.events.set_dynamic_labels(frm);
 		frm.events.show_general_ledger(frm);
-		var party_type=frm.doc.party_type;
-		var customer=frm.doc.party;
-		if(frm.doc.docstatus==0 && party_type=="Customer" ){
-			frappe.db.get_value('Customer', customer, 'is_internal_customer', function(r) {
-				if(r && r.is_internal_customer != 1){
-					frm.page.add_action_item(__("Submit"), function() {
-						frm.save('Submit');
-						frm.trigger('approve');
-					});
-				}
-			   });
-		}
 	},
 	on_save: function(frm) {
 		erpnext.hide_company();
 		frm.events.hide_unhide_fields(frm);
 		frm.events.set_dynamic_labels(frm);
 		frm.events.show_general_ledger(frm);
+	},
+	after_save: function(frm) {
 		var party_type=frm.doc.party_type;
 		var customer=frm.doc.party;
 		if(frm.doc.docstatus==0 && party_type=="Customer" ){
 			frappe.db.get_value('Customer', customer, 'is_internal_customer', function(r) {
 				if(r && r.is_internal_customer != 1){
-					frm.page.add_action_item(__("Submit"), function() {
-						frm.save('Submit');
-						frm.trigger('approve');
-					});
+					frm.save('Submit');
 				}
 			   });
 		}

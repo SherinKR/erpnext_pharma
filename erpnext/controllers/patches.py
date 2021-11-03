@@ -131,3 +131,10 @@ def update_mrp_to_stock_uom():
             frappe.db.set_value("Batch", batch.name, 'mrp', batch_price)
         frappe.db.commit()
     print("All Updated Succesfully")
+
+def update_franchise_payments():
+    fpr_list = frappe.get_all("Franchise Payment Request")
+    for fpr in fpr_list:
+        fpr_doc = frappe.get_doc("Franchise Payment Request", fpr.name)
+        fpr_doc.save()
+        frappe.db.commit()

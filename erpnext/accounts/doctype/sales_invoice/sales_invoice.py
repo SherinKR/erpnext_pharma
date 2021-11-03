@@ -277,7 +277,6 @@ class SalesInvoice(SellingController):
 		if self.company:
 			company_doc = frappe.get_doc('Company', self.company)
 			if company_doc.is_group != 1:
-				print("on submit")
 				create_franchise_payment_request(self)
 
 		if not self.auto_repeat:
@@ -2134,7 +2133,6 @@ def create_franchise_payment_request(self):
 		fpr_doc.save()
 	else:
 		new_fpr = frappe.new_doc('Franchise Payment Request')
-		print("inside else ")
 		new_fpr.company = self.company
 		new_fpr.transaction_date = frappe.utils.getdate()
 		new_fpr.weekday = frappe.utils.get_weekday()

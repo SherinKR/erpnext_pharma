@@ -43,9 +43,9 @@ function find_totals(frm){
   total_purchase_amount=0;
   total_paid_amount=0;
   $.each(frm.doc.items || [], function(i, item) {
-      total_sales_amount = total_sales_amount+ item.total_sales_amount;
-      total_purchase_amount = total_purchase_amount+ item.total_purchase_amount;
-      total_paid_amount = total_paid_amount+ item.total_paid_amount;
+      total_sales_amount = total_sales_amount+ item.sales_amount;
+      total_purchase_amount = total_purchase_amount+ item.purchase_amount;
+      total_paid_amount = total_paid_amount+ item.paid_amount;
   });
   frm.set_value('total_sales_amount',total_sales_amount);
   frm.refresh_field('total_sales_amount');

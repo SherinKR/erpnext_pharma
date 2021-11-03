@@ -194,13 +194,13 @@
   "doctype": "Server Script",
   "doctype_event": "After Submit",
   "event_frequency": "All",
-  "modified": "2021-08-03 14:55:35.308183",
+  "modified": "2021-11-03 19:02:48.002757",
   "name": "Update status of FPR",
   "parent": null,
   "parentfield": null,
   "parenttype": null,
   "reference_doctype": "Payment Entry",
-  "script": "if doc.franchise_payment_request:\n    frappe.db.set_value('Franchise Payment Request', doc.franchise_payment_request, { 'status': \"Paid\" })\n\nif doc.franchise_payment_entry:\n    fpe_doc = frappe.get_doc('Franchise Payment Entry', doc.franchise_payment_entry )\n    for item in fpe_doc.items:\n        frappe.msgprint(title='Test', msg=item.doc_name+\"--->\"+str(item.paid_amount))\n        fpr_doc = frappe.get_doc('Franchise Payment Request', item.doc_name)\n        fpr_doc.paid_amount = item.paid_amount\n        frappe.msgprint(title='Test', msg=item.paid_amount)\n        if(fpr_doc.purchase_amount <= fpr_doc.paid_amount):\n            fpr_doc.status='Paid'\n        else:\n            fpr_doc.status='Unpaid'\n        fpr_doc.save()",
+  "script": "if doc.franchise_payment_request:\n    paid_amount = 0\n    if frappe.db.get_value('Franchise Payment Request', doc.franchise_payment_request, 'total_paid_amount'):\n        paid_amount = int(frappe.db.get_value('Franchise Payment Request', doc.franchise_payment_request, 'total_paid_amount'))\n    paid_amount = paid_amount + int(doc.paid_amount)\n    fpr_doc = frappe.get_doc('Franchise Payment Request', doc.franchise_payment_request )\n    fpr_doc.total_paid_amount = paid_amount\n    fpr_doc.save()\n    # frappe.db.set_value('Franchise Payment Request', doc.franchise_payment_request, { 'total_paid_amount': paid_amount })\n\nif doc.franchise_payment_entry:\n    fpe_doc = frappe.get_doc('Franchise Payment Entry', doc.franchise_payment_entry )\n    for item in fpe_doc.items:\n        paid_amount = 0\n        if frappe.db.get_value('Franchise Payment Request', item.doc_name, 'total_paid_amount'):\n            paid_amount = int(frappe.db.get_value('Franchise Payment Request', item.doc_name, 'total_paid_amount'))\n        paid_amount = paid_amount + int(item.paid_amount)\n        fpr_doc = frappe.get_doc('Franchise Payment Request', item.doc_name )\n        fpr_doc.total_paid_amount = paid_amount\n        fpr_doc.save()\n        # frappe.db.set_value('Franchise Payment Request', item.doc_name, { 'total_paid_amount': paid_amount })",
   "script_type": "DocType Event"
  },
  {

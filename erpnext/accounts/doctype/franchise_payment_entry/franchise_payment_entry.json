@@ -7,15 +7,20 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "company",
   "from_date",
+  "column_break_3",
+  "company",
   "to_date",
+  "section_break_6",
   "get_items",
   "items",
+  "section_break_9",
   "get_total",
   "total_sales_amount",
   "total_purchase_amount",
-  "total_paid_amount"
+  "column_break_12",
+  "total_paid_amount",
+  "total_allocated_amount"
  ],
  "fields": [
   {
@@ -73,11 +78,33 @@
    "fieldtype": "Float",
    "label": "Total Paid Amount",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_allocated_amount",
+   "fieldtype": "Float",
+   "label": "Total Allocated Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_9",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-08-02 15:32:49.910835",
+ "modified": "2021-11-03 22:25:11.685322",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Franchise Payment Entry",

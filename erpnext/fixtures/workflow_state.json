@@ -99,18 +99,6 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
-  "modified": "2021-07-15 16:13:25.825332",
-  "name": "Payment Processed",
-  "parent": null,
-  "parentfield": null,
-  "parenttype": null,
-  "style": "Info",
-  "workflow_state_name": "Payment Processed"
- },
- {
-  "docstatus": 0,
-  "doctype": "Workflow State",
-  "icon": "",
   "modified": "2021-07-15 16:13:38.566523",
   "name": "Payment Approved",
   "parent": null,
@@ -142,5 +130,17 @@
   "parenttype": null,
   "style": "Primary",
   "workflow_state_name": "Open"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2021-07-15 16:13:25.825332",
+  "name": "Payment Processed",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "style": "Info",
+  "workflow_state_name": "Payment Processed"
  }
 ]

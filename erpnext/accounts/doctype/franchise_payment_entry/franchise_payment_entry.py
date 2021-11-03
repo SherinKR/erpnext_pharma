@@ -14,10 +14,10 @@ def make_payment_entry(source_name, target_doc=None):
 		target.naming_series = "ACC-PAY-.YYYY.-"
 		target.payment_type = "Pay"
 		target.party_type =  "Supplier"
-		target.party = "Internal Supplier SG"
-		target.party_name = "Internal Supplier SG"
-		target.paid_amount = source.total_purchase_amount
-		target.received_amount = source.total_purchase_amount
+		target.party = "AVANZA"
+		target.party_name = "AVANZA"
+		target.paid_amount = source.total_allocated_amount
+		target.received_amount = source.total_allocated_amount
 		target.franchise_payment_entry = source.name
 
 	doclist = get_mapped_doc("Franchise Payment Entry", source_name,{

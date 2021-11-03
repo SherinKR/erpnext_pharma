@@ -3,7 +3,9 @@
 
 frappe.ui.form.on('Franchise Payment Request', {
 	refresh: function(frm) {
-    frm.add_custom_button(__('Payment Entry'), cur_frm.cscript['Payment Entry'], __('Create'));
+		if(frm.doc.status=="Unpaid"){
+			frm.add_custom_button(__('Payment Entry'), cur_frm.cscript['Payment Entry'], __('Create'));
+		}
 	}
 });
 

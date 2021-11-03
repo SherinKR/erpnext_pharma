@@ -9,7 +9,8 @@
   "date",
   "sales_amount",
   "purchase_amount",
-  "paid_amount"
+  "paid_amount",
+  "allocated_amount"
  ],
  "fields": [
   {
@@ -31,7 +32,6 @@
    "fetch_from": "doc_name.total_sales_amount",
    "fieldname": "sales_amount",
    "fieldtype": "Float",
-   "in_list_view": 1,
    "label": "Sales Amount",
    "read_only": 1
   },
@@ -44,17 +44,26 @@
    "read_only": 1
   },
   {
-   "fetch_from": "doc_name.total_purchase_amount",
+   "fetch_from": "doc_name.total_paid_amount",
    "fieldname": "paid_amount",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Paid Amount"
+   "label": "Paid Amount",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "doc_name.total_outstanding_amount",
+   "fetch_if_empty": 1,
+   "fieldname": "allocated_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Allocated Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-10-26 17:20:07.623880",
+ "modified": "2021-11-03 22:22:06.706669",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Franchise Payment Entry Items",

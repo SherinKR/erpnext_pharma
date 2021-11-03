@@ -2,6 +2,19 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Customer",
+  "enabled": 1,
+  "modified": "2021-10-28 10:30:19.336580",
+  "name": "Customer-Form",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "script": "frappe.ui.form.on('Customer', {\n\tonload_post_render: function(frm) {\n         $(\"form>.frappe-control input\").css(\"text-transform\", \"uppercase\");\n \t},\n \tcustomer_name(frm)\n    {\n        var d1=frm.doc.customer_name;\n        console.log(d1);\n        var d2=d1.toUpperCase();\n        frm.set_value(\"customer_name\",d2);\n\n    }\n \t\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Payment Entry",
   "enabled": 1,
   "modified": "2021-10-18 15:21:51.791577",

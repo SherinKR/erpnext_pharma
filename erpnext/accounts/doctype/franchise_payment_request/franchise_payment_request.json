@@ -16,10 +16,12 @@
   "represents_company",
   "items",
   "transaction_details_section",
-  "status",
   "total_purchase_amount",
+  "total_paid_amount",
+  "status",
+  "column_break_13",
   "total_sales_amount",
-  "total_paid_amount"
+  "total_outstanding_amount"
  ],
  "fields": [
   {
@@ -97,33 +99,41 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Franchise Payment Request Item"
+   "options": "Franchise Payment Request Item",
+   "read_only": 1
   },
   {
    "fieldname": "total_purchase_amount",
    "fieldtype": "Currency",
-   "label": "Total Purchase Amount"
+   "label": "Total Purchase Amount",
+   "read_only": 1
   },
   {
    "fieldname": "total_sales_amount",
    "fieldtype": "Currency",
-   "label": "Total Sales Amount"
+   "label": "Total Sales Amount",
+   "read_only": 1
   },
   {
    "fieldname": "total_paid_amount",
    "fieldtype": "Currency",
-   "label": "Total Paid Amount"
+   "label": "Total Paid Amount",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_outstanding_amount",
+   "fieldtype": "Currency",
+   "label": "Total Outstanding Amount",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
- "links": [
-  {
-   "custom": 1,
-   "link_doctype": "Payment Entry",
-   "link_fieldname": "franchise_payment_request"
-  }
- ],
- "modified": "2021-10-28 10:59:53.115974",
+ "links": [],
+ "modified": "2021-11-03 22:24:31.422601",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Franchise Payment Request",

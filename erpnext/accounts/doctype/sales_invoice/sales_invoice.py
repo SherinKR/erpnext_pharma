@@ -277,6 +277,7 @@ class SalesInvoice(SellingController):
 		if self.company:
 			company_doc = frappe.get_doc('Company', self.company)
 			if company_doc.is_group != 1:
+				print("on submit")
 				create_franchise_payment_request(self)
 
 		if not self.auto_repeat:
@@ -2120,7 +2121,7 @@ def create_franchise_payment_request(self):
 	for item in self.items:
 		item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
 		sum = sum + (int(item_price)*item.stock_qty)
-	if frappe.db.exists({ 'doctype': 'Franchise Payment Request', 'company': self.company, 'transaction_date': self.posting_date }):
+	if frappe.db.exists({ 'doctype': 'Franchise Payment Request', 'company': self.company, 'transaction_date': self.posting_date, 'status': 'Unpaid' }):
 		fpr_doc_name = frappe.db.get_value('Franchise Payment Request', { 'company': self.company, 'transaction_date': self.posting_date }, ['name'])
 		fpr_doc = frappe.get_doc('Franchise Payment Request', fpr_doc_name)
 		fpr_item = fpr_doc.append('items')
@@ -2133,6 +2134,7 @@ def create_franchise_payment_request(self):
 		fpr_doc.save()
 	else:
 		new_fpr = frappe.new_doc('Franchise Payment Request')
+		print("inside else ")
 		new_fpr.company = self.company
 		new_fpr.transaction_date = frappe.utils.getdate()
 		new_fpr.weekday = frappe.utils.get_weekday()

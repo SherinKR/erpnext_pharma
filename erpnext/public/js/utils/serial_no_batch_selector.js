@@ -154,7 +154,8 @@ erpnext.SerialNoBatchSelector = Class.extend({
 							return me.callback(me.item);
 						}
 					},
-					() => me.dialog.hide()
+					() => me.dialog.hide(),
+					() => me.update_item_rate()
 				])
 			}
 		});
@@ -242,6 +243,30 @@ erpnext.SerialNoBatchSelector = Class.extend({
 				this.map_row_values(row, batch, 'batch_no',
 					'selected_qty', this.values.warehouse);
 			});
+		}
+	},
+	update_item_rate(){ //Code Added by Sherin to update Rate WRT Batch
+		if(this.has_batch){
+			var rate = 0
+			frappe.run_serially([
+				()=> frappe.call({
+					"method":"frappe.client.get",
+					"args":{
+						"doctype":"Item Price",
+						"filters":{"item_code":this.item.item_code,"batch_no":this.item.batch_no,"price_list": this.frm.doc.selling_price_list },
+						"fields":["price_list_rate"]
+					},
+					callback:function(ret){
+						if(ret.message.price_list_rate){
+							rate = ret.message.price_list_rate
+						}
+					}
+				}),
+				()=> this.item.price_list_rate=rate,
+				()=> this.item.stock_uom_rate=rate,
+				()=> this.item.rate=rate
+			]);
+			// console.log(this.item);
 		}
 	},
 

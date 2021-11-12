@@ -17,19 +17,19 @@ frappe.ui.form.on('Sales Invoice', {
 			frm.remove_custom_button("E-Way Bill JSON",'Create');
 			frm.remove_custom_button("Quotation",'Get Items From');
 			frm.remove_custom_button('Fetch Timesheet');
-	  },10);
+	    },10);
 	},
 	refresh: function(frm){
         reset_cancelled_form(frm);
 	    estimate_print(frm);
 		setTimeout(() => {
-	    frm.remove_custom_button("Maintenance Schedule",'Create');
+	        frm.remove_custom_button("Maintenance Schedule",'Create');
 			frm.remove_custom_button("Subscription",'Create');
 			frm.remove_custom_button("Invoice Discounting",'Create');
 			frm.remove_custom_button("E-Way Bill JSON",'Create');
 			frm.remove_custom_button("Quotation",'Get Items From');
 			frm.remove_custom_button('Fetch Timesheet');
-	  },10);
+	    },10);
 		// frm.get_field("items").grid.set_multiple_add("item_code", "qty");
 	},
   validate: function(frm){
@@ -63,24 +63,25 @@ var check_drug_class_restrictions = function(frm, cdt, cdn){
     });
 };
 
-var add_expiry_date = function(frm, cdt, cdn){
-  var child = locals[cdt][cdn];
-  frappe.call({
-       method: 'frappe.client.get',
-       args: {
-           'doctype': 'Batch',
-           'filters': {'batch_id': child.batch_no}
-       },
-       callback: function(r){
-          frappe.model.set_value(cdt, cdn,"expiry_date", r.message.expiry_date);
-       }
-    });
-};
+// var add_expiry_date = function(frm, cdt, cdn){
+//     var child = locals[cdt][cdn];
+//     frappe.call({
+//        method: 'frappe.client.get',
+//        args: {
+//            'doctype': 'Batch',
+//            'filters': {'batch_id': child.batch_no}
+//        },
+//        callback: function(r){
+//           frappe.model.set_value(cdt, cdn,"expiry_date", r.message.expiry_date);
+//        }
+//     });
+// };
+
 function estimate_print(frm){
     if(frm.doc.status=="Draft" && !frm.is_new()){
         frm.add_custom_button(__("Estimate Print"), function() {
-        frm.print_doc();
-    });
+            frm.print_doc();
+        });
     }
 }
 
@@ -186,8 +187,8 @@ var new_items_popup = function(frm, new_items) {
     d.show();
     d.get_primary_btn().attr('disabled', false);
     d.fields_dict.items_html.$wrapper.html("");
-		d.$wrapper.find('.modal-content').css("width", "800px");
-        d.$wrapper.find('.modal-content').css("margin-left", "-100px");
+    d.$wrapper.find('.modal-content').css("width", "800px");
+    d.$wrapper.find('.modal-content').css("margin-left", "-100px");
     var items_area = $('<div class="col-md-12 col-sm-12" style="min-height: 10px;">').appendTo(d.fields_dict.items_html.wrapper);
     d.item_check_list = new frappe.ItemsCheckList(items_area, frm, 0, d, new_items);
 };
@@ -297,45 +298,62 @@ function reset_cancelled_form(frm){
     }
 }
 
-// var r;
-// var i;
-// frappe.ui.form.on('Sales Invoice Item', {
-// 	rate: function(frm, cdt,cdn) {
-// 		var d = locals[cdt][cdn];
-// 		console.log("item")
-// 		r=d.rate;
-// 		frm.trigger('selling_price_list');
-// 	},
-// 	item_code: function(frm, cdt,cdn) {
-// 		var d = locals[cdt][cdn];
-// 		console.log("item")
-// 		var i=d.item_code;
-// 		frm.trigger('batch_no');
-// 		frm.refresh_field('items');
-// 	},
-// 	posa_is_offer:function(frm,cdt,cdn){
-//         var d=locals[cdt][cdn];
-//         if(d.posa_is_offer==1){
-//             frappe.model.set_value(cdt,cdn,"rate",0)
-//         }
-//         if(d.posa_is_offer==0){
-//             frappe.model.set_value(cdt,cdn,"rate",r)
-//         }
-//     },
-// 	batch_no:function(frm,cdt,cdn){
-// 	    var d=locals[cdt][cdn];
-// 	    frappe.call({
-// 	        "method":"frappe.client.get",
-// 	        "args":{
-// 	            "doctype":"Item Price",
-// 	            "filters":{"item_code":i,"batch_no":d.batch_no,"price_list":"Price To Customer - (PTC)"},
-// 	            "fields":["price_list_rate"]
-// 	        },
-// 	        callback:function(r){
-// 	            if(r){
-// 	                frappe.model.set_value(cdt,cdn,"ptc",r.message.price_list_rate)
-// 	            }
-// 	        }
-// 	    })
-// 	}
-// });
+//Code for setting ptc
+frappe.ui.form.on('Sales Invoice Item', {
+    item_code:function(frm,cdt,cdn){
+        set_ptc(frm,cdt,cdn);
+        set_rate_with_batch(frm,cdt,cdn);
+    },
+	batch_no:function(frm,cdt,cdn){
+        set_ptc(frm,cdt,cdn);
+	},
+    uom:function(frm,cdt,cdn){
+        set_rate_with_batch(frm,cdt,cdn);
+	},
+    refresh: function(frm,cdt,cdn){
+        var d=locals[cdt][cdn];
+        if(d.item_code && d.batch_no){
+            set_ptc(frm,cdt,cdn);
+            set_rate_with_batch(frm,cdt,cdn);
+        }
+    }
+ });
+
+function set_ptc(frm,cdt,cdn){
+    var d=locals[cdt][cdn];
+    frappe.call({
+        "method":"frappe.client.get",
+        "args":{
+            "doctype":"Item Price",
+            "filters":{"item_code":d.item_code,"batch_no":d.batch_no,"price_list":"Price To Customer - (PTC)"},
+            "fields":["price_list_rate"]
+        },
+        callback:function(ret){
+            if(ret){
+                frappe.model.set_value(cdt,cdn,"price_to_customer",ret.message.price_list_rate);
+                // frm.trigger('items', 'Sales Invoice Item', d.name);
+                set_rate_with_batch(frm,cdt,cdn);
+            }
+        }
+    });
+}
+
+function set_rate_with_batch(frm,cdt,cdn){
+    var d=locals[cdt][cdn];
+    frappe.call({
+        "method":"frappe.client.get",
+        "args":{
+            "doctype":"Item Price",
+            "filters":{"item_code":d.item_code,"batch_no":d.batch_no,"price_list": frm.doc.selling_price_list },
+            "fields":["price_list_rate"]
+        },
+        callback:function(ret){
+            if(ret){
+                console.log(d.conversion_factor)
+                console.log(ret.message.price_list_rate)
+                frappe.model.set_value(cdt,cdn,"rate",(d.conversion_factor)*(ret.message.price_list_rate));
+                frappe.model.set_value(cdt,cdn,"price_list_rate",(d.conversion_factor)*(ret.message.price_list_rate));
+            }
+        }
+    });
+}

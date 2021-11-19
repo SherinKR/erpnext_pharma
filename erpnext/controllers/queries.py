@@ -11,6 +11,7 @@ from frappe.utils import nowdate, getdate
 from collections import defaultdict
 from erpnext.stock.get_item_details import _get_item_tax_template
 from frappe.utils import unique
+from erpnext.stock.dashboard.item_dashboard import get_data
 
 # searches for active employees
 @frappe.whitelist()
@@ -377,6 +378,29 @@ def get_new_medicines(company, purchase_type=None):
 	if purchase_type:
 		query += " and i.purchase_type=%(purchase_type)s"
 	return frappe.db.sql(query.format(), {'company': company, 'purchase_type': purchase_type}, as_dict=True)
+
+@frappe.whitelist()
+def get_product_availability(company):
+	# frappe.msgprint (("Please wait Product Availability for {0} is processing.").format(company), alert=True)
+	warehouse_list = frappe.db.get_list("Warehouse", filters={ 'company': 'AVANZA' })
+	empty_item_list = []
+	query = """
+		select
+			i.item_code, i.item_name, i.drug_content
+		from
+			`tabItem` i, `tabWarehouse` w, `tabBin` b
+		where
+			( b.item_code=i.name and b.actual_qty<1 and b.warehouse=w.name and w.company=%(company)s ) and i.disabled=0
+	"""
+	item_list = frappe.db.sql(query.format(), {'company': company }, as_dict=True)
+	for item in item_list:
+		item_code = item.item_code
+		for warehouse in warehouse_list:
+			item_qty_list = get_data(item_code, warehouse.name)
+			if(len(item_qty_list)):
+				if((item_qty_list[0].actual_qty)>1):
+					empty_item_list.append(item)
+	return(empty_item_list)
 
 @frappe.whitelist()
 def search_item_contents(filter_value=None, drug_content=None, warehouse=None, price_list=None, sales=None, purchase=None):

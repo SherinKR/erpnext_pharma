@@ -28,6 +28,7 @@ frappe.ui.form.on('Purchase Order', {
                         company_is_group =r.message.is_group;
                         if(!company_is_group){
                             set_new_medicine_button(frm);
+                            set_product_availability_button(frm);
                         }
                     }
                     else{
@@ -149,7 +150,7 @@ function check_order_type(frm){
 
 var new_items_popup = function(frm, new_items) {
     var d = new frappe.ui.Dialog({
-        title:__("New Medicine"),
+        title:__("Products as per search"),
 		width: 1000,
         fields:[
             {
@@ -260,8 +261,6 @@ frappe.ui.form.on('Purchase Order Item', {
     if(child.item_code.charAt(0)=="E"){
         var p1=[];
         var y=child.item_code
-        console.log(y)
-        console.log("External Item Added")
         frappe.call({
             "method" : "frappe.client.get_list",
             "args" : {
@@ -497,3 +496,22 @@ frappe.ItemsCheckList = Class.extend({
         };
     }
 });
+
+var set_product_availability_button = function(frm) {
+	var new_item=[];
+	frm.add_custom_button(__('Product Availability'), function() {
+        frappe.show_alert('Please wait Product Availability for '+frm.doc.company+' is processing.', 10);
+		frappe.call({
+			"method": "erpnext.controllers.queries.get_product_availability",
+			"args": {
+				"company": frm.doc.company
+			},
+			callback: function(ret){
+				console.log(ret);
+				if(ret && ret.message){
+					new_items_popup(frm, ret.message);
+				}
+			}
+		});
+	});
+};

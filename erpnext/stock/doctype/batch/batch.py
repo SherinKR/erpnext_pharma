@@ -313,3 +313,14 @@ def make_batch(args):
 	if frappe.db.get_value("Item", args.item, "has_batch_no"):
 		args.doctype = "Batch"
 		frappe.get_doc(args).insert().name
+
+@frappe.whitelist()
+def get_batch_qty_with_company(company, batch_no):
+	warehouse_list = frappe.db.get_list("Warehouse", filters={ 'company': company })
+	batch_wise_list = get_batch_qty(batch_no)
+	warehouse_stock=0
+	for warehouse in warehouse_list:
+		for batch in batch_wise_list:
+			if(batch['warehouse'] == warehouse['name']):
+				warehouse_stock = warehouse_stock+int(batch['qty'])
+	return(warehouse_stock)

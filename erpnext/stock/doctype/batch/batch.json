@@ -19,6 +19,7 @@
   "manufacturing_date",
   "column_break_3",
   "batch_qty",
+  "franchise_batch_qty",
   "stock_uom",
   "expiry_date",
   "source",
@@ -188,6 +189,13 @@
    "fieldtype": "Data",
    "label": "Batch Name",
    "reqd": 1
+  },
+  {
+   "fieldname": "franchise_batch_qty",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Franchise Batch Qty",
+   "read_only": 1
   }
  ],
  "icon": "fa fa-archive",
@@ -195,7 +203,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 5,
- "modified": "2021-09-08 15:31:47.923549",
+ "modified": "2021-11-19 12:31:33.837500",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Batch",

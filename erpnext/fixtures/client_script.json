@@ -2,6 +2,32 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Purchase Order",
+  "enabled": 1,
+  "modified": "2021-11-16 09:57:11.087205",
+  "name": "Purchase Order-Form",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "script": "frappe.ui.form.on('Purchase Order', {\n\tonload(frm) {\n\t    var t2=frappe.get_list(\"Purchase Order\");\n        console.log(t2);\n        var t3=t2[0].company;\n        console.log(t3);\n        if(t3==\"AVANZA\")\n        {\n            \n            frm.set_value(\"naming_series\",\"PUR-AVZ-.YYYY.-\");\n        }\n        else if(t3==\"SG EDAPPAL\")\n        {\n           frm.set_value(\"naming_series\",\"PUR-SGE-.YYYY.-\");\n        }\n        else if(t3==\"SG KONDOTTY\")\n        {\n           frm.set_value(\"naming_series\",\"PUR-SGKTY-.YYYY.-\");\n        }\n\t\n\t}\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Batch",
+  "enabled": 1,
+  "modified": "2021-11-17 14:10:21.065093",
+  "name": "Batch-Form",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "script": "frappe.ui.form.on('Batch', {\n\tonload(frm) {\n\t   var s1=frappe.defaults.get_user_defaults(\"company\");\n\t   console.log(\"Company\",s1[0]);\n\t   if(s1[0]!=\"AVANZA\")\n\t        {\n\t            \n\t            cur_frm.set_df_property(\"batch_qty\", \"hidden\", true);\n\t       }\n\t\t\n\t}\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Customer",
   "enabled": 1,
   "modified": "2021-10-28 10:30:19.336580",

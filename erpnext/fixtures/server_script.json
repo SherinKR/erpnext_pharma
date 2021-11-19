@@ -262,7 +262,7 @@
   "doctype": "Server Script",
   "doctype_event": "Before Save",
   "event_frequency": "Daily",
-  "modified": "2021-11-19 13:02:03.606727",
+  "modified": "2021-11-19 17:40:12.237753",
   "name": "Creating Weekly Notification",
   "parent": null,
   "parentfield": null,

@@ -13,7 +13,7 @@
   "is_standard": 0,
   "message": "Hi,\n\nYour Purchase Invoice is Here,\n\nThank you",
   "method": null,
-  "modified": "2021-11-10 18:17:19.596597",
+  "modified": "2021-11-20 16:33:02.285124",
   "module": null,
   "name": "Purchase Invoice Created",
   "parent": null,
@@ -41,6 +41,26 @@
     "parenttype": "Notification",
     "receiver_by_document_field": null,
     "receiver_by_role": "SG CALICUT"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name==\"SG EDAPPAL\"",
+    "parent": "Purchase Invoice Created",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG Edappal"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name==\"SG PERUMPADAPPU\"",
+    "parent": "Purchase Invoice Created",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG PERUMPADAPPU"
    }
   ],
   "send_system_notification": 0,
@@ -779,7 +799,7 @@
   "is_standard": 0,
   "message": "Hello,\nNew External Item created by fanchisee:\nPlease review the product details",
   "method": null,
-  "modified": "2021-09-07 11:21:28.937123",
+  "modified": "2021-11-20 16:16:40.758717",
   "module": null,
   "name": "External Product",
   "parent": null,
@@ -797,12 +817,22 @@
     "parenttype": "Notification",
     "receiver_by_document_field": null,
     "receiver_by_role": "System Manager"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": null,
+    "parent": "External Product",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "Central Office Admin"
    }
   ],
   "send_system_notification": 1,
   "send_to_all_assignees": 0,
-  "sender": "Erpeaz01",
-  "sender_email": "erpeaz01@gmail.com",
+  "sender": "Erpeaz2021",
+  "sender_email": "erpeaz2021@gmail.com",
   "set_property_after_alert": null,
   "slack_webhook_url": null,
   "subject": "External Product Added by Outlet",

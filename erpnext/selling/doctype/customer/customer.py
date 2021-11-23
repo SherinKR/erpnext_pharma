@@ -58,6 +58,11 @@ class Customer(TransactionBase):
 		'''If customer created from Lead, update customer id in quotations, opportunities'''
 		self.update_lead_status()
 
+	def before_save(self):
+		if self.customer_name:
+			self.customer_name = self.customer_name.upper()
+			self.name = self.name.upper()
+
 	def validate(self):
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name

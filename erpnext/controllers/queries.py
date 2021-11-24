@@ -382,7 +382,16 @@ def get_new_medicines(company, purchase_type=None):
 @frappe.whitelist()
 def get_product_availability(company):
 	# frappe.msgprint (("Please wait Product Availability for {0} is processing.").format(company), alert=True)
-	warehouse_list = frappe.db.get_list("Warehouse", filters={ 'company': 'AVANZA' })
+	warehouse_query = """
+		select
+			name
+		from
+			`tabWarehouse` w
+		where
+			company='AVANZA'
+	"""
+	warehouse_list = frappe.db.sql(warehouse_query.format(), {'company': company }, as_dict=True)
+	print(warehouse_list)
 	empty_item_list = []
 	query = """
 		select

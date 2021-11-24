@@ -153,7 +153,7 @@ var search_item_button = function(frm){
 var new_items_popup = function(frm, new_items) {
     var d = new frappe.ui.Dialog({
         title:__("Search Items"),
-				width: 1000,
+		width: 900,
         fields:[
             {
                 "fieldtype": "HTML",
@@ -187,8 +187,8 @@ var new_items_popup = function(frm, new_items) {
     d.show();
     d.get_primary_btn().attr('disabled', false);
     d.fields_dict.items_html.$wrapper.html("");
-    d.$wrapper.find('.modal-content').css("width", "800px");
-    d.$wrapper.find('.modal-content').css("margin-left", "-100px");
+    d.$wrapper.find('.modal-content').css("width", "900px");
+    d.$wrapper.find('.modal-content').css("margin-left", "-200px");
     var items_area = $('<div class="col-md-12 col-sm-12" style="min-height: 10px;">').appendTo(d.fields_dict.items_html.wrapper);
     d.item_check_list = new frappe.ItemsCheckList(items_area, frm, 0, d, new_items);
 };

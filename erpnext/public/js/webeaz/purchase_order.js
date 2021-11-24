@@ -124,9 +124,13 @@ var set_new_medicine_button = function(frm) {
 				"company": frm.doc.company, "purchase_type": frm.doc.order_type
 			},
 			callback: function(ret){
-				console.log(ret);
 				if(ret && ret.message){
-					new_items_popup(frm, ret.message);
+                    if((ret.message.length)>0){
+                        new_items_popup(frm, ret.message);
+                    }
+                    else{
+                        frappe.msgprint(__('No new products found that you did not purchased yet.!'));
+                    }
 				}
 			}
 		});
@@ -382,7 +386,6 @@ var search_items = function(frm, values) {
             "purchase" : 1
 		},
 		callback: function(ret){
-			console.log(ret);
 			if(ret && ret.message){
 				new_items_popups(frm, ret.message);
 			}
@@ -509,10 +512,14 @@ var set_product_availability_button = function(frm) {
 				"company": frm.doc.company
 			},
 			callback: function(ret){
-				console.log(ret);
-				if(ret && ret.message){
-					new_items_popup(frm, ret.message);
-				}
+                if(ret && ret.message){
+                    if((ret.message.length)>0){
+                        new_items_popup(frm, ret.message);
+                    }
+                    else{
+                        frappe.msgprint(__('No products found that you have purchased and out of stock. Use New products to order unpurchased items!'));
+                    }
+                }
 			}
 		});
 	});

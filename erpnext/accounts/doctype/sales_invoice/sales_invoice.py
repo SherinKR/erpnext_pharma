@@ -148,49 +148,13 @@ class SalesInvoice(SellingController):
 			for row in self.bin_details:
 				if row.quantity > row.batch_qty :
 					frappe.throw(msg="No enough items "+row.item_code+" available for selected batch in Bin: "+row.bin, title="Item shortage!")
-		
-		# for row in self.items:
-		# 	if row.bin and row.bin_batch_no :
-		# 		if row.stock_qty< row.bin_quantity and row.stock_qty< row.actual_qty:
-		# 			if row.bin_item_qty < row.stock_qty :
-		# 				frappe.msgprint(msg="No enough items "+row.item_code+" available for selected batch in Bin: "+row.bin, title="Item shortage!")
-		# 		else:
-		# 			frappe.throw(msg="No enough items "+row.item_code+" available in Bin: "+row.bin+"! Create Bin entry", title="Item shortage!")
-	
-	# def assign_bin_for_item(self):
-	# 	print(self.name)
-	# 	if self.update_stock:
-	# 		for d in self.get("items"):
-	# 			item_bin = set_bin_details(self,d.item_code)
-	# 			for ib in item_bin:
-	# 				bin_name = ib.name
-	# 				if frappe.db.exists({ 'doctype': 'Bin Items','parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code }):
-	# 					qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
-	# 					if qty and qty < d.stock_qty:
-	# 						frappe.msgprint(msg='item short', title="Error!")
-	# 			bin_name = item_bin[0].name
-	# 			qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
-	# 			bin_doc = frappe.get_doc('Bins', bin_name )
-	# 			if frappe.db.exists({ 'doctype': 'Bin SI Items','parent': self.name, 'bin': bin_name ,'batch': d.batch_no, 'item_code': d.item_code }):
-	# 				tab_name, idx = frappe.db.get_value('Bin SI Items', {'parent': self.name, 'bin': bin_name ,'batch': d.batch_no, 'item_code': d.item_code }, ['name','idx'])
-	# 				frappe.db.set_value('Bin SI Items', tab_name, { 'quantity': d.stock_qty })
-	# 				frappe.db.commit()
-	# 				# self.reload()
-	# 			else:
-	# 				bin_item = self.append('bin_details')
-	# 				bin_item.item_code = d.item_code
-	# 				bin_item.item_name = d.item_name
-	# 				bin_item.batch = d.batch_no
-	# 				bin_item.quantity = d.stock_qty
-	# 				bin_item.bin = bin_name
-	# 				bin_item.room = bin_doc.room_name
-	# 				bin_item.shelf = bin_doc.shelf_name
-	# 				bin_item.rack = bin_doc.rack_name
-	# 				bin_item.bin_qty = bin_doc.bin_qty
-	# 				bin_item.batch_qty = qty
 
 	def assign_bin_for_item(self):
 		print(self.name)
+		frappe.db.delete("Bin SI Items", {
+			"parent": self.name
+		})
+		self.bin_details = []
 		if self.update_stock:
 			for d in self.items:
 				item_bin = set_bin_details(self, d.item_code, d.batch_no)

@@ -7,6 +7,13 @@ from frappe.model.mapper import get_mapped_doc
 
 class FranchisePaymentRequest(Document):
 	def validate(self):
+		total_purchase_amount = 0
+		total_sales_amount = 0
+		for item in self.items:
+			total_purchase_amount = total_purchase_amount + item.purchase_amount
+			total_sales_amount = total_sales_amount + item.sales_amount
+		self.total_purchase_amount = total_purchase_amount
+		self.total_sales_amount = total_sales_amount
 		self.total_outstanding_amount = int(self.total_purchase_amount)
 		if self.total_paid_amount and self.total_purchase_amount:
 			self.total_outstanding_amount = int(self.total_purchase_amount) - int(self.total_paid_amount)

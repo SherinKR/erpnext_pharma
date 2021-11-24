@@ -2119,8 +2119,8 @@ def create_franchise_payment_request(self):
 	due_days=0
 	for item in self.items:
 		if item.item_code[:2]=="IP":
-			item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
-			sum = sum + (int(item_price)*item.stock_qty)
+			item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'batch_no':item.batch_no , 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+			sum = sum + (float(item_price)*item.stock_qty)
 	if sum:
 		if frappe.db.exists({ 'doctype': 'Franchise Payment Request', 'company': self.company, 'transaction_date': self.posting_date, 'status': 'Unpaid' }):
 			fpr_doc_name = frappe.db.get_value('Franchise Payment Request', { 'company': self.company, 'transaction_date': self.posting_date }, ['name'])

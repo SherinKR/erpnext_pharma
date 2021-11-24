@@ -23,10 +23,3 @@ def update_franchise_payment_request():
             if purchase_rate:
                 fpr_item.purchase_amount = purchase_rate
         franchise_payment_request_doc.save()
-
-        # if purchase_invoice_doc.farmer_agreement_reference and not purchase_invoice_doc.farmer_name:
-        #     farmer,farmer_name = frappe.db.get_value("Farmer Agreement", purchase_invoice_doc.farmer_agreement_reference, ['farmer', 'farmer_name'])
-        #     frappe.db.set_value("Purchase Invoice", purchase_invoice.name, 'farmer', farmer)
-        #     frappe.db.set_value("Purchase Invoice", purchase_invoice.name, 'farmer_name', farmer_name)
-        #     frappe.db.commit()
-        #     print("Purchase Invoice "+ purchase_invoice.name+ " updated with farmer and farmer name")

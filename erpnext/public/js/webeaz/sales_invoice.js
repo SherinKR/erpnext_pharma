@@ -11,25 +11,25 @@ frappe.ui.form.on('Sales Invoice', {
 		}
 		frm.remove_custom_button('Fetch Timesheet');
 		setTimeout(() => {
-	        frm.remove_custom_button("Maintenance Schedule",'Create');
-			frm.remove_custom_button("Subscription",'Create');
-			frm.remove_custom_button("Invoice Discounting",'Create');
-			frm.remove_custom_button("E-Way Bill JSON",'Create');
-			frm.remove_custom_button("Quotation",'Get Items From');
-			frm.remove_custom_button('Fetch Timesheet');
+	      frm.remove_custom_button("Maintenance Schedule",'Create');
+				frm.remove_custom_button("Subscription",'Create');
+				frm.remove_custom_button("Invoice Discounting",'Create');
+				frm.remove_custom_button("E-Way Bill JSON",'Create');
+				frm.remove_custom_button("Quotation",'Get Items From');
+				frm.remove_custom_button('Fetch Timesheet');
 	    },10);
 	},
 	refresh: function(frm){
-        reset_cancelled_form(frm);
+      reset_cancelled_form(frm);
 	    estimate_print(frm);
-		setTimeout(() => {
-	        frm.remove_custom_button("Maintenance Schedule",'Create');
-			frm.remove_custom_button("Subscription",'Create');
-			frm.remove_custom_button("Invoice Discounting",'Create');
-			frm.remove_custom_button("E-Way Bill JSON",'Create');
-			frm.remove_custom_button("Quotation",'Get Items From');
-			frm.remove_custom_button('Fetch Timesheet');
-	    },10);
+			setTimeout(() => {
+		    frm.remove_custom_button("Maintenance Schedule",'Create');
+				frm.remove_custom_button("Subscription",'Create');
+				frm.remove_custom_button("Invoice Discounting",'Create');
+				frm.remove_custom_button("E-Way Bill JSON",'Create');
+				frm.remove_custom_button("Quotation",'Get Items From');
+				frm.remove_custom_button('Fetch Timesheet');
+		  },10);
 		// frm.get_field("items").grid.set_multiple_add("item_code", "qty");
 	},
   validate: function(frm){
@@ -37,6 +37,7 @@ frappe.ui.form.on('Sales Invoice', {
 		calculate_taxable_amount(frm);
   },
   search_item : function(frm){
+		remove_empty_items(frm);
 		if(!frm.doc.customer){
 			frappe.throw(__('Select Customer before search'));
 		}
@@ -277,8 +278,8 @@ function update_batch_price(frm){
             callback: function(r){
                 frappe.model.set_value(v.doctype, v.name,"rate", (r.message.price_list_rate)*v.conversion_factor);
             }
-          });
-      });
+        });
+    });
 }
 
 function calculate_taxable_amount(frm){
@@ -288,6 +289,16 @@ function calculate_taxable_amount(frm){
 				var taxable_amount = ((amount/100)*tax_percentage);
 				frappe.model.set_value(item.doctype, item.name,"taxable_amount", amount+taxable_amount);
 		});
+}
+
+function remove_empty_items(frm){
+		var len = frm.doc.items.length;
+		if(len>0){
+			if(!frm.doc.items[len-1].item_code)
+	    {
+				frm.get_field("items").grid.grid_rows[len-1].remove();
+	    }	
+		}
 }
 
 function reset_cancelled_form(frm){

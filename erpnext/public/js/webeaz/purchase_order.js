@@ -41,16 +41,19 @@ frappe.ui.form.on('Purchase Order', {
     },
     order_type: function(frm){
         check_order_type(frm);
-		check_company(frm);
+        check_company(frm);
     },
     company: function(frm){
-		check_company(frm);
+		    check_company(frm);
     },
     search_item : function(frm){
+      remove_empty_items(frm);
   		if(!frm.doc.supplier){
   			frappe.throw(__('Select Supplier before search'));
   		}
-        search_item_button(frm);
+      else {
+        search_item_button(frm);  
+      }
     }
 });
 var check_company = function(frm){
@@ -118,6 +121,7 @@ var set_supplier = function(frm) {
 var set_new_medicine_button = function(frm) {
 	var new_item=[];
 	frm.add_custom_button(__('Get New Products'), function() {
+    remove_empty_items(frm);
 		frappe.call({
 			"method": "erpnext.controllers.queries.get_new_medicines",
 			"args": {
@@ -272,7 +276,7 @@ frappe.ui.form.on('Purchase Order Item', {
             "args" : {
                 "doctype" : "Item",
                 "filters" : {"item_code":y},
-                "fields"  :["drug_content"] 
+                "fields"  :["drug_content"]
             },
             callback:function(r){
                 if(r){
@@ -376,7 +380,7 @@ var search_items = function(frm, values) {
             }
        });
     }
-    
+
 	var new_item=[];
 	frappe.call({
 		"method": "erpnext.controllers.queries.search_item_contents",
@@ -505,22 +509,33 @@ frappe.ItemsCheckList = Class.extend({
 var set_product_availability_button = function(frm) {
 	var new_item=[];
 	frm.add_custom_button(__('Product Availability'), function() {
-        frappe.show_alert('Please wait Product Availability for '+frm.doc.company+' is processing.', 10);
+    remove_empty_items(frm);
+    frappe.show_alert('Please wait Product Availability for '+frm.doc.company+' is processing.', 10);
 		frappe.call({
 			"method": "erpnext.controllers.queries.get_product_availability",
 			"args": {
 				"company": frm.doc.company
 			},
 			callback: function(ret){
-                if(ret && ret.message){
-                    if((ret.message.length)>0){
-                        new_items_popup(frm, ret.message);
-                    }
-                    else{
-                        frappe.msgprint(__('No products found that you have purchased and out of stock. Use New products to order unpurchased items!'));
-                    }
-                }
+        if(ret && ret.message){
+            if((ret.message.length)>0){
+                new_items_popup(frm, ret.message);
+            }
+            else{
+                frappe.msgprint(__('No products found that you have purchased and out of stock. Use New products to order unpurchased items!'));
+            }
+        }
 			}
 		});
 	});
 };
+
+function remove_empty_items(frm){
+		var len = frm.doc.items.length;
+		if(len>0){
+			if(!frm.doc.items[len-1].item_code)
+	    {
+				frm.get_field("items").grid.grid_rows[len-1].remove();
+	    }
+		}
+}

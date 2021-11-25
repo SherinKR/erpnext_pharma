@@ -34,6 +34,7 @@ frappe.ui.form.on('Sales Invoice', {
 	},
   validate: function(frm){
     update_batch_price(frm);
+		calculate_taxable_amount(frm);
   },
   search_item : function(frm){
 		if(!frm.doc.customer){
@@ -267,16 +268,6 @@ function update_batch_price(frm){
         var batch_no = v.batch_no;
         var item_code = v.item_code;
         var price_list = frm.doc.selling_price_list
-        // frappe.call({
-        //   method: 'frappe.client.get',
-        //   args: {
-        //     'doctype': 'Batch',
-        //     'filters': {'batch_id': batch_no}
-        //   },
-        //   callback: function(r){
-        //       frappe.model.set_value(v.doctype, v.name,"expiry_date", r.message.expiry_date);
-        //   }
-        // });
         frappe.call({
             method: 'frappe.client.get',
             args: {
@@ -289,6 +280,16 @@ function update_batch_price(frm){
           });
       });
 }
+
+function calculate_taxable_amount(frm){
+		$.each(frm.doc.items || [], function(i, item) {
+				var amount = parseFloat(item.amount);
+				var tax_percentage = parseFloat(item.tax_percentage);
+				var taxable_amount = ((amount/100)*tax_percentage);
+				frappe.model.set_value(item.doctype, item.name,"taxable_amount", amount+taxable_amount);
+		});
+}
+
 function reset_cancelled_form(frm){
     if(frm.is_new()){
         if(frm.doc.bin_details){

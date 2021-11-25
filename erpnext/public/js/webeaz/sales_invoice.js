@@ -1,23 +1,23 @@
 frappe.ui.form.on('Sales Invoice', {
 	onload: function(frm){
-        reset_cancelled_form(frm);
+      reset_cancelled_form(frm);
 	    estimate_print(frm);
-		if(frm.doc.customer){
-			frm.refresh_field('customer');
- 			// frm.trigger('customer');
-			// frm.refresh_field('taxes_and_charges');
-			// frm.trigger('taxes_and_charges');
-			// frm.refresh_field('taxes');
-		}
-		frm.remove_custom_button('Fetch Timesheet');
-		setTimeout(() => {
-	      frm.remove_custom_button("Maintenance Schedule",'Create');
-				frm.remove_custom_button("Subscription",'Create');
-				frm.remove_custom_button("Invoice Discounting",'Create');
-				frm.remove_custom_button("E-Way Bill JSON",'Create');
-				frm.remove_custom_button("Quotation",'Get Items From');
-				frm.remove_custom_button('Fetch Timesheet');
-	    },10);
+			if(frm.doc.customer){
+				frm.refresh_field('customer');
+	 			// frm.trigger('customer');
+				// frm.refresh_field('taxes_and_charges');
+				// frm.trigger('taxes_and_charges');
+				// frm.refresh_field('taxes');
+			}
+			frm.remove_custom_button('Fetch Timesheet');
+			setTimeout(() => {
+		      frm.remove_custom_button("Maintenance Schedule",'Create');
+					frm.remove_custom_button("Subscription",'Create');
+					frm.remove_custom_button("Invoice Discounting",'Create');
+					frm.remove_custom_button("E-Way Bill JSON",'Create');
+					frm.remove_custom_button("Quotation",'Get Items From');
+					frm.remove_custom_button('Fetch Timesheet');
+		    },10);
 	},
 	refresh: function(frm){
       reset_cancelled_form(frm);
@@ -30,12 +30,33 @@ frappe.ui.form.on('Sales Invoice', {
 				frm.remove_custom_button("Quotation",'Get Items From');
 				frm.remove_custom_button('Fetch Timesheet');
 		  },10);
-		// frm.get_field("items").grid.set_multiple_add("item_code", "qty");
+			// frm.get_field("items").grid.set_multiple_add("item_code", "qty");
+			frappe.call({
+					"method": "frappe.client.get",
+					"args": {
+							"doctype": "Company",
+							"filters": {"company_name": frm.doc.company }
+							},
+					callback: function(r){
+							if(r && r.message ){
+									if(! r.message.is_group){
+											frm.set_df_property('grand_total_amount', 'hidden', 0);
+									}
+									else{
+										frm.set_df_property('grand_total_amount', 'hidden', 1);
+									}
+							}
+					}
+			});
 	},
   validate: function(frm){
     update_batch_price(frm);
 		calculate_taxable_amount(frm);
+		frm.set_value("grand_total_amount", frm.doc.grand_total);
   },
+	grand_total: function(frm){
+		frm.set_value("grand_total_amount", frm.doc.grand_total);
+	},
   search_item : function(frm){
 		remove_empty_items(frm);
 		if(!frm.doc.customer){
@@ -155,7 +176,7 @@ var search_item_button = function(frm){
 var new_items_popup = function(frm, new_items) {
     var d = new frappe.ui.Dialog({
         title:__("Search Items"),
-		width: 900,
+				width: 900,
         fields:[
             {
                 "fieldtype": "HTML",
@@ -297,7 +318,7 @@ function remove_empty_items(frm){
 			if(!frm.doc.items[len-1].item_code)
 	    {
 				frm.get_field("items").grid.grid_rows[len-1].remove();
-	    }	
+	    }
 		}
 }
 

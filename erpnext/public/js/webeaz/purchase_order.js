@@ -52,7 +52,7 @@ frappe.ui.form.on('Purchase Order', {
   			frappe.throw(__('Select Supplier before search'));
   		}
       else {
-        search_item_button(frm);  
+        search_item_button(frm);
       }
     }
 });
@@ -129,12 +129,12 @@ var set_new_medicine_button = function(frm) {
 			},
 			callback: function(ret){
 				if(ret && ret.message){
-                    if((ret.message.length)>0){
-                        new_items_popup(frm, ret.message);
-                    }
-                    else{
-                        frappe.msgprint(__('No new products found that you did not purchased yet.!'));
-                    }
+            if((ret.message.length)>0){
+                new_items_popup(frm, ret.message);
+            }
+            else{
+                frappe.msgprint(__('No new products found that you did not purchased yet.!'));
+            }
 				}
 			}
 		});
@@ -159,7 +159,7 @@ function check_order_type(frm){
 var new_items_popup = function(frm, new_items) {
     var d = new frappe.ui.Dialog({
         title:__("Products as per search"),
-		width: 900,
+		    width: 900,
         fields:[
             {
                 "fieldtype": "HTML",
@@ -300,7 +300,6 @@ frappe.ui.form.on('Purchase Order Item', {
                                     var neww1=neww[i].item_name;
                                     neww2.push(neww1)
                                 }
-                                console.log("weeeeeeeeeeeeeeeeeeeeeeeee",neww2);
                                 frappe.msgprint({
                                     title:__('Notification'),
                                     indicator:'green',
@@ -519,7 +518,7 @@ var set_product_availability_button = function(frm) {
 			callback: function(ret){
         if(ret && ret.message){
             if((ret.message.length)>0){
-                new_items_popup(frm, ret.message);
+                availabe_items_popup(frm, ret.message);
             }
             else{
                 frappe.msgprint(__('No products found that you have purchased and out of stock. Use New products to order unpurchased items!'));
@@ -539,3 +538,112 @@ function remove_empty_items(frm){
 	    }
 		}
 }
+
+var availabe_items_popup = function(frm, new_items) {
+    var d = new frappe.ui.Dialog({
+        title:__("Products as per search"),
+		width: 900,
+        fields:[
+            {
+                "fieldtype": "HTML",
+                "fieldname": "items_html"
+            }
+        ],
+        primary_action_label: 'Add Items',
+        primary_action() {
+            var opts = d.item_check_list.get_item();
+            var me = d.item_check_list;
+            var items = "";
+            if(!opts.checked_items.length){
+                return;
+            }
+            else{
+                opts.checked_items.forEach((item, i) => {
+                    // let item_table = frappe.model.add_child(frm.doc, 'Items', 'items');
+                    // frappe.model.set_value(item_table.doctype, item_table.name, 'item_code', item);
+                    let row = frm.add_child('items', {
+                        item_code: item
+                    });
+                    frm.script_manager.trigger("item_code", row.doctype, row.name);
+                    frm.refresh_field("items");
+                });
+                frm.refresh_field('items');
+                frm.refresh_fields();
+                frm.trigger("validate");
+            }
+            d.hide();
+    }
+    });
+    d.show();
+    d.get_primary_btn().attr('disabled', false);
+    d.fields_dict.items_html.$wrapper.html("");
+    d.$wrapper.find('.modal-content').css("width", "900px");
+    d.$wrapper.find('.modal-content').css("margin-left", "-200px");
+    var items_area = $('<div class="col-md-12 col-sm-12" style="min-height: 10px;">').appendTo(d.fields_dict.items_html.wrapper);
+    d.item_check_list = new frappe.ItemsCheckListAvailable(items_area, frm, 0, d, new_items);
+};
+
+frappe.ItemsCheckListAvailable = Class.extend({
+    init: function(wrapper, frm, disable, d, new_items) {
+        var me = this;
+        this.frm = frm;
+        this.wrapper = wrapper;
+        this.disable = disable;
+        $(wrapper).html('<div class="help">' + __("Loading") + '...</div>');
+        me.items = new_items;
+        me.show_items(frm, d);
+    },
+    show_items: function(frm, d) {
+        var me = this;
+        var i;
+        var table_row = '';
+        $(this.wrapper).empty();
+        var table_head = '';
+        if(this.items){
+            $.each(this.items, function(i, item) {
+				var drug_content = item.drug_content ? item.drug_content : '';
+                var item_check_field = repl('<div class="item" \
+                data-item-id="%(item_id)s">\
+                <input type="checkbox" class="box"> \
+                </input>',
+                {item_id: item.item_code});
+                table_row += "<tr><td>"+item_check_field+"</td><td>"+__(item.item_name)+"</td><td>"+drug_content+"</td></tr>";
+            });
+        }
+        var table_html = `
+            <table widht="100%"><tr>
+				<th></th>
+                <th>Product</th>
+                <th>Drug Content</th>
+            </tr>
+        `;
+        if (table_row){
+            table_html += table_row;
+        }
+        table_html += '</table>';
+        $(me.wrapper).append(table_html);
+    },
+    show: function() {
+        var me = this;
+        // uncheck all items
+        $(this.wrapper).find('input[type="checkbox"]')
+            .each(function(i, checkbox) {
+                checkbox.checked = false;
+        });
+    },
+    get_item: function() {
+        var checked_items = [];
+        var unchecked_items = [];
+        $(this.wrapper).find('[data-item-id]').each(function() {
+            if($(this).find('input[type="checkbox"]:checked').length) {
+                checked_items.push($(this).attr('data-item-id'));
+            } else {
+                unchecked_items.push($(this).attr('data-item-id'));
+            }
+        });
+        return {
+            checked_items: checked_items,
+            unchecked_items: unchecked_items
+        };
+    }
+});

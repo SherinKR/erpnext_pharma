@@ -30,9 +30,6 @@ frappe.ui.form.on('Purchase Order', {
                             set_new_medicine_button(frm);
                             set_product_availability_button(frm);
                         }
-                        else{
-                          set_avanza_purchase_item_filter(frm);
-                        }
                     }
                     else{
                         return false;
@@ -96,7 +93,7 @@ var set_item_filter_central = function(frm){
 	frm.set_query("item_code", "items", function() {
         return {
             query: "erpnext.controllers.queries.item_query",
-            filters: {'purchase_type': "Internal", 'is_purchase_item':1}
+            filters: {'purchase_type': "Internal", 'is_purchase_item':1, 'avanza_purchase_item':1}
         };
 	});
 };
@@ -265,74 +262,6 @@ frappe.ItemsCheckList = Class.extend({
             checked_items: checked_items,
             unchecked_items: unchecked_items
         };
-    }
-});
-
-frappe.ui.form.on('Purchase Order Item', {
-  item_code: function(frm, cdt, cdn){
-    var child = locals[cdt][cdn];
-    if(child.item_code.charAt(0)=="E"){
-        var p1=[];
-        var y=child.item_code
-        frappe.call({
-            "method" : "frappe.client.get_list",
-            "args" : {
-                "doctype" : "Item",
-                "filters" : {"item_code":y},
-                "fields"  :["drug_content"]
-            },
-            callback:function(r){
-                if(r){
-                    console.log(r);
-                    console.log(r.message[0]);
-                    p1=r.message[0].drug_content
-                    console.log("r1r1r1r1r1rr",p1);
-                    frappe.call({
-                        "method":"frappe.client.get_list",
-                        "args":{
-                            "doctype":"Item",
-                            "filters":{"drug_content":p1,"purchase_type":"Internal"},
-                            "fields":["item_name"]
-                        },
-                        callback:function(r1){
-                                console.log(r1);
-                                var neww=r1.message;
-                                var neww2=[];
-                                for( var i=0;i<neww.length;i++){
-                                    console.log(neww[i].item_name)
-                                    var neww1=neww[i].item_name;
-                                    neww2.push(neww1)
-                                }
-                                frappe.msgprint({
-                                    title:__('Notification'),
-                                    indicator:'green',
-                                    message:__("You have similar Product in Storegenrix:"+neww2)
-                                })
-                        }
-                    })
-                }
-            }
-        });
-    }
-    else{
-        console.log(child.item_code);
-        frappe.call({
-            method: 'frappe.client.get',
-            args: {
-                'doctype': 'Item',
-                'filters': {'item_code': child.item_code}
-            },
-            callback: function(r){
-                if(r.message.superseded_from){
-                frappe.msgprint({
-                    title: __('Notification'),
-                    indicator: 'green',
-                    message: __('Item '+r.message.superseded_from+' is superseded by '+child.item_code)
-                });
-                }
-            }
-        });
-    }
     }
 });
 
@@ -650,14 +579,3 @@ frappe.ItemsCheckListAvailable = Class.extend({
         };
     }
 });
-
-function set_avanza_purchase_item_filter(frm){
-  frm.set_query('item_code', 'items', function(doc, cdt, cdn) {
-		var d = locals[cdt][cdn];
-		return {
-				"filters": {
-					"avanza_purchase_item": '1'
-				}
-		};
-	});
-}

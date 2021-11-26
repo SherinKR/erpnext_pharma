@@ -30,6 +30,9 @@ frappe.ui.form.on('Purchase Order', {
                             set_new_medicine_button(frm);
                             set_product_availability_button(frm);
                         }
+                        else{
+                          set_avanza_purchase_item_filter(frm);
+                        }
                     }
                     else{
                         return false;
@@ -647,3 +650,14 @@ frappe.ItemsCheckListAvailable = Class.extend({
         };
     }
 });
+
+function set_avanza_purchase_item_filter(frm){
+  frm.set_query('item_code', 'items', function(doc, cdt, cdn) {
+		var d = locals[cdt][cdn];
+		return {
+				"filters": {
+					"avanza_purchase_item": '1'
+				}
+		};
+	});
+}

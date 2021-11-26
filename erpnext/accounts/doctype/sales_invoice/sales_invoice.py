@@ -166,7 +166,7 @@ class SalesInvoice(SellingController):
 							frappe.msgprint(msg='item short for item '+d.item_code , title="Error!")
 				else:
 					frappe.throw(msg="No bins found, Please asign items to Bins for item "+d.item_code, title="Error!")
-				
+
 				qty = frappe.db.get_value('Bin Items', {'parent': bin_name, 'batch': d.batch_no, 'item_code': d.item_code}, ['batch_qty'])
 				bin_doc = frappe.get_doc('Bins', bin_name )
 
@@ -329,7 +329,7 @@ class SalesInvoice(SellingController):
 			frappe.db.set_value('Bins', item.bin, { 'bin_qty': bin_doc.bin_qty - item.quantity })
 			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty - item.quantity })
 			frappe.db.commit()
-	# for updating cancelled stocks back to bin 
+	# for updating cancelled stocks back to bin
 	def credit_stock_to_bin(self):
 		for item in self.bin_details:
 			bin_doc = frappe.get_doc("Bins",item.bin)
@@ -367,7 +367,7 @@ class SalesInvoice(SellingController):
 		super(SalesInvoice, self).on_cancel()
 		self.credit_stock_to_bin()
 		self.check_sales_order_on_hold_or_close("sales_order")
-		
+
 		if self.is_return and not self.update_billed_amount_in_sales_order:
 			# NOTE status updating bypassed for is_return
 			self.status_updater = []
@@ -2081,10 +2081,16 @@ def check_superseded_item(item_name):
 def create_franchise_payment_request(self):
 	sum=0
 	due_days=0
+	tax_percentage = 0
+	amount = 0
 	for item in self.items:
 		if item.item_code[:2]=="IP":
+			tax_percentage = float(item.tax_percentage)
 			item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'batch_no':item.batch_no , 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
-			sum = sum + (float(item_price)*item.stock_qty)
+			if item_price:
+				amount = float(item_price)*item.stock_qty
+				amount = float(amount) + (float(amount/100))*tax_percentage
+				sum = sum + amount
 	if sum:
 		if frappe.db.exists({ 'doctype': 'Franchise Payment Request', 'company': self.company, 'transaction_date': self.posting_date, 'status': 'Unpaid' }):
 			fpr_doc_name = frappe.db.get_value('Franchise Payment Request', { 'company': self.company, 'transaction_date': self.posting_date }, ['name'])

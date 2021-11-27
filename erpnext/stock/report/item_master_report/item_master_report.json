@@ -151,6 +151,12 @@
    "width": 0
   },
   {
+   "fieldname": "is_avanza_purchase",
+   "fieldtype": "Check",
+   "label": "Is Avanza Purchase",
+   "width": 0
+  },
+  {
    "fieldname": "is_sales",
    "fieldtype": "Check",
    "label": "Is Sales",
@@ -189,12 +195,12 @@
  ],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-09-25 13:11:42.753665",
+ "modified": "2021-11-27 17:06:01.116404",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item Master Report",
  "owner": "Administrator",
- "prepared_report": 0,
+ "prepared_report": 1,
  "ref_doctype": "Item",
  "report_name": "Item Master Report",
  "report_type": "Script Report",

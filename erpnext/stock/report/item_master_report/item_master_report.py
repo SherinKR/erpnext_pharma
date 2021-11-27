@@ -39,6 +39,7 @@ def get_columns():
 		_("Qty Per Pack") + ":Float:150",
 		_("Rack") + ":Link/Bins:130",
 		_("Is Purchase") + ":Check:100",
+		_("Is Avanza Purchase") + ":Check:150",
 		_("Is Sales") + ":Check:100",
 		_("Superseeded By") + ":Link/Item:160"
 	]
@@ -52,7 +53,7 @@ def get_data(filters=None):
 		batch_list=frappe.get_list("Batch", filters={'item':filters['item']})
 	else:
 		batch_list=frappe.get_list("Batch")
-	
+
 	item_code = ""
 	manufacturer = ""
 	item_name = ""
@@ -68,11 +69,11 @@ def get_data(filters=None):
 	uom = ""
 	qty_per_pack = 1
 	rack = ""
-	is_purchase, is_sales = 0,0
+	is_purchase, is_avanza_purchase, is_sales = 0,0,0
 	superseeded_by = ""
 	for b in batch_list:
 		batch, item_code, item_name, expiry, current_stock = frappe.db.get_value('Batch', b.name, ['name', 'item', 'item_name', 'expiry_date', 'batch_qty'])
-		uom, content, is_purchase, is_sales, superseeded_by, gst, manufacturer, item_creation = frappe.db.get_value('Item', item_code, ['stock_uom','drug_content', 'is_purchase_item', 'is_sales_item', 'superseded_item', 'default_tax_rate', 'manufacturer', 'creation'])
+		uom, content, is_purchase, is_avanza_purchase, is_sales, superseeded_by, gst, manufacturer, item_creation = frappe.db.get_value('Item', item_code, ['stock_uom','drug_content', 'is_purchase_item', 'avanza_purchase_item', 'is_sales_item', 'superseded_item', 'default_tax_rate', 'manufacturer', 'creation'])
 		ptf = frappe.db.get_value('Item Price', {'price_list': 'Price To Franchaisee - (PTF)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		ptc = frappe.db.get_value('Item Price', {'price_list': 'Price To Customer - (PTC)', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
 		company_buying = frappe.db.get_value('Item Price', {'price_list': 'Company Buying', 'item_code':item_code, 'batch_no':batch }, 'price_list_rate')
@@ -150,6 +151,7 @@ def get_data(filters=None):
 			qty_per_pack,
 			rack,
 			is_purchase,
+			is_avanza_purchase,
 			is_sales,
 			superseeded_by
 		]
@@ -169,7 +171,7 @@ def get_data(filters=None):
 		uom = ""
 		qty_per_pack = 1
 		rack = ""
-		is_purchase, is_sales = 0,0
+		is_purchase, is_avanza_purchase, is_sales = 0,0,0
 		superseeded_by = ""
 
 	return data

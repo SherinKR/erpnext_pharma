@@ -440,6 +440,10 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				alphanumeric += character
 			elif character == '%':
 				alphanumeric += character
+			elif character == '/':
+				alphanumeric += character
+			elif character == '.':
+				alphanumeric += character
 			elif character == ',':
 				drug.append(alphanumeric)
 				alphanumeric = ""
@@ -459,6 +463,10 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 					alphanumeric += character
 				elif character == '-':
 					alphanumeric += character
+				elif character == '/':
+					alphanumeric += character
+				elif character == '.':
+					alphanumeric += character
 			# print(alphanumeric)
 			query = """
 					select
@@ -475,7 +483,7 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				# print(query)
 				# print(alphanumeric)
 			return_dict = frappe.db.sql(query.format(), {'filter_value': '%'+ filter_value +'%', 'druglist': '%'+alphanumeric+'%'}, as_dict=True)
-
+			# print(return_dict)
 			for item in return_dict:
 				item_qty = frappe.db.get_value('Bin', {'warehouse': warehouse, 'item_code': item.item_code }, ['actual_qty'])
 				item_price = frappe.db.get_value('Item Price', {'price_list': price_list, 'item_code': item.item_code }, ['price_list_rate'])
@@ -487,6 +495,7 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				item['price'] = item_price
 				return_items.append(item)
 				# print(return_dict)
+				# print(return_items)
 		return return_items
 
 

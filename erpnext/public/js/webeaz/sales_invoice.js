@@ -159,8 +159,8 @@ var search_item_button = function(frm){
             fieldname: 'drug_contents',
             fieldtype: 'MultiSelectList',
             get_data: function(txt) {
-				return frappe.db.get_link_options('Drug Content',txt);
-			}
+							return frappe.db.get_link_options('Drug Content',txt);
+						}
         }
     ],
     primary_action_label: 'Search',
@@ -169,8 +169,8 @@ var search_item_button = function(frm){
             d.hide();
             search_items(frm,values)
         }
-	});
-	d.show();
+		});
+		d.show();
 }
 
 var new_items_popup = function(frm, new_items) {

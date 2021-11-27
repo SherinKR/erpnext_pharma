@@ -1,13 +1,13 @@
 var company,company_is_group,company_internal_supplier,company_external_supplier;
 frappe.ui.form.on('Purchase Order', {
     onload: function(frm){
-    setTimeout(() => {
-        frm.remove_custom_button("Product Bundle",'Get Items From');
-        frm.remove_custom_button("Supplier Quotation",'Get Items From');
-        frm.remove_custom_button("Update Rate as per Last Purchase",'Tools');
-        frm.remove_custom_button("Link to Material Request",'Tools');
-        frm.remove_custom_button('Subscription', 'Create');
-    },5);
+      setTimeout(() => {
+          frm.remove_custom_button("Product Bundle",'Get Items From');
+          frm.remove_custom_button("Supplier Quotation",'Get Items From');
+          frm.remove_custom_button("Update Rate as per Last Purchase",'Tools');
+          frm.remove_custom_button("Link to Material Request",'Tools');
+          frm.remove_custom_button('Subscription', 'Create');
+      },5);
     },
     refresh: function(frm) {
         set_supplier(frm);

@@ -399,7 +399,7 @@ def get_product_availability(company):
 		from
 			`tabItem` i, `tabWarehouse` w, `tabBin` b
 		where
-			( b.item_code=i.name and b.actual_qty<1 and b.warehouse=w.name and w.company=%(company)s ) and i.disabled=0
+			( b.item_code=i.name and b.actual_qty<1 and b.warehouse=w.name and w.company=%(company)s ) and i.disabled=0 and i.is_purchase_item=1 
 	"""
 	item_list = frappe.db.sql(query.format(), {'company': company }, as_dict=True)
 	for item in item_list:

@@ -413,6 +413,7 @@ def get_product_availability(company):
 
 @frappe.whitelist()
 def search_item_contents(filter_value=None, drug_content=None, warehouse=None, price_list=None, sales=None, purchase=None):
+	return_items = []
 	if sales:
 		filter_condition  = 'and is_sales_item = 1 )'
 	if purchase:
@@ -435,6 +436,10 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				alphanumeric += character
 			elif character == ' ':
 				alphanumeric += character
+			elif character == '-':
+				alphanumeric += character
+			elif character == '%':
+				alphanumeric += character
 			elif character == ',':
 				drug.append(alphanumeric)
 				alphanumeric = ""
@@ -449,6 +454,10 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				elif character == ' ':
 					alphanumeric += character
 				elif character == ',':
+					alphanumeric += character
+				elif character == '%':
+					alphanumeric += character
+				elif character == '-':
 					alphanumeric += character
 			# print(alphanumeric)
 			query = """
@@ -466,7 +475,7 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				# print(query)
 				# print(alphanumeric)
 			return_dict = frappe.db.sql(query.format(), {'filter_value': '%'+ filter_value +'%', 'druglist': '%'+alphanumeric+'%'}, as_dict=True)
-			# print(len(return_dict))
+
 			for item in return_dict:
 				item_qty = frappe.db.get_value('Bin', {'warehouse': warehouse, 'item_code': item.item_code }, ['actual_qty'])
 				item_price = frappe.db.get_value('Item Price', {'price_list': price_list, 'item_code': item.item_code }, ['price_list_rate'])
@@ -475,10 +484,10 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 				item['qty'] = item_qty
 				if not item_price:
 					item_price=0
-				item['qty'] = item_qty
 				item['price'] = item_price
-				# print(return_dict[0].item_code)
-		return return_dict
+				return_items.append(item)
+				# print(return_dict)
+		return return_items
 
 
 @frappe.whitelist()

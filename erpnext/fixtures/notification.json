@@ -13,7 +13,7 @@
   "is_standard": 0,
   "message": "Hi,\n\nYour Purchase Invoice is Here,\n\nThank you",
   "method": null,
-  "modified": "2021-11-20 16:33:02.285124",
+  "modified": "2021-11-25 16:48:54.013985",
   "module": null,
   "name": "Purchase Invoice Created",
   "parent": null,
@@ -61,6 +61,16 @@
     "parenttype": "Notification",
     "receiver_by_document_field": null,
     "receiver_by_role": "SG PERUMPADAPPU"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name==\"SG VADAKKEKAD\"",
+    "parent": "Purchase Invoice Created",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG VADAKKEKAD"
    }
   ],
   "send_system_notification": 0,
@@ -215,7 +225,7 @@
   "is_standard": 0,
   "message": "{{ doc.message }}",
   "method": null,
-  "modified": "2021-10-28 12:23:46.841596",
+  "modified": "2021-11-25 16:50:08.309267",
   "module": null,
   "name": "Please clear the payment dues amount",
   "parent": null,
@@ -443,6 +453,16 @@
     "parenttype": "Notification",
     "receiver_by_document_field": null,
     "receiver_by_role": "SG PERUMPADAPPU"
+   },
+   {
+    "bcc": null,
+    "cc": null,
+    "condition": "doc.company_name == \"SG VADAKKEKAD\"",
+    "parent": "Please clear the payment dues amount",
+    "parentfield": "recipients",
+    "parenttype": "Notification",
+    "receiver_by_document_field": null,
+    "receiver_by_role": "SG VADAKKEKAD"
    }
   ],
   "send_system_notification": 0,

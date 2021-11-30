@@ -15,13 +15,20 @@ def auto_item_reorder():
     supply_qty_list = {}
     available_qty_list = {}
     reorder_qty_list = {}
-    warehouse = "Stores - AVZ"
 
-    if frappe.defaults.get_user_default("Company"):
-        company_name = frappe.defaults.get_user_default("Company")
+    if frappe.db.get_value("Webeaz Settings", None, "default_warehouse_for_central_warehouse"):
+        warehouse =  frappe.db.get_value("Webeaz Settings", None, "default_warehouse_for_central_warehouse")
     else:
-        # company_name = frappe.db.get_value('User Permission', {'user':frappe.session.user,'allow': 'Company'}, ['for_value'])
+        warehouse = "Stores - AVZ"
+
+    if frappe.db.get_value("Webeaz Settings", None, "central_warehouse"):
+        company_name =  frappe.db.get_value("Webeaz Settings", None, "central_warehouse")
+    else:
         company_name = frappe.sys_defaults.company
+
+    if not frappe.db.exists('Warehouse', warehouse):
+        warehouse = frappe.db.get_value('Warehouse', { 'company': company_name, 'warehouse_name': 'Stores'}, ['name'])
+
     if(today[8:]=='15' or today[8:]=='30'):
         for so in frappe.get_list("Sales Order", filters={"transaction_date": ["between",  (from_date, today)], "company":company_name, "is_internal_customer":1, "workflow_state": "Demand Request Approved"}):
             if so:
@@ -55,7 +62,6 @@ def auto_item_reorder():
                     item_list.append(item.item_code)
 
         for item in item_list:
-            print(item)
             if item in supply_qty_list.keys():
                 supply_qty = supply_qty_list[item]
             else:
@@ -71,11 +77,11 @@ def auto_item_reorder():
                     available_qty_list.update({ item : proj_qty - supply_qty })
                     new_qty = math.ceil((si_qty*1.5) - available_qty_list[item])
                     reorder_qty_list.update({ item : new_qty })
-                    print(item+" si qty = "+ str(si_qty))
-                    print(item+" supply qty = "+ str(supply_qty))
-                    print(item+" available qty = "+ str(available_qty_list[item]))
-                    print(item+" order qty = "+ str(reorder_qty_list[item]))
-            print(reorder_qty_list)
+            #         print(item+" si qty = "+ str(si_qty))
+            #         print(item+" supply qty = "+ str(supply_qty))
+            #         print(item+" available qty = "+ str(available_qty_list[item]))
+            #         print(item+" order qty = "+ str(reorder_qty_list[item]))
+        # print(reorder_qty_list)
         createMaterialRequest(item_list,reorder_qty_list,warehouse,company_name)
 
 def createMaterialRequest(item_list,reorder_qty_list,warehouse,company_name):
@@ -115,13 +121,11 @@ def createMaterialRequest(item_list,reorder_qty_list,warehouse,company_name):
                     "brand": item.brand,
                 })
     if has_items:
-        print("before_save")
         mr.flags.ignore_mandatory = True
         mr.save(ignore_permissions=True)
         mr.reload()
         mr.submit()
-        print("after_save")
-        print(mr)
+        print(mr.as_dict())
     else:
         frappe.db.rollback()
         print("rollback")

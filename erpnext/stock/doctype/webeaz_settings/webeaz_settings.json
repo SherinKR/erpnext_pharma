@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "creation": "2021-11-30 17:04:10.981319",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "central_warehouse",
+  "default_warehouse_for_central_warehouse",
+  "column_break_3",
+  "ptf_price_list",
+  "company_buying_price_list",
+  "ptc_price_list"
+ ],
+ "fields": [
+  {
+   "fieldname": "central_warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Central Warehouse",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_warehouse_for_central_warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Default Warehouse For Central Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ptf_price_list",
+   "fieldtype": "Link",
+   "label": "PTF Price List",
+   "options": "Price List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_buying_price_list",
+   "fieldtype": "Link",
+   "label": "Company Buying Price List",
+   "options": "Price List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "ptc_price_list",
+   "fieldtype": "Link",
+   "label": "PTC Price List",
+   "options": "Price List",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2021-11-30 17:06:21.105515",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Webeaz Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

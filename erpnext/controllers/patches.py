@@ -8,7 +8,13 @@ from pymysql.converters import conversions
 
 @frappe.whitelist()
 def create_item_price_without_batch(price_list):
-    if price_list=="Price To Franchaisee - (PTF)":
+    if frappe.db.get_value("Webeaz Settings", None, "ptf_price_list"):
+        ptf_price_list =  frappe.db.get_value("Webeaz Settings", None, "ptf_price_list")
+    else:
+        ptf_price_list = ""
+        frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
+
+    if price_list==ptf_price_list:
         item_price_list = frappe.get_list("Item Price", filters={'price_list': price_list})
         count = 0
         # frappe.msgprint('Item Price updation started')
@@ -48,13 +54,19 @@ def update_franchise_payment_request_to_new(transaction_date,company):
         new_fpr.transaction_date = getdate(transaction_date)
         new_fpr.total_purchase_amount = 0
         new_fpr.total_sales_amount = 0
+        if frappe.db.get_value("Webeaz Settings", None, "ptf_price_list"):
+            ptf_price_list =  frappe.db.get_value("Webeaz Settings", None, "ptf_price_list")
+        else:
+            ptf_price_list = ""
+    		frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
+
         for franchise_payment_request in franchise_payment_request_list:
             sum = 0
             print(franchise_payment_request.name)
             franchise_payment_request_doc = frappe.get_doc("Franchise Payment Request", franchise_payment_request.name)
             sales_invoice_doc = frappe.get_doc("Sales Invoice", franchise_payment_request_doc.reference_document)
             for item in sales_invoice_doc.items:
-                item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+                item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list': ptf_price_list'}, ['price_list_rate'])
                 sum = sum + (int(item_price)*item.stock_qty)
             new_fpr.weekday = franchise_payment_request_doc.weekday
             new_fpr.notification_date = franchise_payment_request_doc.notification_date
@@ -72,6 +84,12 @@ def update_franchise_payment_request_to_new(transaction_date,company):
 @frappe.whitelist()
 def update_franchise_payment_request():
     franchise_payment_request_list = frappe.get_list("Franchise Payment Request")
+    if frappe.db.get_value("Webeaz Settings", None, "ptf_price_list"):
+        ptf_price_list =  frappe.db.get_value("Webeaz Settings", None, "ptf_price_list")
+    else:
+        ptf_price_list = ""
+		frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
+
     for franchise_payment_request in franchise_payment_request_list:
         print(franchise_payment_request.name)
         franchise_payment_request_doc = frappe.get_doc("Franchise Payment Request", franchise_payment_request.name)
@@ -79,7 +97,7 @@ def update_franchise_payment_request():
             sum = 0
             sales_invoice_doc = frappe.get_doc("Sales Invoice", item.sales_invoice)
             for si_item in sales_invoice_doc.items:
-                item_price = frappe.db.get_value('Item Price', {'item_code': si_item.item_code, 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+                item_price = frappe.db.get_value('Item Price', {'item_code': si_item.item_code, 'price_list': ptf_price_list }, ['price_list_rate'])
                 sum = sum + (int(item_price)*si_item.stock_qty)
             item.purchase_amount = sum
         franchise_payment_request_doc.save()

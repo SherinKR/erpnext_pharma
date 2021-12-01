@@ -46,4 +46,11 @@ function set_filters(frm){
         }
     }
   });
+	frm.set_query('internal_supplier_avanza', () => {
+    return {
+        filters: {
+            is_internal_supplier: '1'
+        }
+    }
+  });
 }

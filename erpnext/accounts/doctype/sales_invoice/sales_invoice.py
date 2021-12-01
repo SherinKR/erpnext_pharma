@@ -2079,6 +2079,12 @@ def check_superseded_item(item_name):
 
 @frappe.whitelist()
 def create_franchise_payment_request(self):
+	if frappe.db.get_value("Webeaz Settings", None, "ptf_price_list"):
+		ptf_price_list =  frappe.db.get_value("Webeaz Settings", None, "ptf_price_list")
+	else:
+		ptf_price_list = ""
+		frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
+
 	sum=0
 	due_days=0
 	tax_percentage = 0
@@ -2086,7 +2092,7 @@ def create_franchise_payment_request(self):
 	for item in self.items:
 		if item.item_code[:2]=="IP":
 			tax_percentage = float(item.tax_percentage)
-			item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'batch_no':item.batch_no , 'price_list':'Price To Franchaisee - (PTF)'}, ['price_list_rate'])
+			item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'batch_no':item.batch_no , 'price_list': ptf_price_list }, ['price_list_rate'])
 			if item_price:
 				amount = float(item_price)*item.stock_qty
 				amount = float(amount) + (float(amount/100))*tax_percentage

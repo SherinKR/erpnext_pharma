@@ -7,6 +7,7 @@
  "field_order": [
   "central_warehouse",
   "default_warehouse_for_central_warehouse",
+  "internal_supplier_avanza",
   "column_break_3",
   "ptf_price_list",
   "company_buying_price_list",
@@ -17,7 +18,7 @@
    "fieldname": "central_warehouse",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Central Warehouse",
+   "label": "Central Company",
    "options": "Company",
    "reqd": 1
   },
@@ -53,12 +54,19 @@
    "label": "PTC Price List",
    "options": "Price List",
    "reqd": 1
+  },
+  {
+   "fieldname": "internal_supplier_avanza",
+   "fieldtype": "Link",
+   "label": "Internal Supplier Avanza",
+   "options": "Supplier",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-11-30 17:06:21.105515",
+ "modified": "2021-12-01 11:07:33.153902",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Webeaz Settings",

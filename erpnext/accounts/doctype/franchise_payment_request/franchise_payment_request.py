@@ -24,6 +24,12 @@ class FranchisePaymentRequest(Document):
 
 @frappe.whitelist()
 def make_payment_entry(source_name, target_doc=None):
+	if frappe.db.get_value("Webeaz Settings", None, "internal_supplier_avanza"):
+		internal_supplier =  frappe.db.get_value("Webeaz Settings", None, "internal_supplier_avanza")
+	else:
+		internal_supplier = ""
+		frappe.throw( title='Internal Supplier Missing!', msg='Set Default Internal Supplier in Webeaz Settings' )
+
 	def set_missing_values(source, target):
 		if source.total_paid_amount:
 			paid_amount = source.total_paid_amount
@@ -32,8 +38,8 @@ def make_payment_entry(source_name, target_doc=None):
 		target.naming_series = "ACC-PAY-.YYYY.-"
 		target.payment_type = "Pay"
 		target.party_type =  "Supplier"
-		target.party = "AVANZA"
-		target.party_name = "AVANZA"
+		target.party = internal_supplier
+		target.party_name = frappe.db.get_value("Supplier", internal_supplier, 'supplier_name')
 		target.paid_amount = int(source.total_purchase_amount)-paid_amount
 		target.received_amount = int(source.total_purchase_amount)-paid_amount
 		target.franchise_payment_request = source.name

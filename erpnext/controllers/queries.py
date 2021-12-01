@@ -381,6 +381,11 @@ def get_new_medicines(company, purchase_type=None):
 
 @frappe.whitelist()
 def get_product_availability(company):
+	if frappe.db.get_value("Webeaz Settings", None, "central_warehouse"):
+		central_company =  frappe.db.get_value("Webeaz Settings", None, "central_warehouse")
+	else:
+		central_company = ""
+		frappe.throw( title='Central Company Missing!', msg='Set Central Company in Webeaz Settings' )
 	# frappe.msgprint (("Please wait Product Availability for {0} is processing.").format(company), alert=True)
 	warehouse_query = """
 		select
@@ -388,9 +393,9 @@ def get_product_availability(company):
 		from
 			`tabWarehouse` w
 		where
-			company='AVANZA'
+			company=%(company)s
 	"""
-	warehouse_list = frappe.db.sql(warehouse_query.format(), {'company': company }, as_dict=True)
+	warehouse_list = frappe.db.sql(warehouse_query.format(), {'company': central_company }, as_dict=True)
 	print(warehouse_list)
 	empty_item_list = []
 	query = """
@@ -399,7 +404,7 @@ def get_product_availability(company):
 		from
 			`tabItem` i, `tabWarehouse` w, `tabBin` b
 		where
-			( b.item_code=i.name and b.actual_qty<1 and b.warehouse=w.name and w.company=%(company)s ) and i.disabled=0 and i.is_purchase_item=1 
+			( b.item_code=i.name and b.actual_qty<1 and b.warehouse=w.name and w.company=%(company)s ) and i.disabled=0 and i.is_purchase_item=1
 	"""
 	item_list = frappe.db.sql(query.format(), {'company': company }, as_dict=True)
 	for item in item_list:

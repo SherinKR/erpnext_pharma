@@ -12,17 +12,25 @@ frappe.ui.form.on('Purchase Receipt', {
         fetch_batches(frm);
     },
     supplier:function(frm){
-        if(frm.doc.supplier!="Internal Supplier SG"){
-            frm.set_df_property("fetch_batches","hidden",true);
-        }
-        else{
-            frm.set_df_property("fetch_batches","hidden",false);
-        }
+      frappe.db.get_single_value("Webeaz Settings", "internal_supplier_avanza").then( internal_supplier_avanza=>{
+  			if(internal_supplier_avanza){
+          if(frm.doc.supplier==internal_supplier_avanza){
+              frm.set_df_property("fetch_batches","hidden",false);
+          }
+          else{
+              frm.set_df_property("fetch_batches","hidden",true);
+          }
+  			}
+  			else{
+  				frappe.throw(__('Set Internal Supplier in Webeaz Settings!'));
+  			}
+  		});
     }
 });
+
 function fetch_batches(frm){
-    console.log( frm.doc.purchase_invoice_reference);
     var batches =[];
+    var rates =[];
     frappe.call({
         "method" : "frappe.client.get",
         "args" : {
@@ -33,24 +41,25 @@ function fetch_batches(frm){
             if(r){
                 var j=0;
                 $.each(r.message.items, function(i, item) {
-                    batches[j] = item.batch_no; j=j+1;
+                    batches[j] = item.batch_no;
+                    rates[j] = item.rate;
+                    j=j+1;
                 });
                 var j=0;
-                // console.log(batches);
-                // console.log(batches[0]);
                 $.each(frm.doc.items, function(i, item) {
-                    // console.log("dsvfdsgvef");
                     item.batch_no=batches[j];
-                    // console.log(batches[j]);
+                    item.rate = rates[j]
+                    item.price_list_rate = rates[j]
+                    item.base_rate = rates[j]
+                    item.base_price_list_rate = rates[j]
                     j=j+1;
                 });
                 frm.refresh_field("items");
-                frm.refresh();  
+                frm.refresh();
             }
             else{
                 return false;
              }
         }
     });
-
 }

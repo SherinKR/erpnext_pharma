@@ -479,7 +479,7 @@ def search_item_contents(filter_value=None, drug_content=None, warehouse=None, p
 					from
 						`tabItem` i
 					where
-						(( item_code like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0
+						(( item_code like %(filter_value)s or superseded_from like %(filter_value)s or item_name like %(filter_value)s or brand like %(filter_value)s ) and disabled=0
 				"""
 			if filter_condition:
 				query += filter_condition

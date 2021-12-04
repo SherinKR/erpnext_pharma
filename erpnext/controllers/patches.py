@@ -58,7 +58,7 @@ def update_franchise_payment_request_to_new(transaction_date,company):
             ptf_price_list =  frappe.db.get_value("Webeaz Settings", None, "ptf_price_list")
         else:
             ptf_price_list = ""
-    		frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
+            frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
 
         for franchise_payment_request in franchise_payment_request_list:
             sum = 0
@@ -66,7 +66,7 @@ def update_franchise_payment_request_to_new(transaction_date,company):
             franchise_payment_request_doc = frappe.get_doc("Franchise Payment Request", franchise_payment_request.name)
             sales_invoice_doc = frappe.get_doc("Sales Invoice", franchise_payment_request_doc.reference_document)
             for item in sales_invoice_doc.items:
-                item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list': ptf_price_list'}, ['price_list_rate'])
+                item_price = frappe.db.get_value('Item Price', {'item_code': item.item_code, 'price_list': ptf_price_list}, ['price_list_rate'])
                 sum = sum + (int(item_price)*item.stock_qty)
             new_fpr.weekday = franchise_payment_request_doc.weekday
             new_fpr.notification_date = franchise_payment_request_doc.notification_date
@@ -88,7 +88,7 @@ def update_franchise_payment_request():
         ptf_price_list =  frappe.db.get_value("Webeaz Settings", None, "ptf_price_list")
     else:
         ptf_price_list = ""
-		frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
+        frappe.throw( title='Pricelist Missing!', msg='Set Price To Franchise Price List in Webeaz Settings' )
 
     for franchise_payment_request in franchise_payment_request_list:
         print(franchise_payment_request.name)

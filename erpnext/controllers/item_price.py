@@ -28,3 +28,16 @@ def item_price_on_validate(doc, method):
     else:
         doc.price_list_rate = float(doc.rate_in_strip)
     frappe.db.commit()
+
+@frappe.whitelist()
+def get_item_conversion_factor(item_code, mrp_in_strip):
+    item_doc = frappe.get_doc("Item", item_code)
+    if(len(item_doc.uoms)>1 and mrp_in_strip):
+        lastElement = item_doc.uoms[len(item_doc.uoms)-1]
+        conversion_factor = lastElement.conversion_factor
+        if not conversion_factor:
+            conversion_factor=1
+            # print(item_doc.name+" Updated Succesfully with coversion_factor = 1")
+        return { 'mrp': float(mrp_in_strip)/float(conversion_factor) }
+    else:
+        return {  'mrp': float(mrp_in_strip) }

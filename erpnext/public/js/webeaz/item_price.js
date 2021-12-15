@@ -22,7 +22,6 @@ var get_price_list_rate_based_on_rate_in_strip = function(frm){
         if(r.message){
           frm.set_value('price_list_rate', r.message.price_list_rate);
           // frm.set_df_property('price_list_rate', 'read_only', 1)
-
         }
       }
     });

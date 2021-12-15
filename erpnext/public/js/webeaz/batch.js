@@ -9,6 +9,7 @@ frappe.ui.form.on('Batch', {
 	    if(frm.doc.batch_name && frm.doc.item){
 		    frm.set_value('batch_id', frm.doc.batch_name+"-"+frm.doc.item);
 		    frm.refresh_field('batch_id');
+			get_mrp_based_on_mrp_in_strip(frm);
 		}
 	},
 	item(frm){
@@ -24,7 +25,11 @@ frappe.ui.form.on('Batch', {
 	refresh(frm){
 		hide_dashbord(frm);
 		calculate_batch_qty(frm);
+	},
+	mrp_in_strip(frm){
+		get_mrp_based_on_mrp_in_strip(frm);
 	}
+
 });
 
 function hide_dashbord(frm){
@@ -68,4 +73,25 @@ function calculate_batch_qty(frm){
 			});
 		}
 	}
+}
+
+function get_mrp_based_on_mrp_in_strip(frm){
+	console.log('sdfghj');
+	if(frm.doc.mrp_in_strip && frm.doc.item){
+		frappe.call({
+		  "method": "erpnext.controllers.item_price.get_item_conversion_factor",
+		  "args": {
+			'mrp_in_strip': frm.doc.mrp_in_strip,
+			'item_code': frm.doc.item
+		  },
+		  callback: function(r){
+			console.log(r.message);
+			if(r.message){
+			  frm.set_value('mrp', r.message.mrp);
+			  // frm.set_df_property('price_list_rate', 'read_only', 1)
+	
+			}
+		  }
+		});
+	  }
 }

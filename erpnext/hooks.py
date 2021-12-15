@@ -35,7 +35,8 @@ doctype_js = {
 	"Purchase Invoice": "public/js/webeaz/purchase_invoice.js",
 	"Purchase Order": "public/js/webeaz/purchase_order.js",
 	"Sales Invoice": "public/js/webeaz/sales_invoice.js",
-	"Purchase Receipt": "public/js/webeaz/purchase_receipt.js"
+	"Purchase Receipt": "public/js/webeaz/purchase_receipt.js",
+	"Item Price": "public/js/webeaz/item_price.js"
 }
 
 override_doctype_class = {
@@ -309,6 +310,9 @@ doc_events = {
 	},
 	('Quotation', 'Sales Order', 'Sales Invoice'): {
 		'validate': ["erpnext.erpnext_integrations.taxjar_integration.set_sales_tax"]
+	},
+	"Item Price":{
+		'validate': "erpnext.controllers.item_price.get_price_list_rate_based_on_rate_in_strip"
 	}
 }
 

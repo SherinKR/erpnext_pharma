@@ -310,9 +310,6 @@ doc_events = {
 	},
 	('Quotation', 'Sales Order', 'Sales Invoice'): {
 		'validate': ["erpnext.erpnext_integrations.taxjar_integration.set_sales_tax"]
-	},
-	"Item Price":{
-		'validate': "erpnext.controllers.item_price.get_price_list_rate_based_on_rate_in_strip"
 	}
 }
 

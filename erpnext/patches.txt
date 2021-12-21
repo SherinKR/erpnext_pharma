@@ -293,3 +293,4 @@ erpnext.patches.v13_0.update_job_card_details
 erpnext.patches.v13_0.update_franchise_payments
 erpnext.patches.v13_0.check_and_update_purchase_rate_in_fprqst #24-11-2021
 erpnext.patches.v13_0.delete_cancelled_and_return_invoice_from_fpr #24-11-2021
+erpnext.patches.v13_0.delete_cancelled_and_return_invoice_from_fprqst #21-12-2021

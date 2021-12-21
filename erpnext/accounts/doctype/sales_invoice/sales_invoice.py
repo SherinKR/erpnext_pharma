@@ -237,6 +237,11 @@ class SalesInvoice(SellingController):
 	def on_submit(self):
 		self.validate_pos_paid_amount()
 		self.deduct_stock_from_bin()
+		if self.is_return:
+			if self.return_against:
+				self.si_on_return()
+			else:
+				frappe.throw(_("Against Return Invoice. is mandatory"))
 
 		if self.company:
 			company_doc = frappe.get_doc('Company', self.company)
@@ -341,6 +346,17 @@ class SalesInvoice(SellingController):
 			frappe.db.set_value('Bin Items', tab_name, { 'batch_qty': batch_qty + item.quantity })
 			frappe.db.commit()
 
+	@frappe.whitelist()
+	def si_on_cancel(self):
+		if not self.is_return:
+			delete_si_from_fpr(self)
+
+	@frappe.whitelist()
+	def si_on_return(self):
+		if not self.return_against:
+			frappe.throw(_("Against Return Invoice. is mandatory"))
+		delete_si_from_fpr(self)
+
 	def check_if_consolidated_invoice(self):
 		# since POS Invoice extends Sales Invoice, we explicitly check if doctype is Sales Invoice
 		if self.doctype == "Sales Invoice" and self.is_consolidated:
@@ -366,6 +382,7 @@ class SalesInvoice(SellingController):
 	def on_cancel(self):
 		super(SalesInvoice, self).on_cancel()
 		self.credit_stock_to_bin()
+		self.si_on_cancel()
 		self.check_sales_order_on_hold_or_close("sales_order")
 
 		if self.is_return and not self.update_billed_amount_in_sales_order:
@@ -2127,3 +2144,17 @@ def create_franchise_payment_request(self):
 			new_fpr.total_purchase_amount = sum
 			new_fpr.total_sales_amount = self.outstanding_amount
 			new_fpr.insert()
+
+@frappe.whitelist()
+def delete_si_from_fpr(self):
+	if self.return_against:
+		self = frappe.get_doc("Sales Invoice", self.return_against)
+	if frappe.db.exists({ "doctype":'Franchise Payment Request', "company": self.company, "transaction_date": self.posting_date }):
+		fpr_doc = frappe.get_doc('Franchise Payment Request', { "company": self.company, 'transaction_date': self.posting_date })
+		for item in fpr_doc.items:
+			if item.sales_invoice == self.name :
+				fpr_doc.remove(item)
+				frappe.msgprint (("Franchise Payment Request removed against Sales invoice <b> {0} </b>.").format(self.name), alert=True)
+		fpr_doc.save()
+	else:
+		frappe.msgprint (("No Franchise Payment Request found against Sales invoice <b> {0} </b>.").format(self.name), alert=True)

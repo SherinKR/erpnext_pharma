@@ -49,11 +49,14 @@ frappe.ui.form.on('Sales Invoice', {
 					}
 			});
 	},
-  validate: function(frm){
-    update_batch_price(frm);
-		calculate_taxable_amount(frm);
-		frm.set_value("grand_total_amount", frm.doc.grand_total);
-  },
+    validate: function(frm){
+        update_batch_price(frm);
+        calculate_taxable_amount(frm);
+        frm.set_value("grand_total_amount", frm.doc.grand_total);
+        $.each(frm.doc.items, function(i, item) {
+            set_ptc_on_validate(item);
+        });
+    },
 	grand_total: function(frm){
 		frm.set_value("grand_total_amount", frm.doc.grand_total);
 	},
@@ -351,6 +354,22 @@ frappe.ui.form.on('Sales Invoice Item', {
         }
     }
  });
+
+function set_ptc_on_validate(item){
+    frappe.call({
+        "method":"frappe.client.get",
+        "args":{
+            "doctype":"Item Price",
+            "filters":{"item_code":item.item_code,"batch_no":item.batch_no,"price_list":"Price To Customer - (PTC)"},
+            "fields":["price_list_rate"]
+        },
+        callback:function(ret){
+            if(ret){
+                item.price_to_customer = ret.message.price_list_rate ;
+            }
+        }
+    });
+}
 
 function set_ptc(frm,cdt,cdn){
     var d=locals[cdt][cdn];
